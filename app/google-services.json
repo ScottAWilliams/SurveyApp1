@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "234788813175",
+    "firebase_url": "https://adherencesurvey.firebaseio.com",
+    "project_id": "adherencesurvey",
+    "storage_bucket": "adherencesurvey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234788813175:android:50463ae5b43dec08",
+        "android_client_info": {
+          "package_name": "com.nonscirenefas.yeshy.surveyapptablet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "234788813175-rr96l785vthitql7hdpu701qpdhpi84i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfj2ZOnfr2QTteDfzEtp_FSOYJF2xwlko"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234788813175:android:380b59a0d38bb8c3",
+        "android_client_info": {
+          "package_name": "com.nonscirenefas.yeshy.surveyapp1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "234788813175-rr96l785vthitql7hdpu701qpdhpi84i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfj2ZOnfr2QTteDfzEtp_FSOYJF2xwlko"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
