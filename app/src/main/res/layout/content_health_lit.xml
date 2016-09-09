@@ -8,6 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    tools:context="com.nonscirenefas.yeshy.surveyapp1.MainActivity"
+    tools:showIn="@layout/app_bar_health_lit_ex"
     >
     <TextView
         android:layout_width="match_parent"
@@ -22,7 +24,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:paddingTop="30dp"
         android:id="@+id/textView2"
-        android:text="The option chosen, (?), has been checked below."
+        android:text="The option, (?), has been checked below."
         android:textSize="20dp"/>
 
 
