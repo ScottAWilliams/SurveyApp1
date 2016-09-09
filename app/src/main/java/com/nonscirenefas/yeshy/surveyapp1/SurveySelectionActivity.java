@@ -70,9 +70,9 @@ public class SurveySelectionActivity extends AppCompatActivity
         healthLiteracySurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SurveySelectionActivity.this, healthLiteracyExampleActivity.class);
+                Intent i = new Intent(SurveySelectionActivity.this, HealthLitParagraphActivity.class);
                 //Intent i = new Intent(SurveySelectionActivity.this, SurveyActivity.class);
-                i.putExtra("name", 3); //number corresponds to survey
+                //i.putExtra("name", 3); //number corresponds to survey
                 startActivity(i);
 
 

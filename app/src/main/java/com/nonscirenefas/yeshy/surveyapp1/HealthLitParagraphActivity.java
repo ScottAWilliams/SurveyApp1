@@ -14,24 +14,25 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
 /**
- * Created by lindsayherron on 9/8/16.
+ * Created by lindsayherron on 8/30/16.
  */
-public class healthLiteracyExampleActivity extends AppCompatActivity
+public class HealthLitParagraphActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String PREFS_NAME = "MyPrefsFile";
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_health_literacy_example);
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_health_lit_paragraph);
+        //setTheme(R.style.myDialog);
+        //showLocationDialog();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        toolbar.setSubtitle("STOFHLA Information");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -42,69 +43,16 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //add comment to test commits
-
-        final TextView t = (TextView) findViewById(R.id.textView2);
-
-        //final RadioButton origButton=(RadioButton)findViewById(R.id.origButton);
-        final RadioButton opt1=(RadioButton)findViewById(R.id.opt1);
-        final RadioButton opt2=(RadioButton)findViewById(R.id.opt2);
-        final RadioButton opt3=(RadioButton)findViewById(R.id.opt3);
-
-
-
-        opt1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // TODO Auto-generated method stub
-                if(isChecked)
-                {
-                    opt2.setChecked(false);
-                    opt3.setChecked(false);
-                    //TextView t;
-                    t.setText("The option, Option 1, has been checked below.");
-                }
-            }
-        });
-
-        opt2.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // TODO Auto-generated method stub
-                if(isChecked)
-                {
-                    opt1.setChecked(false);
-                    opt3.setChecked(false);
-                    //TextView t;
-                    t.setText("The option, Option 2, has been checked below.");
-                }
-            }
-        });
-
-        opt3.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // TODO Auto-generated method stub
-                if(isChecked)
-                {
-                    opt1.setChecked(false);
-                    opt2.setChecked(false);
-                    //TextView t;
-                    t.setText("The option, Option 3, has been checked below.");
-                }
-            }
-        });
-
-
-        final Button button = (Button) findViewById(R.id.btnDisplay);
+        final Button button = (Button) findViewById(R.id.btnNext);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(healthLiteracyExampleActivity.this, SurveyActivity.class);
-                i.putExtra("name", 3);
+                Intent i = new Intent(HealthLitParagraphActivity.this, healthLiteracyExampleActivity.class);
                 startActivity(i);
             }
         });
-    }
 
+    }
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
