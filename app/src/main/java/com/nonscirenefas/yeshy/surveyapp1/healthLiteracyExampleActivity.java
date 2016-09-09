@@ -1,6 +1,5 @@
 package com.nonscirenefas.yeshy.surveyapp1;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -15,22 +14,24 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 /**
- * Created by Yeshy on 7/12/2016.
+ * Created by lindsayherron on 9/8/16.
  */
-public class SurveySelectionActivity extends AppCompatActivity
+public class healthLiteracyExampleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    Context ctx;
+
     public static final String PREFS_NAME = "MyPrefsFile";
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_survey_selection);
-        ctx = this;
+        setContentView(R.layout.activity_health_literacy_example);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setSubtitle("Survey List");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -41,79 +42,66 @@ public class SurveySelectionActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initializeSurveyButtons();
-    }
+        final TextView t = (TextView) findViewById(R.id.textView2);
 
-    public void initializeSurveyButtons() {
-        Button lifestyleSurvey = (Button) findViewById(R.id.lifestylesurveybutton);
-        Button medicalAdherenceSurvey = (Button) findViewById(R.id.medicaladherencesurveybutton);
-        Button healthLiteracySurvey = (Button) findViewById(R.id.healthliteracysurveybutton);
+        //final RadioButton origButton=(RadioButton)findViewById(R.id.origButton);
+        final RadioButton opt1=(RadioButton)findViewById(R.id.opt1);
+        final RadioButton opt2=(RadioButton)findViewById(R.id.opt2);
+        final RadioButton opt3=(RadioButton)findViewById(R.id.opt3);
 
-        lifestyleSurvey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(SurveySelectionActivity.this, SurveyActivity.class);
-                i.putExtra("name", 1); //number corresponds to survey
-                startActivity(i);
+        //opt1.setChecked(false);
+        //opt2.setChecked(false);
+        //opt3.setChecked(false);
+
+        opt1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // TODO Auto-generated method stub
+                if(isChecked)
+                {
+                    opt2.setChecked(false);
+                    opt3.setChecked(false);
+                    //TextView t;
+                    t.setText("The option chosen, Option 1, has been checked below.");
+                }
             }
         });
 
-        medicalAdherenceSurvey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(SurveySelectionActivity.this, SurveyActivity.class);
-                i.putExtra("name", 2); //number corresponds to survey
-                startActivity(i);
+        opt2.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // TODO Auto-generated method stub
+                if(isChecked)
+                {
+                    opt1.setChecked(false);
+                    opt3.setChecked(false);
+                    //TextView t;
+                    t.setText("The option chosen, Option 2, has been checked below.");
+                }
             }
         });
 
-        healthLiteracySurvey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(SurveySelectionActivity.this, healthLiteracyExampleActivity.class);
-                //Intent i = new Intent(SurveySelectionActivity.this, SurveyActivity.class);
-                i.putExtra("name", 3); //number corresponds to survey
+        opt3.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // TODO Auto-generated method stub
+                if(isChecked)
+                {
+                    opt1.setChecked(false);
+                    opt2.setChecked(false);
+                    //TextView t;
+                    t.setText("The option chosen, Option 3, has been checked below.");
+                }
+            }
+        });
+
+
+        final Button button = (Button) findViewById(R.id.btnDisplay);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(healthLiteracyExampleActivity.this, SurveyActivity.class);
+                i.putExtra("name", 3);
                 startActivity(i);
-
-
             }
         });
     }
-
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    */
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -127,13 +115,13 @@ public class SurveySelectionActivity extends AppCompatActivity
         else if (id == R.id.nav_bloodpressure) {
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
-        }  else if (id == R.id.nav_medication) {
+        }else if (id == R.id.nav_medication) {
             Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
 
         }else if (id == R.id.nav_surveys) {
-            //Intent i = new Intent(this, SurveySelectionActivity.class);
-            //startActivity(i);
+            Intent i = new Intent(this, SurveySelectionActivity.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
@@ -168,4 +156,14 @@ public class SurveySelectionActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }

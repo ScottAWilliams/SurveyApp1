@@ -43,8 +43,7 @@
                 android:hint="User Code: Ex. patient1"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:imeOptions="actionDone"
-                />
+                android:imeOptions="actionDone" />
 
             <Button
                 android:id="@+id/email_sign_in_button" style="?android:textAppearanceSmall"

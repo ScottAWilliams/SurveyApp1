@@ -256,8 +256,9 @@ public class SurveyActivity extends AppCompatActivity
                     if(x != -1) {
                         counter++;
                         //TODO: Add code here for changed color of listeview completed
-                        mListView.getChildAt(qnum).setBackgroundColor(Color.DKGRAY);
+                        mListView.getChildAt(qnum).setBackgroundColor(Color.LTGRAY);
                     }
+
                     qnum++;
 
                 }
