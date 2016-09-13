@@ -39,13 +39,13 @@ public class LoginActivity extends Activity {
         String UIDstored = settings.getString("UID", "Default");
         Log.d("UID", UIDstored);
 
-        /*
+
         if(!UIDstored.equals("Default")) {
             ((MyApplication) this.getApplication()).setUID(UIDstored);
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
             finish();
-        }*/
+        }
 
         FirebaseAuth.getInstance().signOut();
         mAuth = FirebaseAuth.getInstance();

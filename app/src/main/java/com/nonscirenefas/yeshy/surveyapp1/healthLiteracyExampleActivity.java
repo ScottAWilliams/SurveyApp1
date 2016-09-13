@@ -42,6 +42,8 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //add comment to test commits
+
         final TextView t = (TextView) findViewById(R.id.textView2);
 
         //final RadioButton origButton=(RadioButton)findViewById(R.id.origButton);
