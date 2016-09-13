@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -252,11 +253,19 @@ public class SurveyActivity extends AppCompatActivity
                 //set progressbar to the amount of questions answered.
                 int counter = 0;
                 int qnum = 0;
+                int size = mListView.getChildCount();
+                //Toast.makeText(SurveyActivity.this, size, Toast.LENGTH_SHORT).show();
                 for(int x: answers) {
                     if(x != -1) {
                         counter++;
                         //TODO: Add code here for changed color of listeview completed
+
                         mListView.getChildAt(qnum).setBackgroundColor(Color.LTGRAY);
+                        for(int c = 0; c < size; c++ ){
+                            if(c > qnum){
+                                mListView.getChildAt(c).setBackgroundColor(Color.WHITE);
+                            }
+                        }
                     }
 
                     qnum++;
