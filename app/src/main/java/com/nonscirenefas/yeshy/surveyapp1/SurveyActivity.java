@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,6 +170,7 @@ public class SurveyActivity extends AppCompatActivity
             amountOfQuestions.setText(text);
 
         } else if (surveyNumber == 3) {
+
             toolbar.setSubtitle("Literacy Survey");
             //get questions from xml file
             String[] mArray = getResources().getStringArray(R.array.LiteracySurvey);
@@ -259,17 +259,14 @@ public class SurveyActivity extends AppCompatActivity
                     if(x != -1) {
                         counter++;
                         //TODO: Add code here for changed color of listeview completed
-
                         mListView.getChildAt(qnum).setBackgroundColor(Color.LTGRAY);
-                        for(int c = 0; c < size; c++ ){
-                            if(c > qnum){
-                                mListView.getChildAt(c).setBackgroundColor(Color.WHITE);
+                        for(int eighth = qnum; eighth< answers.length; eighth = eighth+8) {
+                            if (eighth == -1) {
+                                mListView.getChildAt(eighth).setBackgroundColor(Color.DKGRAY);
                             }
                         }
                     }
-
                     qnum++;
-
                 }
                 progressBar.setMax(answers.length);
                 progressBar.setProgress(counter);
