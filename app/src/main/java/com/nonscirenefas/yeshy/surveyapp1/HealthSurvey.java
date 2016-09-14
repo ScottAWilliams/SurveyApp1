@@ -114,6 +114,7 @@ public class HealthSurvey extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     questionsView.setText(questionArray[btnTag.getId()]);
+
                 }
             });
 
