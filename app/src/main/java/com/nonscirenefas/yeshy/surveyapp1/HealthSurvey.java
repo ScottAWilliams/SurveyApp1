@@ -118,6 +118,7 @@ public class HealthSurvey extends AppCompatActivity
             btnTag.setText("Question " + (i + 1));
             btnTag.setId(Integer.parseInt(Integer.toString(i)));
             layout.addView(btnTag);
+
             btnTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -171,8 +172,10 @@ public class HealthSurvey extends AppCompatActivity
                                 opt2.setChecked(false);
                                 opt3.setChecked(false);
                                 opt4.setChecked(false);
-                                btnTag.setBackgroundColor(Color.TRANSPARENT);
-                                answers[qnum] = 1;
+                                if (btnTag.getId()==qnum){
+                                    btnTag.setBackgroundColor(Color.TRANSPARENT);
+                                    answers[qnum] = 1;
+                                }
                                 //TextView t;
                                 //t.setText("The option, Option 1, has been checked below.");
 
@@ -188,7 +191,10 @@ public class HealthSurvey extends AppCompatActivity
                                 opt1.setChecked(false);
                                 opt3.setChecked(false);
                                 opt4.setChecked(false);
-                                btnTag.setBackgroundColor(Color.TRANSPARENT);
+                                if (btnTag.getId()==qnum){
+                                    btnTag.setBackgroundColor(Color.TRANSPARENT);
+                                    answers[qnum] = 2;
+                                }
                                 //TextView t;
                                 //t.setText("The option, Option 2, has been checked below.");
                             }
@@ -203,7 +209,10 @@ public class HealthSurvey extends AppCompatActivity
                                 opt1.setChecked(false);
                                 opt2.setChecked(false);
                                 opt4.setChecked(false);
-                                btnTag.setBackgroundColor(Color.TRANSPARENT);
+                                if (btnTag.getId()==qnum){
+                                    btnTag.setBackgroundColor(Color.TRANSPARENT);
+                                    answers[qnum] = 3;
+                                }
                                 //TextView t;
                                 //t.setText("The option, Option 3, has been checked below.");
                             }
@@ -218,7 +227,10 @@ public class HealthSurvey extends AppCompatActivity
                                 opt1.setChecked(false);
                                 opt2.setChecked(false);
                                 opt3.setChecked(false);
-                                btnTag.setBackgroundColor(Color.TRANSPARENT);
+                                if (btnTag.getId()==qnum){
+                                    btnTag.setBackgroundColor(Color.TRANSPARENT);
+                                    answers[qnum] = 4;
+                                }
                                 //TextView t;
                                 //t.setText("The option, Option 3, has been checked below.");
                             }
@@ -243,9 +255,13 @@ public class HealthSurvey extends AppCompatActivity
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     selected=0;
+                    int nonselected = 0;
                     for (int x : answers) {
                         if (x != -1) {
                             selected++;
+                        }
+                        else{
+                            nonselected++;
                         }
                     }
                     if (selected>2) {
@@ -255,7 +271,7 @@ public class HealthSurvey extends AppCompatActivity
                         startActivity(i);
                     }
                     else{
-                        Snackbar.make(v, "Please complete all 36 questions", Snackbar.LENGTH_LONG)
+                        Snackbar.make(v, "Please complete all 36 questions. You have "+nonselected+" questions left.", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
                 }
