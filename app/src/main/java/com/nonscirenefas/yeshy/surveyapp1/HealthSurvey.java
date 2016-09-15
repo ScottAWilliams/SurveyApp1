@@ -108,6 +108,7 @@ public class HealthSurvey extends AppCompatActivity
 
         final TextView questionsView = (TextView) layout_main.findViewById(R.id.questionView);
         //questionsView.setText("Click an above button to start the survey.");
+        final Button button = (Button) findViewById(R.id.submitButton);
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.lv);
 
@@ -121,7 +122,7 @@ public class HealthSurvey extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     qnum = btnTag.getId();
-                    questionsView.setText(questionArray[qnum]);
+                    questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
                     opt1.setText(questionchoices.get(qnum)[0]);
@@ -131,6 +132,37 @@ public class HealthSurvey extends AppCompatActivity
                     opt3.setText(questionchoices.get(qnum)[2]);
                     final RadioButton opt4 = (RadioButton) findViewById(R.id.opt4);
                     opt4.setText(questionchoices.get(qnum)[3]);
+                            if (answers[qnum] == 1) {
+                                opt1.setChecked(true);
+                                opt2.setChecked(false);
+                                opt3.setChecked(false);
+                                opt4.setChecked(false);
+                            }
+                            else if (answers[qnum] == 2){
+                                opt1.setChecked(false);
+                                opt2.setChecked(true);
+                                opt3.setChecked(false);
+                                opt4.setChecked(false);
+                            }
+                            else if (answers[qnum] == 3){
+                                opt1.setChecked(false);
+                                opt2.setChecked(false);
+                                opt3.setChecked(true);
+                                opt4.setChecked(false);
+                            }
+                            else if (answers[qnum] == 4) {
+                                opt1.setChecked(false);
+                                opt2.setChecked(false);
+                                opt3.setChecked(false);
+                                opt4.setChecked(true);
+                            }
+                    else{
+                                opt1.setChecked(false);
+                                opt2.setChecked(false);
+                                opt3.setChecked(false);
+                                opt4.setChecked(false);
+                            }
+
 
                     opt1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -192,32 +224,22 @@ public class HealthSurvey extends AppCompatActivity
                             }
                         }
                     });
-                    opt1.setChecked(false);
-                    opt2.setChecked(false);
-                    opt3.setChecked(false);
-                    opt4.setChecked(false);
 
                     int selected = 0;
                     for (int x : answers) {
                         if (x != -1) {
                             selected++;
                         }
+                        if (selected>34) {
+                            button.setBackgroundColor(Color.LTGRAY);
+                            button.setTextColor(Color.BLACK);
+                        }
                     }
                 }
             });
 
         }
-            final Button button = (Button) findViewById(R.id.submitButton);
-            selected=0;
-            for (int x : answers) {
-                if (x != -1) {
-                    selected++;
-                }
-            }
-            if (selected>2) {
-                button.setBackgroundColor(Color.LTGRAY);
-                button.setTextColor(Color.BLACK);
-            }
+
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     selected=0;
@@ -227,8 +249,6 @@ public class HealthSurvey extends AppCompatActivity
                         }
                     }
                     if (selected>2) {
-                        button.setBackgroundColor(Color.LTGRAY);
-                        button.setTextColor(Color.BLACK);
                         Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
