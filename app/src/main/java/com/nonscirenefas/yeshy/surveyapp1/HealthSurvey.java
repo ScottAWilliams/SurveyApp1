@@ -264,7 +264,7 @@ public class HealthSurvey extends AppCompatActivity
                             nonselected++;
                         }
                     }
-                    if (selected>2) {
+                    if (selected>35) {
                         Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
