@@ -3,25 +3,19 @@ package com.nonscirenefas.yeshy.surveyapp1;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TimePicker;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 
 /**
@@ -104,6 +98,9 @@ public class BloodPressureLogActivity extends AppCompatActivity {
             time = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
         }
         mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").child(date).child(time).setValue(bpSystolic + "-" + bpDiastolic);
+
+        Snackbar.make(v, "Your blood pressure has been logged.", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     public void checkLogs(View v) {

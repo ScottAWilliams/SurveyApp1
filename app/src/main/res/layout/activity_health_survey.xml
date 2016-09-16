@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="55dp"
-            android:layout_gravity="top">
+            android:layout_gravity="top"
+            android:scrollbarFadeDuration="0">
 
                 <LinearLayout
                     android:id="@+id/lv"
@@ -44,7 +45,7 @@
 
         <TextView
             android:id="@+id/questionView"
-            android:paddingTop="60dp"
+            android:layout_marginTop="40dp"
             android:layout_gravity="center_horizontal"
             android:text="Click an above button in the scrolling menu to start the survey."
             android:textSize="20dp"

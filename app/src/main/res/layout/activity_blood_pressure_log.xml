@@ -23,6 +23,7 @@
         android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:textAlignment="center"
         android:ems="10"
         android:id="@+id/bp_systolic"
         android:layout_gravity="center_horizontal" />
@@ -39,16 +40,19 @@
         android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:textAlignment="center"
         android:ems="10"
         android:id="@+id/bp_diastolic"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical" />
 
     <TimePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timePicker"
         android:timePickerMode="spinner"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:imeOptions="actionDone"/>
 
     <Button
         android:id="@+id/btnSubmit"

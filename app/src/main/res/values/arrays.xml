@@ -8,6 +8,24 @@
         <item>Drug 5</item>
     </string-array>
 
+
+    <string-array name="LiteracySurveyExample">
+    <item index="0">(?) has been checked below in Question 1, then () was checked in Quesiton 2._Option 1_Option 2_Option 3_Option 4</item>
+    <item index="1">() has been checked below in Question 1, then (?) was checked in Quesiton 2._Option 1_Option 2_Option 3_Option 4</item>
+    </string-array>
+
+
+    <string-array name="LitExampleSurveyAnswers">
+        <item index="0">0</item>
+        <item index="1">0</item>
+    </string-array>
+
+    <string-array name="LitExampleSurveyAnswersNA">
+    <item index="0">0</item>
+    <item index="1">0</item>
+    </string-array>
+
+
     <string-array name="LifestylePositiveMessagesArray">
         <item index="0">Exercising and being physically active is a great way to maintain a healthy lifestyle. Keep up the great work!</item>
         <item index="1">Not using cigarettes or other forms of tobacco is an important component of a healthy lifestyle.  You are making good decisions for your health!</item>

@@ -173,12 +173,23 @@ public class HealthSurvey extends AppCompatActivity
                                 opt3.setChecked(false);
                                 opt4.setChecked(false);
                                 if (btnTag.getId()==qnum){
+                                    //btnTag.setBackgroundResource(R.drawable.button_bg);
                                     btnTag.setBackgroundColor(Color.TRANSPARENT);
                                     answers[qnum] = 1;
                                 }
                                 //TextView t;
                                 //t.setText("The option, Option 1, has been checked below.");
 
+                            }
+                            int selected = 0;
+                            for (int x : answers) {
+                                if (x != -1) {
+                                    selected++;
+                                }
+                                if (selected>35) {
+                                    button.setBackgroundColor(Color.LTGRAY);
+                                    button.setTextColor(Color.BLACK);
+                                }
                             }
                         }
                     });
@@ -192,11 +203,22 @@ public class HealthSurvey extends AppCompatActivity
                                 opt3.setChecked(false);
                                 opt4.setChecked(false);
                                 if (btnTag.getId()==qnum){
+                                    //btnTag.setBackgroundResource(R.drawable.button_bg);
                                     btnTag.setBackgroundColor(Color.TRANSPARENT);
                                     answers[qnum] = 2;
                                 }
                                 //TextView t;
                                 //t.setText("The option, Option 2, has been checked below.");
+                            }
+                            int selected = 0;
+                            for (int x : answers) {
+                                if (x != -1) {
+                                    selected++;
+                                }
+                                if (selected>35) {
+                                    button.setBackgroundColor(Color.LTGRAY);
+                                    button.setTextColor(Color.BLACK);
+                                }
                             }
                         }
                     });
@@ -210,11 +232,22 @@ public class HealthSurvey extends AppCompatActivity
                                 opt2.setChecked(false);
                                 opt4.setChecked(false);
                                 if (btnTag.getId()==qnum){
+                                    //btnTag.setBackgroundResource(R.drawable.horizontal_buttons_scroll);
                                     btnTag.setBackgroundColor(Color.TRANSPARENT);
                                     answers[qnum] = 3;
                                 }
                                 //TextView t;
                                 //t.setText("The option, Option 3, has been checked below.");
+                            }
+                            int selected = 0;
+                            for (int x : answers) {
+                                if (x != -1) {
+                                    selected++;
+                                }
+                                if (selected>35) {
+                                    button.setBackgroundColor(Color.LTGRAY);
+                                    button.setTextColor(Color.BLACK);
+                                }
                             }
                         }
                     });
@@ -228,25 +261,26 @@ public class HealthSurvey extends AppCompatActivity
                                 opt2.setChecked(false);
                                 opt3.setChecked(false);
                                 if (btnTag.getId()==qnum){
+                                    //btnTag.setBackgroundResource(R.drawable.button_bg);
                                     btnTag.setBackgroundColor(Color.TRANSPARENT);
                                     answers[qnum] = 4;
                                 }
                                 //TextView t;
                                 //t.setText("The option, Option 3, has been checked below.");
                             }
+                            int selected = 0;
+                            for (int x : answers) {
+                                if (x != -1) {
+                                    selected++;
+                                }
+                                if (selected>35) {
+                                    button.setBackgroundColor(Color.LTGRAY);
+                                    button.setTextColor(Color.BLACK);
+                                }
+                            }
                         }
                     });
 
-                    int selected = 0;
-                    for (int x : answers) {
-                        if (x != -1) {
-                            selected++;
-                        }
-                        if (selected>34) {
-                            button.setBackgroundColor(Color.LTGRAY);
-                            button.setTextColor(Color.BLACK);
-                        }
-                    }
                 }
             });
 
@@ -271,7 +305,7 @@ public class HealthSurvey extends AppCompatActivity
                         startActivity(i);
                     }
                     else{
-                        Snackbar.make(v, "Please complete all 36 questions. You have "+nonselected+" questions left.", Snackbar.LENGTH_LONG)
+                        Snackbar.make(v, "Please complete all 36 questions. "+nonselected+" questions remain. Please scroll through the buttons above.", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
                 }
