@@ -127,12 +127,16 @@ public class HealthSurvey extends AppCompatActivity
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
                     opt1.setText(questionchoices.get(qnum)[0]);
+                    opt1.setVisibility(view.VISIBLE);
                     final RadioButton opt2 = (RadioButton) findViewById(R.id.opt2);
                     opt2.setText(questionchoices.get(qnum)[1]);
+                    opt2.setVisibility(view.VISIBLE);
                     final RadioButton opt3 = (RadioButton) findViewById(R.id.opt3);
                     opt3.setText(questionchoices.get(qnum)[2]);
+                    opt3.setVisibility(view.VISIBLE);
                     final RadioButton opt4 = (RadioButton) findViewById(R.id.opt4);
                     opt4.setText(questionchoices.get(qnum)[3]);
+                    opt4.setVisibility(view.VISIBLE);
                             if (answers[qnum] == 1) {
                                 opt1.setChecked(true);
                                 opt2.setChecked(false);
@@ -187,8 +191,7 @@ public class HealthSurvey extends AppCompatActivity
                                     selected++;
                                 }
                                 if (selected>35) {
-                                    button.setBackgroundColor(Color.LTGRAY);
-                                    button.setTextColor(Color.BLACK);
+                                    button.setVisibility(View.VISIBLE);
                                 }
                             }
                         }
@@ -216,8 +219,7 @@ public class HealthSurvey extends AppCompatActivity
                                     selected++;
                                 }
                                 if (selected>35) {
-                                    button.setBackgroundColor(Color.LTGRAY);
-                                    button.setTextColor(Color.BLACK);
+                                    button.setVisibility(View.VISIBLE);
                                 }
                             }
                         }
@@ -245,8 +247,7 @@ public class HealthSurvey extends AppCompatActivity
                                     selected++;
                                 }
                                 if (selected>35) {
-                                    button.setBackgroundColor(Color.LTGRAY);
-                                    button.setTextColor(Color.BLACK);
+                                    button.setVisibility(View.VISIBLE);
                                 }
                             }
                         }
@@ -274,8 +275,7 @@ public class HealthSurvey extends AppCompatActivity
                                     selected++;
                                 }
                                 if (selected>35) {
-                                    button.setBackgroundColor(Color.LTGRAY);
-                                    button.setTextColor(Color.BLACK);
+                                    button.setVisibility(View.VISIBLE);
                                 }
                             }
                         }

@@ -60,6 +60,7 @@
             android:layout_gravity="center_horizontal" />
 
         <RadioButton
+            android:visibility="invisible"
             android:id="@+id/opt1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,6 +73,7 @@
             android:layout_gravity="center_horizontal" />
 
         <RadioButton
+            android:visibility="invisible"
             android:id="@+id/opt2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,6 +86,7 @@
             android:layout_gravity="center_horizontal" />
 
         <RadioButton
+            android:visibility="invisible"
             android:id="@+id/opt3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,6 +98,7 @@
             android:layout_height="10dp"
             android:layout_gravity="center_horizontal" />
         <RadioButton
+            android:visibility="invisible"
             android:id="@+id/opt4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,10 +110,9 @@
             android:layout_height="20dp"
             android:layout_gravity="center_horizontal" />
         <Button
+            android:visibility="invisible"
             android:id="@+id/submitButton"
             android:text="Submit"
-            android:background="@android:color/transparent"
-            android:textColor="#EEEEEE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"/>
