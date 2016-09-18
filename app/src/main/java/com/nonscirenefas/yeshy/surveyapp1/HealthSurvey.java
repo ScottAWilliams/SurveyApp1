@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -32,6 +33,7 @@ import java.util.Arrays;
  */
 public class HealthSurvey extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Button btnTag;
     int qnum;
     public static final String PREFS_NAME = "MyPrefsFile";
     Context ctx;
@@ -106,10 +108,12 @@ public class HealthSurvey extends AppCompatActivity
         rightorwrong = new int[mArray.length];
         Arrays.fill(rightorwrong, 1); //default for wrong
 
+        final HorizontalScrollView horScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scrollview);
         final TextView questionsView = (TextView) layout_main.findViewById(R.id.questionView);
         //questionsView.setText("Click an above button to start the survey.");
         final Button button = (Button) findViewById(R.id.submitButton);
-
+        final Button buttonNext = (Button) findViewById(R.id.nextButton);
+        final Button buttonPrev = (Button) findViewById(R.id.prevButton);
         LinearLayout layout = (LinearLayout) findViewById(R.id.lv);
 
         for (int i = 0; i < 36; i++) {
@@ -118,11 +122,23 @@ public class HealthSurvey extends AppCompatActivity
             btnTag.setText("Question " + (i + 1));
             btnTag.setId(Integer.parseInt(Integer.toString(i)));
             layout.addView(btnTag);
-
             btnTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     qnum = btnTag.getId();
+                    horScrollView.scrollTo(qnum*388,0);
+                    if (qnum<35){
+                        if (qnum==0){
+                            buttonPrev.setVisibility(view.INVISIBLE);
+                        }
+                        buttonNext.setVisibility(view.VISIBLE);
+                    }
+                    if (qnum>0){
+                        if (qnum==35){
+                            buttonNext.setVisibility(view.INVISIBLE);
+                        }
+                        buttonPrev.setVisibility(view.VISIBLE);
+                    }
                     questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
@@ -286,31 +302,44 @@ public class HealthSurvey extends AppCompatActivity
 
         }
 
-            button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    selected=0;
-                    int nonselected = 0;
-                    for (int x : answers) {
-                        if (x != -1) {
-                            selected++;
-                        }
-                        else{
-                            nonselected++;
-                        }
-                    }
-                    if (selected>35) {
-                        Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                        Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
-                        startActivity(i);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               btnTag = (Button) findViewById(qnum+1);
+                btnTag.performClick();
+            }
+        });
+
+        buttonPrev.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                btnTag = (Button) findViewById(qnum-1);
+                btnTag.performClick();
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                selected=0;
+                int nonselected = 0;
+                for (int x : answers) {
+                    if (x != -1) {
+                        selected++;
                     }
                     else{
-                        Snackbar.make(v, "Please complete all 36 questions. "+nonselected+" questions remain. Please scroll through the buttons above.", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                        nonselected++;
                     }
                 }
-            });
-
+                if (selected>35) {
+                    Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
+                    startActivity(i);
+                }
+                else{
+                    Snackbar.make(v, "Please complete all 36 questions. "+nonselected+" questions remain. Please scroll through the buttons above.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        });
     }
 
 

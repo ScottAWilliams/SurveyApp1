@@ -28,7 +28,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="55dp"
             android:layout_gravity="top"
-            android:scrollbarFadeDuration="0">
+            android:scrollbarFadeDuration="0"
+            android:scrollX="0dp">
 
                 <LinearLayout
                     android:id="@+id/lv"
@@ -109,13 +110,43 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_gravity="center_horizontal" />
+
+
+
+            <LinearLayout
+                android:id="@+id/lv_bottom"
+                android:gravity="bottom|center"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+
         <Button
+            android:layout_alignParentBottom="true"
             android:visibility="invisible"
-            android:id="@+id/submitButton"
-            android:text="Submit"
+            android:id="@+id/prevButton"
+            android:text="Prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"/>
+            />
+                <Button
+                    android:visibility="invisible"
+                    android:id="@+id/submitButton"
+                    android:text="Submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+                <Button
+                    android:layout_alignParentBottom="true"
+                    android:visibility="invisible"
+                    android:id="@+id/nextButton"
+                    android:text="Next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
 
 
 
