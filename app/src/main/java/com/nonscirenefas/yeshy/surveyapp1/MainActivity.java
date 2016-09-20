@@ -16,16 +16,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -64,6 +59,7 @@ public class MainActivity extends AppCompatActivity
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
+        /*
         mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -82,6 +78,9 @@ public class MainActivity extends AppCompatActivity
                             Log.e("reading2", medicine.toString());
                             Log.e("reading3", medicine.getKey());
                             Log.e("reading4", medicine.child(medicine.getKey()).toString());
+
+
+                            //TODO: I believe error occurs here with setting to type Medication (Problem converting String to Medication)
                             Medication med = medicine.getValue(Medication.class);
                             ((MyApplication) MainActivity.this.getApplication()).addMedication(med);
 
@@ -122,7 +121,7 @@ public class MainActivity extends AppCompatActivity
                         //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                     }
                 });
-
+*/
 
         initializeMessagesList();
         startAlarm(this);
@@ -156,10 +155,10 @@ public class MainActivity extends AppCompatActivity
             counter++;
         }
 
-        //Calendar calendar = Calendar.getInstance();
-        //long day = (long) calendar.get(Calendar.DAY_OF_YEAR);
-        Random generator = new Random();
-        int num = generator.nextInt(messages.size());
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_YEAR);
+        //Random generator = new Random();
+        int num = day % messages.size();
         //Log.e("num",Integer.toString(num));
 
         //String [] mArrayBefore = new String[messages.size()];
