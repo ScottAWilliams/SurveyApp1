@@ -131,20 +131,22 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                 @Override
                 public void onClick(View view) {
                     qnum = btnTag.getId();
+                    questCount = btnTag.getId();
                     horScrollView.scrollTo(qnum*388,0);
-                    if (qnum<8){
+                    if (qnum<7){
                         if (qnum==0){
                             buttonPrev.setVisibility(view.INVISIBLE);
                         }
                         buttonNext.setVisibility(view.VISIBLE);
                     }
                     if (qnum>0){
-                        if (qnum==8){
+                        if (qnum==7){
                             buttonNext.setVisibility(view.INVISIBLE);
                         }
                         buttonPrev.setVisibility(view.VISIBLE);
                     }
                     questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
+
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
                     final RadioButton opt2 = (RadioButton) findViewById(R.id.opt2);
