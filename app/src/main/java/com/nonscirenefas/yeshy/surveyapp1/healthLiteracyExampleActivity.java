@@ -31,6 +31,9 @@ import java.util.Arrays;
 public class healthLiteracyExampleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     int qnum;
+    int paren =0;
+    int qMark =0;
+    String questionParse;
     public static final String PREFS_NAME = "MyPrefsFile";
     final ArrayList<String> questions = new ArrayList<>();
     String[] questionArray = new String[questions.size()];
@@ -115,6 +118,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     qnum = btnTag.getId();
+
                     questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
@@ -186,6 +190,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+
                         }
                     });
 
@@ -214,6 +219,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+
                         }
                     });
 
@@ -242,6 +248,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+
                         }
                     });
                     opt4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -270,6 +277,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+
                         }
                     });
 
@@ -307,7 +315,60 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
     }
 
 
+public String parseQuestion(int z){
+    StringBuilder questionArrangement= new StringBuilder();;
+    int currentQuestion =0;
+    int pos = 0;
+    StringBuilder newQuestion = new StringBuilder();
+    questionParse = questionArray[z];
+    qMark = questionParse.indexOf("?");
+    paren = questionParse.indexOf("(");
 
+    while (paren!=-1){
+        if (paren+1!=qMark){
+            questionArrangement.append("0");
+        }
+        else{
+            questionArrangement.append("1");
+        }
+        questionParse=questionParse.substring(paren+1,questionParse.length()-1);
+        paren = questionParse.indexOf("(");
+    }
+    newQuestion = questionArrangement;
+    ////TODO: Parse string here to change question into choices that have been made
+    questionParse = questionArray[z];
+    qMark = questionParse.indexOf("?");
+    paren = questionParse.indexOf("(");
+    while (pos<questionArrangement.toString().length()){
+        if (Integer.parseInt(questionArrangement.toString().substring(pos,pos+1))==0){
+            currentQuestion = z-questionArrangement.toString().length()+pos;
+            if (answers[currentQuestion]!=-1){
+                newQuestion.append(questionParse.substring(0,paren-1));
+                newQuestion.append(questionchoices.get(currentQuestion)[answers[currentQuestion]]);
+            }
+            else{
+                newQuestion.append(questionParse.substring(0,paren+2));
+            }
+            questionParse = questionParse.substring(paren+2,questionParse.length()-1);
+        }
+        else if (Integer.parseInt(questionArrangement.toString().substring(pos,pos+1))==1) {
+            currentQuestion = z-questionArrangement.toString().length()+pos;
+            if (answers[currentQuestion]!=-1){
+                newQuestion.append(questionParse.substring(0,paren-1));
+                newQuestion.append(questionchoices.get(currentQuestion)[answers[currentQuestion]]);
+            }
+            else{
+                newQuestion.append(questionParse.substring(0,paren+3));
+
+            }
+            questionParse = questionParse.substring(paren+3,questionParse.length()-1);
+        }
+        pos++;
+        paren = questionParse.indexOf("(");
+    }
+
+    return newQuestion.toString();
+}
 
 
 

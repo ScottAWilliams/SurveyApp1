@@ -139,6 +139,10 @@ public class HealthSurvey extends AppCompatActivity
                         }
                         buttonPrev.setVisibility(view.VISIBLE);
                     }
+
+                    ////TODO: Parse string here to change question into choices that have been made
+
+
                     questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
