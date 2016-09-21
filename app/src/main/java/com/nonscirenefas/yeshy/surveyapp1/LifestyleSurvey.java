@@ -53,6 +53,7 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
     float textsize = 20;
     int selected =0;
     public int questCount = 0;
+    int Lindsay = 0;
 
 
     @Override
