@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nonscirenefas.yeshy.surveyapp1">
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,16 +12,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <service android:name=".ReminderService">
-        </service>
+        <service android:name=".ReminderService" />
 
         <receiver android:name=".MyAlarmReceiver">
             <intent-filter>
                 <action android:name="com.nonscirenefas.yeshy.surveyapp1.MyAlarmReceiver" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".StartMyServiceAtBootReceiver"
             android:label="StartMyServiceAtBootReceiver">
@@ -28,8 +26,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-
 
         <activity
             android:name=".LoginActivity"
@@ -41,104 +37,78 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
         <activity
             android:name=".InformedConsentActivity"
             android:label="Informed Consent"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HIPAAActivity"
             android:label="HIPAA Waiver"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".BloodPressureActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BloodPressureLogActivity"
             android:label="@string/app_name"
-            android:theme="@style/log">
-        </activity>
-
+            android:theme="@style/log" />
         <activity
             android:name=".BloodPressureLogReadActivity"
             android:label="@string/app_name"
-            android:theme="@style/log">
-        </activity>
-
+            android:theme="@style/log" />
         <activity
             android:name=".MedicationActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MedicationLogActivity"
             android:label="@string/app_name"
-            android:theme="@style/log">
-        </activity>
-
+            android:theme="@style/log" />
         <activity
             android:name=".MedicationLogReadActivity"
             android:label="@string/app_name"
-            android:theme="@style/log">
-        </activity>
-
+            android:theme="@style/log" />
         <activity
             android:name=".MedicationInformationActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SurveySelectionActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SurveyActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".healthLiteracyExampleActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HealthLitParagraphActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HealthSurvey"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".QuestionLogActivity"
             android:label="@string/app_name"
-            android:theme="@style/log">
-        </activity>
+            android:theme="@style/log" />
+        <activity android:name=".LifestyleSurvey"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".MedicationAdherenceSurvey"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
     </application>
 
 </manifest>

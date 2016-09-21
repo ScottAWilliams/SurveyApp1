@@ -1,5 +1,4 @@
 package com.nonscirenefas.yeshy.surveyapp1;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,9 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-/**
- * Created by Yeshy on 7/12/2016.
- */
 public class SurveySelectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context ctx;
@@ -31,19 +27,14 @@ public class SurveySelectionActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setSubtitle("Survey List");
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         initializeSurveyButtons();
-
-
     }
 
     public void initializeSurveyButtons() {
@@ -54,8 +45,8 @@ public class SurveySelectionActivity extends AppCompatActivity
         lifestyleSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SurveySelectionActivity.this, SurveyActivity.class);
-                i.putExtra("name", 1); //number corresponds to survey
+                Intent i = new Intent(SurveySelectionActivity.this, LifestyleSurvey.class);
+                //i.putExtra("name", 1); //number corresponds to survey
                 startActivity(i);
             }
         });
@@ -63,8 +54,8 @@ public class SurveySelectionActivity extends AppCompatActivity
         medicalAdherenceSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SurveySelectionActivity.this, SurveyActivity.class);
-                i.putExtra("name", 2); //number corresponds to survey
+                Intent i = new Intent(SurveySelectionActivity.this, MedicationAdherenceSurvey.class);
+                //i.putExtra("name", 2); //number corresponds to survey
                 startActivity(i);
             }
         });
@@ -76,8 +67,6 @@ public class SurveySelectionActivity extends AppCompatActivity
                 //Intent i = new Intent(SurveySelectionActivity.this, SurveyActivity.class);
                 //i.putExtra("name", 3); //number corresponds to survey
                 startActivity(i);
-
-
             }
         });
     }
@@ -145,11 +134,9 @@ public class SurveySelectionActivity extends AppCompatActivity
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
             Log.e("logout", UIDstored);
-
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
-
             UIDstored = settings.getString("UID", "Default");
             Log.e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
@@ -159,13 +146,11 @@ public class SurveySelectionActivity extends AppCompatActivity
         else if (id == R.id.nav_hipaa) {
             Intent i = new Intent(this, HIPAAActivity.class);
             startActivity(i);
-
         }
         else if (id == R.id.nav_informedconsent) {
             Intent i = new Intent(this, InformedConsentActivity.class);
             startActivity(i);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
