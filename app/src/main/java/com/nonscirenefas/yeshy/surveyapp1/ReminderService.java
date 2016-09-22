@@ -10,12 +10,20 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ReminderService extends IntentService
 {
@@ -207,13 +215,16 @@ public class ReminderService extends IntentService
 
         /*
         int typeOfNotification =  intent.getIntExtra("type", 0);
+
         SharedPreferences settings = getSharedPreferences(PREFS_UID, 0);
         //there should be a second settings for the medications list
         String UIDstored = settings.getString("UID", "Default");
         Log.d("UID", UIDstored);
+
         if(UIDstored.equals("Default")) {
             Calendar cur_cal = new GregorianCalendar();
             cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
+
             Calendar cal = new GregorianCalendar();
             cal.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR));
             cal.set(Calendar.HOUR_OF_DAY, 10); //18:32
@@ -222,16 +233,21 @@ public class ReminderService extends IntentService
             cal.set(Calendar.MILLISECOND, cur_cal.get(Calendar.MILLISECOND));
             cal.set(Calendar.DATE, cur_cal.get(Calendar.DATE));
             cal.set(Calendar.MONTH, cur_cal.get(Calendar.MONTH));
+
+
             Intent alarmIntent = new Intent(this, MyAlarmReceiver.class);
             alarmIntent.putExtra("type", 1);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
+
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_menu_camera)
                     .setContentTitle("BP-n-ME")
                     .setContentText("Please log in to receive medication reminders!");
             Intent resultIntent = new Intent(this, MainActivity.class);
+
 // Because clicking the notification opens a new ("special") activity, there's
 // no need to create an artificial back stack.
             PendingIntent resultPendingIntent =
@@ -241,6 +257,7 @@ public class ReminderService extends IntentService
                             resultIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
+
             mBuilder.setContentIntent(resultPendingIntent);
 // Sets an ID for the notification
             int mNotificationId = 001;
@@ -256,9 +273,11 @@ public class ReminderService extends IntentService
             String twoDay = settings1.getString("twoPerDay", "Default");
             String threeDay = settings1.getString("threePerDay", "Default");
             String fourDay = settings1.getString("fourPerDay", "Default");
+
             //first notification at 10
             Calendar cur_cal = new GregorianCalendar();
             cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
+
             Calendar cal = new GregorianCalendar();
             cal.setTimeInMillis(System.currentTimeMillis());
             cal.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR));
@@ -268,11 +287,13 @@ public class ReminderService extends IntentService
             cal.set(Calendar.MILLISECOND, cur_cal.get(Calendar.MILLISECOND));
             cal.set(Calendar.DATE, cur_cal.get(Calendar.DATE));
             cal.set(Calendar.MONTH, cur_cal.get(Calendar.MONTH));
+
             Intent alarmIntent = new Intent(this, MyAlarmReceiver.class);
             alarmIntent.putExtra("type", 1);
             PendingIntent pendingIntent = PendingIntent.getService(this, 0, alarmIntent, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
             //second notification at 2
             Calendar cal1 = new GregorianCalendar();
             cal1.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR));
@@ -282,11 +303,13 @@ public class ReminderService extends IntentService
             cal1.set(Calendar.MILLISECOND, cur_cal.get(Calendar.MILLISECOND));
             cal1.set(Calendar.DATE, cur_cal.get(Calendar.DATE));
             cal1.set(Calendar.MONTH, cur_cal.get(Calendar.MONTH));
+
             Intent alarmIntent1 = new Intent(this, MyAlarmReceiver.class);
             alarmIntent1.putExtra("type", 2);
             PendingIntent pendingIntent1 = PendingIntent.getService(this, 0, alarmIntent1, 0);
             AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager1.set(AlarmManager.RTC_WAKEUP, cal1.getTimeInMillis(), pendingIntent1);
+
             //third notification at 8
             Calendar cal2 = new GregorianCalendar();
             cal2.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR));
@@ -296,19 +319,23 @@ public class ReminderService extends IntentService
             cal2.set(Calendar.MILLISECOND, cur_cal.get(Calendar.MILLISECOND));
             cal2.set(Calendar.DATE, cur_cal.get(Calendar.DATE));
             cal2.set(Calendar.MONTH, cur_cal.get(Calendar.MONTH));
+
             Intent alarmIntent2 = new Intent(this, MyAlarmReceiver.class);
             alarmIntent2.putExtra("type", 3);
             PendingIntent pendingIntent2 = PendingIntent.getService(this, 0, alarmIntent2, 0);
             AlarmManager alarmManager2 = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager2.set(AlarmManager.RTC_WAKEUP, cal2.getTimeInMillis(), pendingIntent2);
+
             String listOfMeds = "";
             if(typeOfNotification == 1) {
                 if(!oneDay.equals("Default")) {
                     listOfMeds = listOfMeds + oneDay;
                 }
+
                 if(!twoDay.equals("Default")) {
                     listOfMeds = listOfMeds + twoDay;
                 }
+
                 if(!threeDay.equals("Default")) {
                     listOfMeds = listOfMeds + threeDay;
                 }
@@ -316,6 +343,7 @@ public class ReminderService extends IntentService
                 if(!twoDay.equals("Default")) {
                     listOfMeds = listOfMeds + twoDay;
                 }
+
                 if(!threeDay.equals("Default")) {
                     listOfMeds = listOfMeds + threeDay;
                 }
@@ -328,12 +356,14 @@ public class ReminderService extends IntentService
                 //listOfMeds = oneDay + twoDay + threeDay;
                 Log.e("error","soemthing went wrong with reminders");
             }
+
             //if(!listOfMeds.equals("")) {
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_menu_camera)
                         .setContentTitle("BP-n-ME")
                         .setContentText("It is time to take the following medication: " + listOfMeds);
                 Intent resultIntent = new Intent(this, MainActivity.class);
+
 // Because clicking the notification opens a new ("special") activity, there's
 // no need to create an artificial back stack.
                 PendingIntent resultPendingIntent =
@@ -343,6 +373,7 @@ public class ReminderService extends IntentService
                                 resultIntent,
                                 PendingIntent.FLAG_UPDATE_CURRENT
                         );
+
                 mBuilder.setContentIntent(resultPendingIntent);
 // Sets an ID for the notification
                 int mNotificationId = 001;
