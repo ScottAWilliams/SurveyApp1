@@ -25,8 +25,12 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+
 
 /**
  * Created by lindsayherron on 9/14/16.
@@ -36,6 +40,8 @@ public class HealthSurvey extends AppCompatActivity
     Button btnTag;
     int qnum;
     String questionParse;
+
+    private DatabaseReference mDatabase;
 
     final ArrayList<Integer> arrOpenParen = new ArrayList<>();
     final ArrayList<Integer> arrCloseParen = new ArrayList<>();
@@ -345,8 +351,12 @@ public class HealthSurvey extends AppCompatActivity
                     }
                 }
                 if (selected>35) {
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    //String UID = ((MyApplication) this.getApplication()).getUID();
                     Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    //mDatabase.child("app").child("users").child(UID).child("HealthLitSurvey").setValue(answers);
+
                     Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
                     startActivity(i);
                 }
@@ -355,6 +365,8 @@ public class HealthSurvey extends AppCompatActivity
                             .setAction("Action", null).show();
                 }
             }
+
+
         });
     }
 
