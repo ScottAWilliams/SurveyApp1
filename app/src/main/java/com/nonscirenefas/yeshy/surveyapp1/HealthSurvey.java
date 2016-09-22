@@ -430,8 +430,14 @@ public class HealthSurvey extends AppCompatActivity
             }
         }
         for (int i=0;i<answersFilled.size();i++) {
-            newQuestion = newQuestion.concat(questionFilled.get(i)).concat(answersFilled.get(i));
+            if (answersFilled.get(i).indexOf("(") == -1){
+                newQuestion = newQuestion.concat(questionFilled.get(i)).concat("(").concat(answersFilled.get(i)).concat(")");
+            }
+            else {
+                newQuestion = newQuestion.concat(questionFilled.get(i)).concat(answersFilled.get(i));
+            }
         }
+
         newQuestion = newQuestion.concat(questionFilled.get(answersFilled.size()));
         return newQuestion;
     }
