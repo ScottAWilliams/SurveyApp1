@@ -10,8 +10,8 @@
 
 
     <string-array name="LiteracySurveyExample">
-    <item index="0">(?) has been checked below in Question 1, then () was checked in Quesiton 2._Option 1_Option 2_Option 3_Option 4</item>
-    <item index="1">() has been checked below in Question 1, then (?) was checked in Quesiton 2._Option 1_Option 2_Option 3_Option 4</item>
+    <item index="0">Option, (?), has been checked in Question 1, then () was checked in Quesiton 2._Option 1_Option 2_Option 3_Option 4</item>
+    <item index="1">Option, (), has been checked in Question 1, then (?) was checked in Quesiton 2._Option 1_Option 2_Option 3_Option 4</item>
     </string-array>
 
 
@@ -117,41 +117,41 @@
 
     <string-array name="LiteracySurvey">
         <item index="0">Your doctor has sent you to have a (?) X-ray._stomach_diabetes_stitches_germs</item>
-        <item index="1">You must have an (?) stomach when you come for ( )._asthma_empty_incest_anemia</item>
-        <item index="2">You must have an ( ) stomach when you come for (?)._is_am_if_it</item>
-        <item index="3">The X-ray will (?) from 1 to 3 ( ) to do._take_view_talk_look</item>
-        <item index="4">The X-ray will ( ) from 1 to 3 (?) to do._beds_brains_hours_diets</item>
-        <item index="5">For supper have only a (?) snack of fruit, ( ) and jelly, with coffee or tea._little_broth_attack_nausea</item>
-        <item index="6">For supper have only a ( ) snack of fruit, (?) and jelly, with coffee or tea._toes_throat_toast_thigh</item>
-        <item index="7">After (?), you must not ( ) or drink anything at ( ) until after you have ( ) the X-ray._minute_midnight_during_before</item>
-        <item index="8">After ( ), you must not (?) or drink anything at ( ) until after you have ( ) the X-ray._easy_ate_drank_eat</item>
-        <item index="9">After ( ), you must not ( ) or drink anything at (?) until after you have ( ) the X-ray._ill_all_each_any</item>
-        <item index="10">After ( ), you must not ( ) or drink anything at ( ) until after you have (?) the X-ray._are_has_had_was</item>
+        <item index="1">You must have an (?) stomach when you come for ()._asthma_empty_incest_anemia</item>
+        <item index="2">You must have an () stomach when you come for (?)._is_am_if_it</item>
+        <item index="3">The X-ray will (?) from 1 to 3 () to do._take_view_talk_look</item>
+        <item index="4">The X-ray will () from 1 to 3 (?) to do._beds_brains_hours_diets</item>
+        <item index="5">For supper have only a (?) snack of fruit, () and jelly, with coffee or tea._little_broth_attack_nausea</item>
+        <item index="6">For supper have only a () snack of fruit, (?) and jelly, with coffee or tea._toes_throat_toast_thigh</item>
+        <item index="7">After (?), you must not () or drink anything at () until after you have () the X-ray._minute_midnight_during_before</item>
+        <item index="8">After (), you must not (?) or drink anything at () until after you have () the X-ray._easy_ate_drank_eat</item>
+        <item index="9">After (), you must not () or drink anything at (?) until after you have () the X-ray._ill_all_each_any</item>
+        <item index="10">After (), you must not () or drink anything at () until after you have (?) the X-ray._are_has_had_was</item>
         <item index="11">Do not eat (?)._appointment_walk-in_breakfast_clinic</item>
-        <item index="12">Do not (?), even ( )._drive_drink_dress_dose</item>
-        <item index="13">Do not ( ), even (?)._heart_breath_water_cancer</item>
-        <item index="14">If you have any (?), call the X-ray ( ) at 6164500._answers_exercises_tracts_questions</item>
-        <item index="15">If you have any ( ), call the X-ray (?) at 6164500._Department_Sprain_Pharmacy_Toothache</item>
+        <item index="12">Do not (?), even ()._drive_drink_dress_dose</item>
+        <item index="13">Do not (), even (?)._heart_breath_water_cancer</item>
+        <item index="14">If you have any (?), call the X-ray () at 6164500._answers_exercises_tracts_questions</item>
+        <item index="15">If you have any (), call the X-ray (?) at 6164500._Department_Sprain_Pharmacy_Toothache</item>
         <item index="16">I agree to give correct information to (?) if I can receive Medicaid._hair_salt_see_ache</item>
-        <item index="17">I (?) to provide the county information to ( ) any statements fiven in this ( ) and hereby give permission to the ( ) to get such proof._agree_probe_send_gain</item>
-        <item index="18">I ( ) to provide the county information to (?) any statements fiven in this ( ) and hereby give permission to the ( ) to get such proof._hide_risk_discharge_prove</item>
-        <item index="19">I ( ) to provide the county information to ( ) any statements fiven in this (?) and hereby give permission to the ( ) to get such proof._emphysema_application_gallbladder_relationship</item>
-        <item index="20">I ( ) to provide the county information to ( ) any statements fiven in this ( ) and hereby give permission to the ( ) to get such proof._inflammation_religion_iron_county</item>
-        <item index="21">I (?) that for Medicaid I must report any ( ) in my circumstances within ( ) days of becoming ( ) of the change._investigate_entertain_understand_establish</item>
-        <item index="22">I ( ) that for Medicaid I must report any (?) in my circumstances within ( ) days of becoming ( ) of the change._changes_hormones_antacids_charges</item>
-        <item index="23">I ( ) that for Medicaid I must report any ( ) in my circumstances within (?) days of becoming ( ) of the change._three_one_five_ten</item>
-        <item index="24">I ( ) that for Medicaid I must report any ( ) in my circumstances within ( ) days of becoming (?) of the change._award_aware_away_await</item>
-        <item index="25">I understand (?) if I DO NOT like the ( ) made on my case, I have the ( ) to a fair hearing._thus_this_that_than</item>
-        <item index="26">I understand ( ) if I DO NOT like the (?) made on my case, I have the ( ) to a fair hearing._marital_occupation_adult_decision</item>
-        <item index="27">I understand ( ) if I DO NOT like the ( ) made on my case, I have the (?) to a fair hearing._bright_left_wrong_right</item>
-        <item index="28">I can (?) a hearing by writing or ( ) the county where I applied._request_refuse_fail_mend</item>
-        <item index="29">I can ( ) a hearing by writing or (?) the county where I applied._counting_reading_calling_smelling</item>
-        <item index="30">If you (?) TANF for any family ( ), you will have to ( ) a different application form._wash_want_cover_tape</item>
-        <item index="31">If you ( ) TANF for any family (?), you will have to ( ) a different application form._member_history_weight_seatbelt</item>
-        <item index="32">If you ( ) TANF for any family ( ), you will have to (?) a different application form._relax_break_inhale_sign</item>
-        <item index="33">(?), we will use the ( ) on this form to determine your ( )._Since_Whether_However_Because</item>
-        <item index="34">( ), we will use the (?) on this form to determine your ( )._lung_date_meal_pelvic</item>
-        <item index="35">( ), we will use the ( ) on this form to determine your (?)._hypoglycemia_eligibility_osteoporosis_schizophrenia</item>
+        <item index="17">I (?) to provide the county information to () any statements fiven in this () and hereby give permission to the () to get such proof._agree_probe_send_gain</item>
+        <item index="18">I () to provide the county information to (?) any statements fiven in this () and hereby give permission to the () to get such proof._hide_risk_discharge_prove</item>
+        <item index="19">I () to provide the county information to () any statements fiven in this (?) and hereby give permission to the () to get such proof._emphysema_application_gallbladder_relationship</item>
+        <item index="20">I () to provide the county information to () any statements fiven in this () and hereby give permission to the (?) to get such proof._inflammation_religion_iron_county</item>
+        <item index="21">I (?) that for Medicaid I must report any () in my circumstances within () days of becoming () of the change._investigate_entertain_understand_establish</item>
+        <item index="22">I () that for Medicaid I must report any (?) in my circumstances within () days of becoming () of the change._changes_hormones_antacids_charges</item>
+        <item index="23">I () that for Medicaid I must report any () in my circumstances within (?) days of becoming () of the change._three_one_five_ten</item>
+        <item index="24">I () that for Medicaid I must report any () in my circumstances within () days of becoming (?) of the change._award_aware_away_await</item>
+        <item index="25">I understand (?) if I DO NOT like the () made on my case, I have the () to a fair hearing._thus_this_that_than</item>
+        <item index="26">I understand () if I DO NOT like the (?) made on my case, I have the () to a fair hearing._marital_occupation_adult_decision</item>
+        <item index="27">I understand () if I DO NOT like the () made on my case, I have the (?) to a fair hearing._bright_left_wrong_right</item>
+        <item index="28">I can (?) a hearing by writing or () the county where I applied._request_refuse_fail_mend</item>
+        <item index="29">I can () a hearing by writing or (?) the county where I applied._counting_reading_calling_smelling</item>
+        <item index="30">If you (?) TANF for any family (), you will have to () a different application form._wash_want_cover_tape</item>
+        <item index="31">If you () TANF for any family (?), you will have to () a different application form._member_history_weight_seatbelt</item>
+        <item index="32">If you () TANF for any family (), you will have to (?) a different application form._relax_break_inhale_sign</item>
+        <item index="33">(?), we will use the () on this form to determine your ()._Since_Whether_However_Because</item>
+        <item index="34">(), we will use the (?) on this form to determine your ()._lung_date_meal_pelvic</item>
+        <item index="35">(), we will use the () on this form to determine your (?)._hypoglycemia_eligibility_osteoporosis_schizophrenia</item>
     </string-array>
 
     <string-array name="LiteracySurveyAnswers">

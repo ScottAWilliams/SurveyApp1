@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_medication) {
-            Intent i = new Intent(this, MedAct.class);
+            Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
 
         } else if (id == R.id.nav_surveys) {

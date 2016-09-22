@@ -30,12 +30,16 @@ import java.util.Arrays;
  */
 public class healthLiteracyExampleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Button btnTag;
     int qnum;
-    int paren =0;
-    int qMark =0;
-    String questionParse;
     public static final String PREFS_NAME = "MyPrefsFile";
     final ArrayList<String> questions = new ArrayList<>();
+
+    final ArrayList<Integer> arrOpenParen = new ArrayList<>();
+    final ArrayList<Integer> arrCloseParen = new ArrayList<>();
+    final ArrayList<String> questionFilled = new ArrayList<>();
+    final ArrayList<String> answersFilled = new ArrayList<>();
+
     String[] questionArray = new String[questions.size()];
     Toolbar toolbar;
     ArrayList<String[]> questionchoices = new ArrayList<>();
@@ -102,7 +106,8 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
         Arrays.fill(rightorwrong, 1); //default for wrong
 
         final TextView questionsView = (TextView) layout_main.findViewById(R.id.questionView);
-        //questionsView.setText("Click an above button to start the survey.");
+        final Button buttonNext = (Button) findViewById(R.id.nextButton);
+        final Button buttonPrev = (Button) findViewById(R.id.prevButton);
         final Button button = (Button) findViewById(R.id.submitButton);
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.lv);
@@ -119,7 +124,23 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                 public void onClick(View view) {
                     qnum = btnTag.getId();
 
-                    questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
+                    if (qnum<1){
+                        if (qnum==0){
+                            buttonPrev.setVisibility(view.INVISIBLE);
+                        }
+                        buttonNext.setVisibility(view.VISIBLE);
+                    }
+                    if (qnum>0){
+                        if (qnum==1){
+                            buttonNext.setVisibility(view.INVISIBLE);
+                        }
+                        buttonPrev.setVisibility(view.VISIBLE);
+                    }
+
+
+                    //questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
+                    questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
+
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
                     opt1.setVisibility(view.VISIBLE);
@@ -190,7 +211,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
-
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -219,7 +240,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
-
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -248,7 +269,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
-
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
                     opt4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -277,7 +298,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
-
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -285,6 +306,20 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
             });
 
         }
+
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                btnTag = (Button) findViewById(qnum+1);
+                btnTag.performClick();
+            }
+        });
+
+        buttonPrev.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                btnTag = (Button) findViewById(qnum-1);
+                btnTag.performClick();
+            }
+        });
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -314,61 +349,72 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
 
     }
 
+    public String parseQuestion(int z) {
+        arrOpenParen.clear();
+        arrCloseParen.clear();
+        questionFilled.clear();
+        answersFilled.clear();
 
-public String parseQuestion(int z){
-    StringBuilder questionArrangement= new StringBuilder();;
-    int currentQuestion =0;
-    int pos = 0;
-    StringBuilder newQuestion = new StringBuilder();
-    questionParse = questionArray[z];
-    qMark = questionParse.indexOf("?");
-    paren = questionParse.indexOf("(");
+        int difference=0;
+        int posOfQuestion = 0;
+        String questionParse = questionArray[z];
+        String newQuestion="";
+        int closeParen = 0;
+        int openParen = 0;
+        closeParen = questionParse.indexOf(")");
+        openParen = questionParse.indexOf("(");
 
-    while (paren!=-1){
-        if (paren+1!=qMark){
-            questionArrangement.append("0");
+        while (openParen!=-1){
+            arrOpenParen.add(openParen);
+            arrCloseParen.add(closeParen);
+            closeParen = questionParse.indexOf(")",closeParen+1);
+            openParen = questionParse.indexOf("(",openParen+1);
         }
-        else{
-            questionArrangement.append("1");
+        int total = arrOpenParen.size();
+        for (int i=0;i<arrCloseParen.size();i++){
+            if (arrOpenParen.get(i)==(arrCloseParen.get(i)-2)){
+                posOfQuestion = i;
+            }
         }
-        questionParse=questionParse.substring(paren+1,questionParse.length()-1);
-        paren = questionParse.indexOf("(");
-    }
-    newQuestion = questionArrangement;
-    ////TODO: Parse string here to change question into choices that have been made
-    questionParse = questionArray[z];
-    qMark = questionParse.indexOf("?");
-    paren = questionParse.indexOf("(");
-    while (pos<questionArrangement.toString().length()){
-        if (Integer.parseInt(questionArrangement.toString().substring(pos,pos+1))==0){
-            currentQuestion = z-questionArrangement.toString().length()+pos;
-            if (answers[currentQuestion]!=-1){
-                newQuestion.append(questionParse.substring(0,paren-1));
-                newQuestion.append(questionchoices.get(currentQuestion)[answers[currentQuestion]]);
+
+
+        for(int i=0;i<total;i++){
+                if (i==0) {
+                    questionFilled.add(questionParse.substring(0, arrOpenParen.get(i)));
+                }
+                else{
+                   questionFilled.add(questionParse.substring(arrCloseParen.get(i-1)+1, arrOpenParen.get(i)));
+                }
+        }
+        questionFilled.add(questionParse.substring(arrCloseParen.get(total-1)+1,questionParse.length()));
+        for (int i=0;i<total;i++){
+            difference = posOfQuestion-i;
+            if (difference==0){
+                if (answers[z] != -1){
+                    answersFilled.add(i,questionchoices.get(z)[answers[z]-1] );
+                }
+                else{
+                    answersFilled.add(i,"(?)");
+                }
             }
             else{
-                newQuestion.append(questionParse.substring(0,paren+2));
+                if (answers[z-difference] != -1){
+                    answersFilled.add(i,questionchoices.get(z-difference)[answers[z-difference]-1] );
+                }
+                else{
+                    answersFilled.add(i,"()");
+                }
             }
-            questionParse = questionParse.substring(paren+2,questionParse.length()-1);
         }
-        else if (Integer.parseInt(questionArrangement.toString().substring(pos,pos+1))==1) {
-            currentQuestion = z-questionArrangement.toString().length()+pos;
-            if (answers[currentQuestion]!=-1){
-                newQuestion.append(questionParse.substring(0,paren-1));
-                newQuestion.append(questionchoices.get(currentQuestion)[answers[currentQuestion]]);
-            }
-            else{
-                newQuestion.append(questionParse.substring(0,paren+3));
 
-            }
-            questionParse = questionParse.substring(paren+3,questionParse.length()-1);
+        for (int i=0;i<answersFilled.size();i++) {
+            newQuestion = newQuestion.concat(questionFilled.get(i)).concat(answersFilled.get(i));
         }
-        pos++;
-        paren = questionParse.indexOf("(");
+        newQuestion = newQuestion.concat(questionFilled.get(answersFilled.size()));
+
+        return newQuestion;
     }
 
-    return newQuestion.toString();
-}
 
 
 

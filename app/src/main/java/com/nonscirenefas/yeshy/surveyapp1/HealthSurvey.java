@@ -35,6 +35,14 @@ public class HealthSurvey extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Button btnTag;
     int qnum;
+    String questionParse;
+
+    final ArrayList<Integer> arrOpenParen = new ArrayList<>();
+    final ArrayList<Integer> arrCloseParen = new ArrayList<>();
+    final ArrayList<String> questionFilled = new ArrayList<>();
+    final ArrayList<String> answersFilled = new ArrayList<>();
+
+
     public static final String PREFS_NAME = "MyPrefsFile";
     Context ctx;
     final ArrayList<String> questions = new ArrayList<>();
@@ -143,7 +151,7 @@ public class HealthSurvey extends AppCompatActivity
                     ////TODO: Parse string here to change question into choices that have been made
 
 
-                    questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
+                    questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
                     opt1.setText(questionchoices.get(qnum)[0]);
@@ -214,6 +222,7 @@ public class HealthSurvey extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -242,6 +251,7 @@ public class HealthSurvey extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -270,6 +280,7 @@ public class HealthSurvey extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
                     opt4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -298,6 +309,7 @@ public class HealthSurvey extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -344,6 +356,72 @@ public class HealthSurvey extends AppCompatActivity
                 }
             }
         });
+    }
+
+
+
+    public String parseQuestion(int z) {
+
+        arrOpenParen.clear();
+        arrCloseParen.clear();
+        questionFilled.clear();
+        answersFilled.clear();
+
+        int difference=0;
+        int posOfQuestion = 0;
+        String questionParse = questionArray[z];
+        String newQuestion="";
+        int closeParen = 0;
+        int openParen = 0;
+        closeParen = questionParse.indexOf(")");
+        openParen = questionParse.indexOf("(");
+
+        while (openParen!=-1){
+            arrOpenParen.add(openParen);
+            arrCloseParen.add(closeParen);
+            closeParen = questionParse.indexOf(")",closeParen+1);
+            openParen = questionParse.indexOf("(",openParen+1);
+        }
+        int total = arrOpenParen.size();
+        for (int i=0;i<arrCloseParen.size();i++){
+            if (arrOpenParen.get(i)==(arrCloseParen.get(i)-2)){
+                posOfQuestion = i;
+            }
+        }
+
+        for(int i=0;i<total;i++){
+            if (i==0) {
+                questionFilled.add(questionParse.substring(0, arrOpenParen.get(i)));
+            }
+            else{
+                questionFilled.add(questionParse.substring(arrCloseParen.get(i-1)+1, arrOpenParen.get(i)));
+            }
+        }
+        questionFilled.add(questionParse.substring(arrCloseParen.get(total-1)+1,questionParse.length()));
+        for (int i=0;i<total;i++){
+            difference = posOfQuestion-i;
+            if (difference==0){
+                if (answers[z] != -1){
+                    answersFilled.add(i,questionchoices.get(z)[answers[z]-1] );
+                }
+                else{
+                    answersFilled.add(i,"(?)");
+                }
+            }
+            else{
+                if (answers[z-difference] != -1){
+                    answersFilled.add(i,questionchoices.get(z-difference)[answers[z-difference]-1] );
+                }
+                else{
+                    answersFilled.add(i,"()");
+                }
+            }
+        }
+        for (int i=0;i<answersFilled.size();i++) {
+            newQuestion = newQuestion.concat(questionFilled.get(i)).concat(answersFilled.get(i));
+        }
+        newQuestion = newQuestion.concat(questionFilled.get(answersFilled.size()));
+        return newQuestion;
     }
 
 
@@ -399,7 +477,6 @@ public class HealthSurvey extends AppCompatActivity
             Intent i = new Intent(this, InformedConsentActivity.class);
             startActivity(i);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
