@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:textAlignment="center"
+        android:imeOptions="actionDone"
         android:ems="10"
         android:id="@+id/bp_systolic"
         android:layout_gravity="center_horizontal" />
@@ -42,6 +43,7 @@
         android:inputType="number"
         android:textAlignment="center"
         android:ems="10"
+        android:imeOptions="actionDone"
         android:id="@+id/bp_diastolic"
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical" />

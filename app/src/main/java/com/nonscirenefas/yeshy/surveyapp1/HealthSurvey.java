@@ -353,6 +353,7 @@ public class HealthSurvey extends AppCompatActivity
                 if (selected>35) {
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     //String UID = ((MyApplication) this.getApplication()).getUID();
+
                     Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     //mDatabase.child("app").child("users").child(UID).child("HealthLitSurvey").setValue(answers);

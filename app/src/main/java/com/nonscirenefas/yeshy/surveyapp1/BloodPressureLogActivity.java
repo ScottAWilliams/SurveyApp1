@@ -97,10 +97,16 @@ public class BloodPressureLogActivity extends AppCompatActivity {
         } else {
             time = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
         }
-        mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").child(date).child(time).setValue(bpSystolic + "-" + bpDiastolic);
+        if (bp_systolic.length()>0&bp_diastolic.length()>0) {
+            mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").child(date).child(time).setValue(bpSystolic + "-" + bpDiastolic);
 
-        Snackbar.make(v, "Your blood pressure has been logged.", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+            Snackbar.make(v, "Your blood pressure has been logged.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+        else {
+            Snackbar.make(v, "Please fill in the Systolic and Diastolic readings.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 
     public void checkLogs(View v) {
