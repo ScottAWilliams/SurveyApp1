@@ -25,8 +25,12 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 
 /**
@@ -35,6 +39,7 @@ import java.util.Arrays;
 public class MedicationAdherenceSurvey extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String PREFS_NAME = "MyPrefsFile";
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();;
     Button btnTag;
     int qnum;
     Context ctx;
@@ -404,6 +409,18 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                 if (selected>7) {
                     Snackbar.make(v, "Medication Adherence Survey Successfully Completed", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                    Calendar now = Calendar.getInstance();
+                    String year = Integer.toString(now.get(Calendar.YEAR));
+                    String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
+                    String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+                    String UID = ((MyApplication) MedicationAdherenceSurvey.this.getApplication()).getUID();
+
+
+                    mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").child(year+"-"+month+"-"+day).setValue(Arrays.toString(answers));
+
+
+
                     Intent i = new Intent(MedicationAdherenceSurvey.this, SurveySelectionActivity.class);
                     startActivity(i);
                 }

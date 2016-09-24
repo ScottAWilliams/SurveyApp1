@@ -25,14 +25,19 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 
 /**
  * Created by Javier 9/18/16.
  */
 public class LifestyleSurvey extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private DatabaseReference mDatabase ;
 
     public static final String PREFS_NAME = "MyPrefsFile";
     Button btnTag;
@@ -76,6 +81,7 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
 
 
         toolbar.setSubtitle("Lifestyle Survey");
+
         LinearLayout layout_main = (LinearLayout) findViewById(R.id.main_ll);
         //get questions from xml file
         String[] mArray = getResources().getStringArray(R.array.LifestyleSurvey);
@@ -397,6 +403,11 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                mDatabase = FirebaseDatabase.getInstance().getReference();
+                String UID = ((MyApplication) LifestyleSurvey.this.getApplication()).getUID();
+
+
+
                 selected=0;
                 int nonselected = 0;
                 for (int x : answers) {
@@ -410,6 +421,14 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
                 if (selected>7) {
                     Snackbar.make(v, "Lifestyle Survey Successfully Completed", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+
+                    Calendar now = Calendar.getInstance();
+                    String year = Integer.toString(now.get(Calendar.YEAR));
+                    String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
+                    String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+
+                    mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
                     Intent i = new Intent(LifestyleSurvey.this, SurveySelectionActivity.class);
                     startActivity(i);
                 }

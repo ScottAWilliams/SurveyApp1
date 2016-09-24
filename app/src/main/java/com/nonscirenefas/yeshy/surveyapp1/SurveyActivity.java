@@ -282,6 +282,7 @@ public class SurveyActivity extends AppCompatActivity
         if(surveyNum == 0) {
             ((MyApplication) SurveyActivity.this.getApplication()).setLifestyleSurveyAnswers(rightorwrong);
         } else if(surveyNum == 1) {
+
             //
         } else if(surveyNum == 2) {
             //

@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 
 /**
@@ -41,7 +42,7 @@ public class HealthSurvey extends AppCompatActivity
     int qnum;
     String questionParse;
 
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();;
 
     final ArrayList<Integer> arrOpenParen = new ArrayList<>();
     final ArrayList<Integer> arrCloseParen = new ArrayList<>();
@@ -351,13 +352,19 @@ public class HealthSurvey extends AppCompatActivity
                     }
                 }
                 if (selected>35) {
-                    mDatabase = FirebaseDatabase.getInstance().getReference();
-                    //String UID = ((MyApplication) this.getApplication()).getUID();
+                    String UID = ((MyApplication) HealthSurvey.this.getApplication()).getUID();
 
                     Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    //mDatabase.child("app").child("users").child(UID).child("HealthLitSurvey").setValue(answers);
 
+                    Calendar now = Calendar.getInstance();
+                    String year = Integer.toString(now.get(Calendar.YEAR));
+                    String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
+                    String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+
+                    mDatabase.child("app").child("users").child(UID).child("literacysurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
+
+                    ((MyApplication) HealthSurvey.this.getApplication()).setLiteracySurveyAnswersRW(answers);
                     Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
                     startActivity(i);
                 }

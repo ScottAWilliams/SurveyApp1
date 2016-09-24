@@ -16,6 +16,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import sun.bob.mcalendarview.MCalendarView;
 import sun.bob.mcalendarview.MarkStyle;
 import sun.bob.mcalendarview.listeners.OnDateClickListener;
@@ -27,7 +36,18 @@ import sun.bob.mcalendarview.vo.DateData;
 public class BloodPressureActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context ctx;
+    private DatabaseReference mDatabase;
     public static final String PREFS_NAME = "MyPrefsFile";
+    ArrayList<String> bpDates = new ArrayList<String>();
+    ArrayList<String> recordedBP = new ArrayList<String>();
+    final ArrayList<ArrayList<Integer>> sysMeasurements = new ArrayList<ArrayList<Integer>>();
+    final ArrayList<ArrayList<Integer>> diaMeasurements = new ArrayList<ArrayList<Integer>>();
+    ArrayList<ArrayList<Integer>> sysFinal = new ArrayList<ArrayList<Integer>>();
+     ArrayList<ArrayList<Integer>> diaFinal = new ArrayList<ArrayList<Integer>>();
+
+    String goal;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +66,180 @@ public class BloodPressureActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initializeCalendar();
+
+        mDatabase= FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+        mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //records = new String[]{" "," "," "," "};
+                        Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
+                        //Log.e("DataSnapgetKey", dataSnapshot.getValue().toString());
+                        System.out.println(dataSnapshot);
+                        int g=0;
+                        while (it.hasNext()) {
+                            DataSnapshot bpDate = (DataSnapshot) it.next();
+                            String key = bpDate.getKey().toString();
+                            String value = bpDate.getValue().toString();
+                            bpDates.add(g,key);
+                            recordedBP.add(g,value);
+                            //Log.e("DataSnapgetValue2", recordedBP.toString();
+                            g++;
+                        }
+                        setBPValues(bpDates,recordedBP);
+                        //parse dia and sys measurements
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+        mDatabase.child("app").child("users").child(UID).child("bloodpressuregoal").addValueEventListener(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        String goal = dataSnapshot.getValue().toString();
+                        Log.e("BP goal 1",goal);
+                        initializeCalendar(goal);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+
+                });
+
+        //initializeCalendar();
+
+
+
+    }
+    public void setBPValues(ArrayList<String> bpDates, ArrayList<String> recordedBP){
+        Log.e("Correct??", bpDates.toString());
+        Log.e("Correct???", recordedBP.toString());
+
+        for(int i = 0; i< bpDates.size(); i++){
+            ArrayList <Integer> sysDay = new ArrayList <Integer>();
+            ArrayList <Integer> diaDay = new ArrayList <Integer>();
+            String currentValue = recordedBP.get(i);
+            int indComma = currentValue.indexOf(",");
+            int indDash;
+            int indEquals;
+            while (indComma!=-1){
+                indComma = currentValue.indexOf(",");
+                indDash = currentValue.indexOf("-");
+                indEquals = currentValue.indexOf("=");
+                sysDay.add(Integer.parseInt(currentValue.substring(indEquals+1,indDash)));
+                Log.e("sysDayValue",currentValue.substring(indEquals+1,indDash));
+                if (indComma==-1){
+                    diaDay.add(Integer.parseInt(currentValue.substring(indDash+1,currentValue.length()-1)));
+                    Log.e("diaDayValue",currentValue.substring(indDash+1,currentValue.length()-1));
+                }
+                else{
+                    diaDay.add(Integer.parseInt(currentValue.substring(indDash+1,indComma)));
+                    Log.e("diaDayValue",currentValue.substring(indDash+1,indComma));
+                    currentValue = currentValue.substring(indComma+1,currentValue.length());
+                }
+            }
+            Log.e("CorrectSys", sysDay.toString());
+            Log.e("CorrectDia", diaDay.toString());
+            addArray(i,sysDay,diaDay);
+            //sysDay.removeAll(sysDay);
+            //diaDay.removeAll(diaDay);
+        }
+
     }
 
-    public void initializeCalendar() {
-        MCalendarView calendar = (MCalendarView) findViewById(R.id.calendar);
+    public void addArray(int i,ArrayList<Integer> sysDay, ArrayList<Integer> diaDay){
+        Log.e("GottenSys", sysDay.toString());
+        Log.e("GottenDia", diaDay.toString());
+        sysMeasurements.add(i,sysDay);
+        diaMeasurements.add(i,diaDay);
+        setSysMeasurements(sysMeasurements);
+        setDiaMeasurements(diaMeasurements);
+        Log.e("CorrectFinal1", sysMeasurements.toString());
+        Log.e("CorrectFinal2", diaMeasurements.toString());
+    }
+    public void setSysMeasurements(ArrayList<ArrayList<Integer>> sysMeasurements){
+        Log.e("eeeeee", sysMeasurements.toString());
+        sysMeasurements = sysMeasurements;
+    }
 
+    public void setDiaMeasurements(ArrayList<ArrayList<Integer>> diaMeasurements){
+        Log.e("eeeeee", diaMeasurements.toString());
+        diaMeasurements = diaMeasurements;
+    }
+
+    public ArrayList<ArrayList<Integer>> returnSysMeasurements(){
+        return sysMeasurements;
+    }
+
+    public ArrayList<ArrayList<Integer>> returnDiaMeasurements(){
+        return diaMeasurements;
+    }
+
+    public void initializeCalendar(String goal) {
+        MCalendarView calendar = (MCalendarView) findViewById(R.id.calendar);
         // sets whether to show the week number.
         //calendar.setShowWeekNumber(false);
+
+        String goalSys = goal.substring(goal.lastIndexOf(" ")+1,goal.indexOf("/"));
+        String goalDia = goal.substring(goal.indexOf("/")+1,goal.length());
+        Log.e("Works?Sys", returnSysMeasurements().toString());
+        Log.e("Works?Dia", returnDiaMeasurements().toString());
+        int foundDia;
+        int foundSys;
+        int month;
+        int day;
+
+        for (int i=0;i<returnSysMeasurements().size();i++) {
+            if (returnDiaMeasurements().get(i).size()>0) {
+                foundDia = returnDiaMeasurements().get(i).get(0);
+                for (int g = 1; g < returnDiaMeasurements().get(i).size(); g++) {
+                    if (returnDiaMeasurements().get(i).get(g) > foundDia) {
+                        foundDia = returnDiaMeasurements().get(i).get(g);
+                    }
+                }
+                foundSys = returnSysMeasurements().get(i).get(0);
+                for (int g = 1; g < returnSysMeasurements().get(i).size(); g++) {
+                    if (returnSysMeasurements().get(i).get(g) > foundDia) {
+                        foundSys = returnSysMeasurements().get(i).get(g);
+                    }
+                }
+                month = Integer.parseInt(bpDates.get(i).substring(0, bpDates.get(i).indexOf("-")));
+                Log.e("month", String.valueOf(month));
+                Log.e("day", bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
+                day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
+                Log.e("day", String.valueOf(day));
+            }
+            else{
+                foundDia=0;foundSys=0;
+                month = Integer.parseInt(bpDates.get(i).substring(0, bpDates.get(i).indexOf("-")));
+                Log.e("month", String.valueOf(month));
+                Log.e("day", bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
+                day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
+                Log.e("day", String.valueOf(day));
+            }
+
+
+            if (Integer.parseInt(goalDia) < foundDia | Integer.parseInt(goalSys) < foundSys) {
+                calendar.markDate(
+                        new DateData(2016,month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.RED)
+                        ));
+                //Log.e("markDate",month+"/"+day);
+            } else {
+                calendar.markDate(
+                        new DateData(2016, month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.GREEN)
+                        ));
+                //Log.e("markDate",month+"/"+day);
+            }
+        }
 
         // sets the first day of week according to Calendar.
         // here we set Monday as the first day of the Calendar
@@ -63,12 +249,14 @@ public class BloodPressureActivity extends AppCompatActivity
         calendar.markDate(
                 new DateData(2016, 7, 2).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN)
                 ));
+//Change colors based on what's in Firebase bloodPressureLog compared to goal
+        //get dates and logged systolic and diastolic measurements
+
+
+
 
 
         //sets the listener to be notified upon selected date change.
-
-
-
         calendar.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onDateClick(View view, DateData date) {

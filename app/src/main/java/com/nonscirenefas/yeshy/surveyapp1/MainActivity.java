@@ -3,7 +3,6 @@ package com.nonscirenefas.yeshy.surveyapp1;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference mDatabase;
     private ArrayList<Medication> medicationList = new ArrayList<>();
     public static final String PREFS_NAME = "MyPrefsFile";
-
+    ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
+        final String tel = ((MyApplication) this.getApplication()).getPhone();
         /*
         mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -154,11 +155,14 @@ public class MainActivity extends AppCompatActivity
         //mArrayBefore = messages.toArray(mArrayBefore);
 
         String [] mArray = {"Messages will appear here once the survey data has loaded."};
-        if(num < messages.size())
+        if(num < messages.size()) {
             mArray[0] = messages.get(num);
+        }
 
+       adapter = new ArrayAdapter<String>(this,R.layout.tip_of_the_day,mArray);
+        //setListAdapter(adapter);
         final ListView lv = (ListView) findViewById(R.id.messagesListView);
-        lv.setAdapter(new MedicationAdapter(MainActivity.this, mArray));
+        lv.setAdapter(adapter);
 
     }
 
@@ -216,7 +220,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:6783600636"));
+            //Log.e("phone", tel);
+            //i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);

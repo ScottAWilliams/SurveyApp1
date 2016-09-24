@@ -39,6 +39,7 @@ public class LoginActivity extends Activity {
         String UIDstored = settings.getString("UID", "Default");
         Log.d("UID", UIDstored);
 
+
 /*
         if(!UIDstored.equals("Default")) {
             ((MyApplication) this.getApplication()).setUID(UIDstored);
@@ -130,6 +131,7 @@ public class LoginActivity extends Activity {
 
 
     }
+
 
 }
 

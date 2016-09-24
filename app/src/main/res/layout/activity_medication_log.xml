@@ -11,11 +11,14 @@
     android:weightSum="1">
 
     <Spinner
-        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:id="@+id/medicationSpinner"
         android:layout_gravity="center_horizontal"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:clickable="true"
+        android:textAlignment="center"/>
 
 
     <TimePicker
