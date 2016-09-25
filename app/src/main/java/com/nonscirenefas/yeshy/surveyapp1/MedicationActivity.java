@@ -3,7 +3,6 @@ package com.nonscirenefas.yeshy.surveyapp1;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -16,17 +15,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import sun.bob.mcalendarview.MCalendarView;
-import sun.bob.mcalendarview.MarkStyle;
-import sun.bob.mcalendarview.listeners.OnDateClickListener;
-import sun.bob.mcalendarview.vo.DateData;
 
 /**
  * Created by Yeshy on 7/12/2016.
@@ -78,21 +74,19 @@ public class MedicationActivity extends AppCompatActivity
     }
 
     public void initializeCalendar() {
-        MCalendarView calendarMed = (MCalendarView) findViewById(R.id.calendarMed);
+        CalendarView calendarMed = (CalendarView) findViewById(R.id.calendarMed);
 
         //sets the listener to be notified upon selected date change.
 
-        calendarMed.markDate(
-                new DateData(2016, 7, 2).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN)
-                ));
 
 
-        calendarMed.setOnDateClickListener(new OnDateClickListener() {
+
+        calendarMed.setOnDateChangeListener(new OnDateChangeListener() {
             @Override
-            public void onDateClick(View view, DateData date) {
+            public void onSelectedDayChange(CalendarView view, int year, int month,int day) {
                 Intent i = new Intent(ctx, MedicationLogActivity.class);
-                i.putExtra("date", String.format("%d-%d", date.getMonth(), date.getDay()));
-                Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
+                i.putExtra("date", String.format("%d-%d", month+1, day));
+                Log.e("nrp",String.format("%d-%d", month+1, day));
                 startActivity(i);
                 /*
                 Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG)

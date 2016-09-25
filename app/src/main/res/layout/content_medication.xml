@@ -16,13 +16,6 @@
 
 
 
-    <!--
-    <CalendarView
-        android:id="@+id/calendar"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    -->
 
     <Button
         android:layout_width="match_parent"
@@ -38,20 +31,18 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.16" />
 
-    <sun.bob.mcalendarview.MCalendarView
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
+    <CalendarView
         android:id="@+id/calendarMed"
-        />
-
-    <Space
-        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.16" />
+        android:weekDayTextAppearance="@android:style/TextAppearance.Medium"
+        android:dateTextAppearance="@android:style/TextAppearance.Medium"/>
+
 
     <TextView
         android:id="@+id/instructions"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click on date from calendar above to enter a new blood pressure reading. " />
