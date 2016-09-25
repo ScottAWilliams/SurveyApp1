@@ -37,8 +37,7 @@
     <sun.bob.mcalendarview.MCalendarView
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        tools:context=".MainActivity"
-        android:id="@+id/calendar"
+        android:id="@+id/calendarBlood"
         />
 
     <Space

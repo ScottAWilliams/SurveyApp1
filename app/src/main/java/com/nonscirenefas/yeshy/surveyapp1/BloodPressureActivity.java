@@ -42,11 +42,6 @@ public class BloodPressureActivity extends AppCompatActivity
     ArrayList<String> recordedBP = new ArrayList<String>();
     final ArrayList<ArrayList<Integer>> sysMeasurements = new ArrayList<ArrayList<Integer>>();
     final ArrayList<ArrayList<Integer>> diaMeasurements = new ArrayList<ArrayList<Integer>>();
-    ArrayList<ArrayList<Integer>> sysFinal = new ArrayList<ArrayList<Integer>>();
-     ArrayList<ArrayList<Integer>> diaFinal = new ArrayList<ArrayList<Integer>>();
-
-    String goal;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +70,6 @@ public class BloodPressureActivity extends AppCompatActivity
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //records = new String[]{" "," "," "," "};
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
-                        //Log.e("DataSnapgetKey", dataSnapshot.getValue().toString());
                         System.out.println(dataSnapshot);
                         int g=0;
                         while (it.hasNext()) {
@@ -84,7 +78,6 @@ public class BloodPressureActivity extends AppCompatActivity
                             String value = bpDate.getValue().toString();
                             bpDates.add(g,key);
                             recordedBP.add(g,value);
-                            //Log.e("DataSnapgetValue2", recordedBP.toString();
                             g++;
                         }
                         setBPValues(bpDates,recordedBP);
@@ -101,29 +94,17 @@ public class BloodPressureActivity extends AppCompatActivity
 
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
                         String goal = dataSnapshot.getValue().toString();
-                        Log.e("BP goal 1",goal);
                         initializeCalendar(goal);
-
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                     }
-
                 });
-
-        //initializeCalendar();
-
-
-
     }
     public void setBPValues(ArrayList<String> bpDates, ArrayList<String> recordedBP){
-        Log.e("Correct??", bpDates.toString());
-        Log.e("Correct???", recordedBP.toString());
-
         for(int i = 0; i< bpDates.size(); i++){
             ArrayList <Integer> sysDay = new ArrayList <Integer>();
             ArrayList <Integer> diaDay = new ArrayList <Integer>();
@@ -131,50 +112,40 @@ public class BloodPressureActivity extends AppCompatActivity
             int indComma = currentValue.indexOf(",");
             int indDash;
             int indEquals;
+            int h =0;
             while (indComma!=-1){
                 indComma = currentValue.indexOf(",");
                 indDash = currentValue.indexOf("-");
                 indEquals = currentValue.indexOf("=");
                 sysDay.add(Integer.parseInt(currentValue.substring(indEquals+1,indDash)));
-                Log.e("sysDayValue",currentValue.substring(indEquals+1,indDash));
+                //Log.e("sysDayValue",currentValue.substring(indEquals+1,indDash));
                 if (indComma==-1){
                     diaDay.add(Integer.parseInt(currentValue.substring(indDash+1,currentValue.length()-1)));
-                    Log.e("diaDayValue",currentValue.substring(indDash+1,currentValue.length()-1));
+                    //Log.e("diaDayValue",currentValue.substring(indDash+1,currentValue.length()-1));
                 }
-                else{
-                    diaDay.add(Integer.parseInt(currentValue.substring(indDash+1,indComma)));
-                    Log.e("diaDayValue",currentValue.substring(indDash+1,indComma));
-                    currentValue = currentValue.substring(indComma+1,currentValue.length());
+                else {
+                    diaDay.add(Integer.parseInt(currentValue.substring(indDash + 1, indComma)));
+                    //Log.e("diaDayValue", currentValue.substring(indDash + 1, indComma));
+                    currentValue = currentValue.substring(indComma + 1, currentValue.length());
                 }
+                h++;
             }
-            Log.e("CorrectSys", sysDay.toString());
-            Log.e("CorrectDia", diaDay.toString());
+            if (h==0 & indComma==-1){
+                indDash = currentValue.indexOf("-");
+                indEquals = currentValue.indexOf("=");
+                sysDay.add(Integer.parseInt(currentValue.substring(indEquals+1,indDash)));
+                    diaDay.add(Integer.parseInt(currentValue.substring(indDash+1,currentValue.length()-1)));
+            }
             addArray(i,sysDay,diaDay);
-            //sysDay.removeAll(sysDay);
-            //diaDay.removeAll(diaDay);
         }
 
     }
 
     public void addArray(int i,ArrayList<Integer> sysDay, ArrayList<Integer> diaDay){
-        Log.e("GottenSys", sysDay.toString());
-        Log.e("GottenDia", diaDay.toString());
         sysMeasurements.add(i,sysDay);
         diaMeasurements.add(i,diaDay);
-        setSysMeasurements(sysMeasurements);
-        setDiaMeasurements(diaMeasurements);
-        Log.e("CorrectFinal1", sysMeasurements.toString());
-        Log.e("CorrectFinal2", diaMeasurements.toString());
-    }
-    public void setSysMeasurements(ArrayList<ArrayList<Integer>> sysMeasurements){
-        Log.e("eeeeee", sysMeasurements.toString());
-        sysMeasurements = sysMeasurements;
     }
 
-    public void setDiaMeasurements(ArrayList<ArrayList<Integer>> diaMeasurements){
-        Log.e("eeeeee", diaMeasurements.toString());
-        diaMeasurements = diaMeasurements;
-    }
 
     public ArrayList<ArrayList<Integer>> returnSysMeasurements(){
         return sysMeasurements;
@@ -185,14 +156,14 @@ public class BloodPressureActivity extends AppCompatActivity
     }
 
     public void initializeCalendar(String goal) {
-        MCalendarView calendar = (MCalendarView) findViewById(R.id.calendar);
+        MCalendarView calendarBlood = (MCalendarView) findViewById(R.id.calendarBlood);
         // sets whether to show the week number.
         //calendar.setShowWeekNumber(false);
 
         String goalSys = goal.substring(goal.lastIndexOf(" ")+1,goal.indexOf("/"));
         String goalDia = goal.substring(goal.indexOf("/")+1,goal.length());
-        Log.e("Works?Sys", returnSysMeasurements().toString());
-        Log.e("Works?Dia", returnDiaMeasurements().toString());
+        //Log.e("Works?Sys", returnSysMeasurements().toString());
+        //Log.e("Works?Dia", returnDiaMeasurements().toString());
         int foundDia;
         int foundSys;
         int month;
@@ -213,42 +184,29 @@ public class BloodPressureActivity extends AppCompatActivity
                     }
                 }
                 month = Integer.parseInt(bpDates.get(i).substring(0, bpDates.get(i).indexOf("-")));
-                Log.e("month", String.valueOf(month));
-                Log.e("day", bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
                 day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
-                Log.e("day", String.valueOf(day));
             }
             else{
                 foundDia=0;foundSys=0;
                 month = Integer.parseInt(bpDates.get(i).substring(0, bpDates.get(i).indexOf("-")));
-                Log.e("month", String.valueOf(month));
-                Log.e("day", bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
                 day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
-                Log.e("day", String.valueOf(day));
+
             }
 
 
             if (Integer.parseInt(goalDia) < foundDia | Integer.parseInt(goalSys) < foundSys) {
-                calendar.markDate(
+                calendarBlood.markDate(
                         new DateData(2016,month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.RED)
                         ));
-                //Log.e("markDate",month+"/"+day);
+
             } else {
-                calendar.markDate(
+                calendarBlood.markDate(
                         new DateData(2016, month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.GREEN)
                         ));
-                //Log.e("markDate",month+"/"+day);
+
             }
         }
 
-        // sets the first day of week according to Calendar.
-        // here we set Monday as the first day of the Calendar
-        //calendar.setFirstDayOfWeek(1);
-
-        //have this part relay to the database
-        calendar.markDate(
-                new DateData(2016, 7, 2).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN)
-                ));
 //Change colors based on what's in Firebase bloodPressureLog compared to goal
         //get dates and logged systolic and diastolic measurements
 
@@ -257,18 +215,16 @@ public class BloodPressureActivity extends AppCompatActivity
 
 
         //sets the listener to be notified upon selected date change.
-        calendar.setOnDateClickListener(new OnDateClickListener() {
+        calendarBlood.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onDateClick(View view, DateData date) {
                 Intent i = new Intent(ctx, BloodPressureLogActivity.class);
                 i.putExtra("date", String.format("%d-%d", date.getMonth(), date.getDay()));
-                Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
+                //Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
                 startActivity(i);
-                /*
-                Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Toast.makeText(BloodPressureActivity.this, String.format("%d-%d", date.getMonth(), date.getDay()), Toast.LENGTH_SHORT).show();
-                */
+
+                //Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
             }
         });
     }
@@ -311,6 +267,26 @@ public class BloodPressureActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+
+        mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String phonenumber = dataSnapshot.getValue().toString();
+                        Log.e("Phone",phonenumber);
+                        ((MyApplication) BloodPressureActivity.this.getApplication()).setPharmaPhone(phonenumber);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+        String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
+
         int id = item.getItemId();
         if (id  == R.id.nav_home){
             Intent i = new Intent(this, MainActivity.class);
@@ -329,7 +305,7 @@ public class BloodPressureActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:6783600636"));
+            i.setData(Uri.parse("tel"+tel));
             startActivity(i);
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);

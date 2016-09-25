@@ -17,6 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import sun.bob.mcalendarview.MCalendarView;
 import sun.bob.mcalendarview.MarkStyle;
 import sun.bob.mcalendarview.listeners.OnDateClickListener;
@@ -27,6 +33,8 @@ import sun.bob.mcalendarview.vo.DateData;
  */
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private DatabaseReference mDatabase;
     Context ctx;
     public static final String PREFS_NAME = "MyPrefsFile";
     @Override
@@ -65,26 +73,16 @@ public class MedicationActivity extends AppCompatActivity
     }
 
     public void initializeCalendar() {
-        MCalendarView calendar = (MCalendarView) findViewById(R.id.calendar);
+        MCalendarView calendarMed = (MCalendarView) findViewById(R.id.calendarMed);
 
-        // sets whether to show the week number.
-        //calendar.setShowWeekNumber(false);
+        //sets the listener to be notified upon selected date change.
 
-        // sets the first day of week according to Calendar.
-        // here we set Monday as the first day of the Calendar
-        //calendar.setFirstDayOfWeek(1);
-
-        //have this part relay to the database
-        calendar.markDate(
+        calendarMed.markDate(
                 new DateData(2016, 7, 2).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN)
                 ));
 
 
-        //sets the listener to be notified upon selected date change.
-
-
-
-        calendar.setOnDateClickListener(new OnDateClickListener() {
+        calendarMed.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onDateClick(View view, DateData date) {
                 Intent i = new Intent(ctx, MedicationLogActivity.class);
@@ -137,6 +135,27 @@ public class MedicationActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+
+        mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String phonenumber = dataSnapshot.getValue().toString();
+                        Log.e("Phone",phonenumber);
+                        ((MyApplication) MedicationActivity.this.getApplication()).setPharmaPhone(phonenumber);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+        String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id  == R.id.nav_home){

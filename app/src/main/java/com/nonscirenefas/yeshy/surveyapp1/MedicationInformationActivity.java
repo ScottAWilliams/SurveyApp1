@@ -13,7 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Yeshy on 7/12/2016.
@@ -22,6 +32,10 @@ public class MedicationInformationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context ctx;
     public static final String PREFS_NAME = "MyPrefsFile";
+    private DatabaseReference mDatabase;
+
+    String [] record = new String [ ]{ " ", " "," "," ", " "};
+    ArrayList<String> records = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +58,45 @@ public class MedicationInformationActivity extends AppCompatActivity
     }
 
     private void initializeMedList(){
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+
+        mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //records = new String[]{" "," "," "," "};
+                        Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
+                        System.out.println(dataSnapshot);
+                        int g=0;
+                        while (it.hasNext()) {
+                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            String attempts =  medicine.child("name").getValue().toString();
+                            records.add(attempts);
+                            //records[g] = (medicine.child("name").getValue().toString());
+                            g++;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+
+
+
         String [] mArray = getResources().getStringArray(R.array.medicationArray);
         System.out.println(mArray.toString());
         final ListView lv = (ListView) findViewById(R.id.medicationListView);
-        lv.setAdapter(new MedicationAdapter(MedicationInformationActivity.this, mArray));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                records);
+        lv.setAdapter(arrayAdapter);
+
+        //lv.setAdapter(new MedicationAdapter(MedicationInformationActivity.this, mArray));
 
     }
 
@@ -88,6 +137,27 @@ public class MedicationInformationActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+
+        mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String phonenumber = dataSnapshot.getValue().toString();
+                        Log.e("Phone",phonenumber);
+                        ((MyApplication) MedicationInformationActivity.this.getApplication()).setPharmaPhone(phonenumber);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+        String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id  == R.id.nav_home){
@@ -107,7 +177,7 @@ public class MedicationInformationActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:6783600636"));
+            i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
