@@ -34,12 +34,16 @@ import sun.bob.mcalendarview.vo.DateData;
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    private MedicationActivity medAct;
     private DatabaseReference mDatabase;
+    Intent intent;
     Context ctx;
     public static final String PREFS_NAME = "MyPrefsFile";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Intent intent = getIntent();
         setContentView(R.layout.activity_medication);
         ctx = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -57,6 +61,7 @@ public class MedicationActivity extends AppCompatActivity
 
         initializeCalendar();
         initializeMedInfoButton();
+        //finish();
     }
 
     public void initializeMedInfoButton(){
@@ -163,8 +168,12 @@ public class MedicationActivity extends AppCompatActivity
             startActivity(i);
         }
         else if (id == R.id.nav_bloodpressure) {
+            System.out.println("killed process");
+            medAct.finishActivity(0);
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
+
+
         }  else if (id == R.id.nav_medication) {
             //Intent i = new Intent(this, MedicationActivity.class);
             //startActivity(i);

@@ -61,9 +61,6 @@ public class BloodPressureActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        deleteFile("user_file");
-
         mDatabase= FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
         mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").addValueEventListener(
@@ -105,6 +102,7 @@ public class BloodPressureActivity extends AppCompatActivity
                         //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                     }
                 });
+        //finish();
     }
     public void setBPValues(ArrayList<String> bpDates, ArrayList<String> recordedBP){
         for(int i = 0; i< bpDates.size(); i++){
@@ -298,6 +296,7 @@ public class BloodPressureActivity extends AppCompatActivity
             //Intent i = new Intent(this, BloodPressureActivity.class);
             //startActivity(i);
         }  else if (id == R.id.nav_medication) {
+            this.finish();
             Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
 
