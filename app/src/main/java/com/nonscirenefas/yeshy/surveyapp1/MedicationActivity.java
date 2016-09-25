@@ -168,8 +168,6 @@ public class MedicationActivity extends AppCompatActivity
             startActivity(i);
         }
         else if (id == R.id.nav_bloodpressure) {
-            System.out.println("killed process");
-            medAct.finishActivity(0);
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
 
