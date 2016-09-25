@@ -62,6 +62,8 @@ public class BloodPressureActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        deleteFile("user_file");
+
         mDatabase= FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
         mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").addValueEventListener(

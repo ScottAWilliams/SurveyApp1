@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -123,15 +124,17 @@ public class LoginActivity extends Activity {
 
     public void startMain(View v) {
         AutoCompleteTextView mEdit = (AutoCompleteTextView)findViewById(R.id.username);
-
-        try {
-            FileOutputStream fos = openFileOutput(USER_FILENAME, Context.MODE_WORLD_READABLE);
-            fos.write(mEdit.getText().toString().getBytes());
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        CheckBox check = (CheckBox)findViewById(R.id.checkbox);
+        if (check.isChecked()){
+            try {
+                FileOutputStream fos = openFileOutput(USER_FILENAME, Context.MODE_WORLD_READABLE);
+                fos.write(mEdit.getText().toString().getBytes());
+                fos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
