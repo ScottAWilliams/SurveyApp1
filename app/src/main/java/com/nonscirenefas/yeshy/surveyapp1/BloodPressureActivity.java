@@ -305,7 +305,7 @@ public class BloodPressureActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel"+tel));
+            i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);

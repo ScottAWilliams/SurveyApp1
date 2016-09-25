@@ -28,6 +28,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    String PHONE_FILENAME = "phone_file";
     private DatabaseReference mDatabase;
     //private ArrayList<Medication> medicationList = new ArrayList<>();
     public static final String PREFS_NAME = "MyPrefsFile";
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -190,13 +192,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        String UID = ((MyApplication) MainActivity.this.getApplication()).getUID();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+
         mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
                 new ValueEventListener() {
 
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
+                        Log.e("Phone",phonenumber);
                         ((MyApplication) MainActivity.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -206,7 +210,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
         String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_home) {
