@@ -76,11 +76,10 @@ public class MedicationActivity extends AppCompatActivity
     public void initializeCalendar() {
         CalendarView calendarMed = (CalendarView) findViewById(R.id.calendarMed);
 
-        //sets the listener to be notified upon selected date change.
+        //calendarMed.setBackground(getResources().getDrawable(R.drawable.common_google_signin_btn_icon_dark));
 
-
-
-
+        calendarMed.setSelectedDateVerticalBar(getResources().getDrawable(R.drawable.common_google_signin_btn_text_dark_normal));
+        //calendarMed.setDateTextAppearance(R.style.TextTheme);
         calendarMed.setOnDateChangeListener(new OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month,int day) {
@@ -88,6 +87,7 @@ public class MedicationActivity extends AppCompatActivity
                 i.putExtra("date", String.format("%d-%d", month+1, day));
                 Log.e("nrp",String.format("%d-%d", month+1, day));
                 startActivity(i);
+
                 /*
                 Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -96,6 +96,7 @@ public class MedicationActivity extends AppCompatActivity
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {

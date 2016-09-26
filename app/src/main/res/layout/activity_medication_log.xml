@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".BloodPressureLogActivity"
+    tools:context=".MedicationLogActivity"
     android:background="@color/white_pressed"
     android:weightSum="1">
 

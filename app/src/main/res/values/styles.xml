@@ -28,4 +28,10 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+
+    <style name="TextTheme" parent="android:Theme.Light" >
+    <item name="android:textColor">#00FF00</item>
+    </style>
+
+
 </resources>

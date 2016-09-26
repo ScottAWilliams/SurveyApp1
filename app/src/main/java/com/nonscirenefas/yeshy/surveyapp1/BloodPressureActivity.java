@@ -42,7 +42,7 @@ public class BloodPressureActivity extends AppCompatActivity
     ArrayList<String> recordedBP = new ArrayList<String>();
     final ArrayList<ArrayList<Integer>> sysMeasurements = new ArrayList<ArrayList<Integer>>();
     final ArrayList<ArrayList<Integer>> diaMeasurements = new ArrayList<ArrayList<Integer>>();
-
+    public int changed= 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,16 +193,17 @@ public class BloodPressureActivity extends AppCompatActivity
 
             }
 
-
             if (Integer.parseInt(goalDia) < foundDia | Integer.parseInt(goalSys) < foundSys) {
                 calendarBlood.markDate(
                         new DateData(2016,month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.RED)
                         ));
+                changed++;
 
             } else {
                 calendarBlood.markDate(
                         new DateData(2016, month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.GREEN)
                         ));
+                changed++;
 
             }
         }
@@ -227,6 +228,7 @@ public class BloodPressureActivity extends AppCompatActivity
 
             }
         });
+
     }
 
     @Override

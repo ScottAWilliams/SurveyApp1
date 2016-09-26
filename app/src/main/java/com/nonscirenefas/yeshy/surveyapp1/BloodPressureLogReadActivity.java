@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +29,7 @@ public class BloodPressureLogReadActivity extends AppCompatActivity {
     String date;
     String UID;
     ArrayList<Medication> medicationList;
+    ArrayAdapter<String> adapter;
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
         date = i.getStringExtra("date");
@@ -74,20 +75,29 @@ public class BloodPressureLogReadActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         ArrayList<String> records = new ArrayList<>();
-                        Log.e("hey","hey");
+                        records.add("Date: "+date);
+                        //Log.e("hey","hey");
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
-                        System.out.println(dataSnapshot);
+                        //System.out.println(dataSnapshot);
+                        if (it.hasNext()){
+                            records.add(" ");
+                        }
                         while (it.hasNext()) {
                             DataSnapshot medicine = (DataSnapshot) it.next();
-                            Log.e("reading2", medicine.toString());
-                            Log.e("reading3", medicine.getKey());
-                            Log.e("reading4", medicine.getValue().toString());
+                            //Log.e("reading2", medicine.toString());
+                            //Log.e("reading3", medicine.getKey());
+                            //Log.e("reading4", medicine.getValue().toString());
                             records.add(medicine.getKey() + " " + medicine.getValue().toString());
                         }
                         String [] mArray = new String[records.size()];
                         mArray = records.toArray(mArray);
+                        //final TextView tv = (TextView) findViewById(R.id.bloodPressureTextView);
+                        //tv.setText(date);
                         final ListView lv = (ListView) findViewById(R.id.bloodPressureListView);
-                        lv.setAdapter(new MedicationAdapter(BloodPressureLogReadActivity.this, mArray));
+                        adapter = new ArrayAdapter<String>(BloodPressureLogReadActivity.this,R.layout.log_read,mArray);
+                        //setListAdapter(adapter);
+                        lv.setAdapter(adapter);
+                        //lv.setAdapter(new MedicationAdapter(BloodPressureLogReadActivity.this, mArray));
                     }
 
                     @Override

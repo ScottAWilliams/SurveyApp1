@@ -10,20 +10,12 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class ReminderService extends IntentService
 {
@@ -129,7 +121,7 @@ public class ReminderService extends IntentService
         SharedPreferences settings = getSharedPreferences(PREFS_UID, 0);
         //there should be a second settings for the medications list
         String UIDstored = settings.getString("UID", "Default");
-        Log.d("UID", UIDstored);
+        //Log. d("UID", UIDstored);
 
         if(UIDstored.equals("Default")) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)

@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.nonscirenefas.yeshy.surveyapp1.MainActivity"
+    tools:context="com.nonscirenefas.yeshy.surveyapp1.BloodPressureActivity"
     tools:showIn="@layout/app_bar_blood_pressure"
     android:weightSum="1">
 
@@ -18,7 +18,8 @@
         android:id="@+id/bp_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Blood Pressure Goal: " />
+        android:text="My Blood Pressure Goal: "
+        android:layout_marginBottom="20dp"/>
 
     <!--
     <CalendarView
@@ -28,23 +29,16 @@
         android:layout_height="match_parent" />
     -->
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.16" />
+
 
     <sun.bob.mcalendarview.MCalendarView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:id="@+id/calendarBlood"
+        android:layout_marginBottom="20dp"
         />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.16" />
+
 
     <TextView
         android:id="@+id/instructions"

@@ -8,30 +8,61 @@
     android:orientation="vertical"
     tools:context=".BloodPressureLogReadActivity"
     android:background="@color/white_pressed"
-    android:weightSum="1">
+    android:weightSum="7">
 
-    <ListView
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bloodPressureListView"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.16" />
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        android:layout_weight="2">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true"
+            android:scrollbarFadeDuration="0">
 
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="delete"
-        android:text="Delete All"
-        android:layout_gravity="center_horizontal" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent">
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/bloodPressureListView"
+                    android:layout_gravity="center_horizontal"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/checkLogs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="back"
-        android:text="Back"
-        android:layout_gravity="center_horizontal" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="5">
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="delete"
+            android:text="Delete All"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:id="@+id/checkLogs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="back"
+            android:text="Back"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 
 
 </LinearLayout>
