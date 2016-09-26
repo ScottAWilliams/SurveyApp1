@@ -46,23 +46,12 @@ public class BloodPressureActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blood_pressure);
-        ctx = this;
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setSubtitle("Blood Pressure Records");
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         mDatabase= FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
+
+
+
         mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").addValueEventListener(
                 new ValueEventListener() {
                     @Override
@@ -88,6 +77,8 @@ public class BloodPressureActivity extends AppCompatActivity
                         //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                     }
                 });
+
+
         mDatabase.child("app").child("users").child(UID).child("bloodpressuregoal").addValueEventListener(
                 new ValueEventListener() {
 
@@ -102,6 +93,8 @@ public class BloodPressureActivity extends AppCompatActivity
                         //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                     }
                 });
+
+
         //finish();
     }
     public void setBPValues(ArrayList<String> bpDates, ArrayList<String> recordedBP){
@@ -156,7 +149,7 @@ public class BloodPressureActivity extends AppCompatActivity
     }
 
     public void initializeCalendar(String goal) {
-        MCalendarView calendarBlood = (MCalendarView) findViewById(R.id.calendarBlood);
+
         // sets whether to show the week number.
         //calendar.setShowWeekNumber(false);
 
@@ -168,6 +161,23 @@ public class BloodPressureActivity extends AppCompatActivity
         int foundSys;
         int month;
         int day;
+
+        setContentView(R.layout.activity_blood_pressure);
+        ctx = this;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setSubtitle("Blood Pressure Records");
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        MCalendarView calendarBlood = (MCalendarView) findViewById(R.id.calendarBlood);
 
         for (int i=0;i<returnSysMeasurements().size();i++) {
             if (returnDiaMeasurements().get(i).size()>0) {
@@ -183,6 +193,7 @@ public class BloodPressureActivity extends AppCompatActivity
                         foundSys = returnSysMeasurements().get(i).get(g);
                     }
                 }
+
                 month = Integer.parseInt(bpDates.get(i).substring(0, bpDates.get(i).indexOf("-")));
                 day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
             }
@@ -192,6 +203,8 @@ public class BloodPressureActivity extends AppCompatActivity
                 day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
 
             }
+
+
 
             if (Integer.parseInt(goalDia) < foundDia | Integer.parseInt(goalSys) < foundSys) {
                 calendarBlood.markDate(
@@ -211,7 +224,7 @@ public class BloodPressureActivity extends AppCompatActivity
 //Change colors based on what's in Firebase bloodPressureLog compared to goal
         //get dates and logged systolic and diastolic measurements
 
-
+        //calendarBlood = (MCalendarView) findViewById(R.id.calendarBlood);
 
 
 
@@ -220,7 +233,7 @@ public class BloodPressureActivity extends AppCompatActivity
             @Override
             public void onDateClick(View view, DateData date) {
                 Intent i = new Intent(ctx, BloodPressureLogActivity.class);
-                i.putExtra("date", String.format("%d-%d", date.getMonth(), date.getDay()));
+                i.putExtra("date", String.format("%d-%d-%d", date.getYear(),date.getMonth(), date.getDay()));
                 //Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
                 startActivity(i);
 

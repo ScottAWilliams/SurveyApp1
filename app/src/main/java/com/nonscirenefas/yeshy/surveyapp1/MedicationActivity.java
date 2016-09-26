@@ -84,8 +84,8 @@ public class MedicationActivity extends AppCompatActivity
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month,int day) {
                 Intent i = new Intent(ctx, MedicationLogActivity.class);
-                i.putExtra("date", String.format("%d-%d", month+1, day));
-                Log.e("nrp",String.format("%d-%d", month+1, day));
+                i.putExtra("date", String.format("%d-%d-%d",year, month+1, day));
+                Log.e("nrp",String.format("%d-%d",year, month+1, day));
                 startActivity(i);
 
                 /*
