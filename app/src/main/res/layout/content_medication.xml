@@ -45,5 +45,5 @@
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click on date from calendar above to enter a new medication reading. " />
+        android:text="Click on a date from the calendar above to record a dose taken. " />
 </LinearLayout>
