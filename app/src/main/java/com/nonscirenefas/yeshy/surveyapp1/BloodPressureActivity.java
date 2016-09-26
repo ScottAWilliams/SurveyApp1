@@ -159,6 +159,7 @@ public class BloodPressureActivity extends AppCompatActivity
         //Log.e("Works?Dia", returnDiaMeasurements().toString());
         int foundDia;
         int foundSys;
+        int year;
         int month;
         int day;
 
@@ -179,45 +180,45 @@ public class BloodPressureActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         MCalendarView calendarBlood = (MCalendarView) findViewById(R.id.calendarBlood);
 
-        for (int i=0;i<returnSysMeasurements().size();i++) {
-            if (returnDiaMeasurements().get(i).size()>0) {
-                foundDia = returnDiaMeasurements().get(i).get(0);
-                for (int g = 1; g < returnDiaMeasurements().get(i).size(); g++) {
-                    if (returnDiaMeasurements().get(i).get(g) > foundDia) {
-                        foundDia = returnDiaMeasurements().get(i).get(g);
+
+        if (returnSysMeasurements().size()>0) {
+            for (int i = 0; i < returnSysMeasurements().size(); i++) {
+                if (returnDiaMeasurements().get(i).size() > 0) {
+                    foundDia = returnDiaMeasurements().get(i).get(0);
+                    for (int g = 1; g < returnDiaMeasurements().get(i).size(); g++) {
+                        if (returnDiaMeasurements().get(i).get(g) > foundDia) {
+                            foundDia = returnDiaMeasurements().get(i).get(g);
+                        }
                     }
-                }
-                foundSys = returnSysMeasurements().get(i).get(0);
-                for (int g = 1; g < returnSysMeasurements().get(i).size(); g++) {
-                    if (returnSysMeasurements().get(i).get(g) > foundDia) {
-                        foundSys = returnSysMeasurements().get(i).get(g);
+                    foundSys = returnSysMeasurements().get(i).get(0);
+                    for (int g = 1; g < returnSysMeasurements().get(i).size(); g++) {
+                        if (returnSysMeasurements().get(i).get(g) > foundDia) {
+                            foundSys = returnSysMeasurements().get(i).get(g);
+                        }
                     }
+                } else {
+                    foundDia = 0;
+                    foundSys = 0;
+
                 }
-
-                month = Integer.parseInt(bpDates.get(i).substring(0, bpDates.get(i).indexOf("-")));
-                day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
-            }
-            else{
-                foundDia=0;foundSys=0;
-                month = Integer.parseInt(bpDates.get(i).substring(0, bpDates.get(i).indexOf("-")));
-                day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).length()));
-
-            }
+                year = Integer.parseInt(bpDates.get(i).substring(0, bpDates.get(i).indexOf("-")));
+                month = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).indexOf("-") + 1, bpDates.get(i).lastIndexOf("-")));
+                day = Integer.parseInt(bpDates.get(i).substring(bpDates.get(i).lastIndexOf("-") + 1, bpDates.get(i).length()));
 
 
+                if (Integer.parseInt(goalDia) < foundDia | Integer.parseInt(goalSys) < foundSys) {
+                    calendarBlood.markDate(
+                            new DateData(year, month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.RED)
+                            ));
+                    changed++;
 
-            if (Integer.parseInt(goalDia) < foundDia | Integer.parseInt(goalSys) < foundSys) {
-                calendarBlood.markDate(
-                        new DateData(2016,month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.RED)
-                        ));
-                changed++;
+                } else {
+                    calendarBlood.markDate(
+                            new DateData(year, month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.GREEN)
+                            ));
+                    changed++;
 
-            } else {
-                calendarBlood.markDate(
-                        new DateData(2016, month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.GREEN)
-                        ));
-                changed++;
-
+                }
             }
         }
 

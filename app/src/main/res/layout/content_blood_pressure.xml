@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/calendarBlood"
         android:layout_marginBottom="20dp"
-        android:name="com.nonscirenefas.yeshy.surveyapp1.BloodPressureActivity$PlaceholderFragment"
         />
 
 
