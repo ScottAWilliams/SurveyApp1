@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="55dp"
             android:layout_gravity="top"
-            android:scrollbarFadeDuration="0">
+            android:fadeScrollbars="false">
 
             <LinearLayout
                 android:id="@+id/lv"

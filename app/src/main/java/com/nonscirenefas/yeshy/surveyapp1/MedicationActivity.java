@@ -177,7 +177,7 @@ public class MedicationActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:6783600636"));
+            i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
