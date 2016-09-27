@@ -131,8 +131,6 @@ public class MainActivity extends AppCompatActivity
     public void startAlarm(Context context) {
         Intent alarmIntent0 = new Intent(this, ReminderService.class);
         startService(alarmIntent0);  //**for testing the notification looks
-
-
     }
 
     private void updateMessagesList() {

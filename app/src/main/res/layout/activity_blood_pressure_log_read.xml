@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".BloodPressureLogReadActivity"
     android:background="@color/white_pressed"
-    android:weightSum="7">
+    android:weightSum="6">
 
 
     <LinearLayout
@@ -46,7 +46,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_weight="5">
+        android:layout_weight="4">
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
@@ -60,7 +60,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="back"
-            android:text="Back"
+            android:text="Back To Log Input"
+            android:layout_gravity="center_horizontal" />
+        <Button
+            android:id="@+id/backToCal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="backToBPCal"
+            android:text="Back To Calendar"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 

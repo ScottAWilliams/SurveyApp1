@@ -58,6 +58,11 @@
         <activity android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".LifestyleFeedbackActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".BloodPressureActivity"
             android:label="@string/app_name"

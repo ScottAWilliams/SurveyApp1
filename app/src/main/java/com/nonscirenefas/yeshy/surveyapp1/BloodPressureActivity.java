@@ -47,6 +47,12 @@ public class BloodPressureActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String USER_FILENAME = "user_file";
+
+        deleteFile(USER_FILENAME);
+
+
+
         mDatabase= FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
 

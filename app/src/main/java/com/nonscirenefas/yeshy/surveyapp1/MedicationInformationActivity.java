@@ -95,7 +95,7 @@ public class MedicationInformationActivity extends AppCompatActivity
                 android.R.layout.simple_list_item_1,
                 records);
         lv.setAdapter(arrayAdapter);
-
+        //lv.setOnItemClickListener();
         //lv.setAdapter(new MedicationAdapter(MedicationInformationActivity.this, mArray));
 
     }
