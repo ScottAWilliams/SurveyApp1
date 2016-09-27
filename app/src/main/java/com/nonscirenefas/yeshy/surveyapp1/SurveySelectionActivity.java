@@ -265,12 +265,12 @@ public class SurveySelectionActivity extends AppCompatActivity
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in x days.", Toast.LENGTH_SHORT).show();
 
                                     } else {
-                                        Intent i = new Intent(SurveySelectionActivity.this, MedicationAdherenceSurvey.class);
+                                        Intent i = new Intent(SurveySelectionActivity.this, HealthLitParagraphActivity.class);
                                         startActivity(i);
                                     }
                                 }
                                 else{
-                                    Intent i = new Intent(SurveySelectionActivity.this, MedicationAdherenceSurvey.class);
+                                    Intent i = new Intent(SurveySelectionActivity.this, HealthLitParagraphActivity.class);
                                     startActivity(i);
                                 }
                             }
