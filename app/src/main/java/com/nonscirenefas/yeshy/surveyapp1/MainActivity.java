@@ -1,6 +1,5 @@
 package com.nonscirenefas.yeshy.surveyapp1;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,10 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,9 +28,11 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    String PHONE_FILENAME = "phone_file";
     private DatabaseReference mDatabase;
-    private ArrayList<Medication> medicationList = new ArrayList<>();
+    //private ArrayList<Medication> medicationList = new ArrayList<>();
     public static final String PREFS_NAME = "MyPrefsFile";
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -47,18 +51,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        boolean alarmUp = (PendingIntent.getBroadcast(this, 0,
-                new Intent("com.my.package.MY_UNIQUE_ACTION"),
-                PendingIntent.FLAG_NO_CREATE) != null);
-
-        if (alarmUp)
-        {
-            Log.d("myTag", "Alarm is already active");
-        }
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
+
+        //String attempt2 = ((MyApplication) MainActivity.this.getApplication()).getPhone();
+
+        //Log.e("Phone2",attempt2);
+
         /*
         mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -124,15 +125,13 @@ public class MainActivity extends AppCompatActivity
 */
 
         initializeMessagesList();
-        startAlarm(this);
+            //startAlarm(this); //Start test alarm
     }
 
 
     public void startAlarm(Context context) {
         Intent alarmIntent0 = new Intent(this, ReminderService.class);
         startService(alarmIntent0);  //**for testing the notification looks
-
-
     }
 
     private void updateMessagesList() {
@@ -165,11 +164,14 @@ public class MainActivity extends AppCompatActivity
         //mArrayBefore = messages.toArray(mArrayBefore);
 
         String [] mArray = {"Messages will appear here once the survey data has loaded."};
-        if(num < messages.size())
+        if(num < messages.size()) {
             mArray[0] = messages.get(num);
+        }
 
+       adapter = new ArrayAdapter<String>(this,R.layout.tip_of_the_day,mArray);
+        //setListAdapter(adapter);
         final ListView lv = (ListView) findViewById(R.id.messagesListView);
-        lv.setAdapter(new MedicationAdapter(MainActivity.this, mArray));
+        lv.setAdapter(adapter);
 
     }
 
@@ -184,53 +186,46 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    */
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+
+        mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String phonenumber = dataSnapshot.getValue().toString();
+                        Log.e("Phone",phonenumber);
+                        ((MyApplication) MainActivity.this.getApplication()).setPharmaPhone(phonenumber);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+        String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id  == R.id.nav_home){
-            //Intent i = new Intent(this, MainActivity.class);
-            //startActivity(i);
-        }
-        else if (id == R.id.nav_bloodpressure) {
+        if (id == R.id.nav_home) {
+        } else if (id == R.id.nav_bloodpressure) {
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
-        }  else if (id == R.id.nav_medication) {
+        } else if (id == R.id.nav_medication) {
             Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
 
-        }else if (id == R.id.nav_surveys) {
+        } else if (id == R.id.nav_surveys) {
             Intent i = new Intent(this, SurveySelectionActivity.class);
             startActivity(i);
-
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:6783600636"));
+            i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -246,16 +241,15 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();
-        }
-        else if (id == R.id.nav_hipaa) {
+        } else if (id == R.id.nav_hipaa) {
             Intent i = new Intent(this, HIPAAActivity.class);
             startActivity(i);
 
-        }
-        else if (id == R.id.nav_informedconsent) {
+        } else if (id == R.id.nav_informedconsent) {
             Intent i = new Intent(this, InformedConsentActivity.class);
             startActivity(i);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
