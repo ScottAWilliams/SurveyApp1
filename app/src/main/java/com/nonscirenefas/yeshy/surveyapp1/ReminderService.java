@@ -84,6 +84,7 @@ public class ReminderService extends IntentService
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
+        /*
         //third notification at 10 PM current day
         cal.set(Calendar.HOUR_OF_DAY, 10); //18:32
         cal.set(Calendar.MINUTE, 0);
@@ -114,7 +115,7 @@ public class ReminderService extends IntentService
         pendingIntent = PendingIntent.getBroadcast(this, _id5, alarmIntent, 0);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
+*/
 
         int typeOfNotification =  intent.getIntExtra("type", 0);
 
