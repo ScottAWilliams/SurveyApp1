@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
+import android.icu.util.GregorianCalendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -120,9 +121,24 @@ public class SurveySelectionActivity extends AppCompatActivity
                                     curDay = Integer.parseInt(currDate.substring(currDate.lastIndexOf("-") + 1, currDate.length()));
 
 
-                                    Log.e("curr", Integer.toString(curDay));
-                                    Log.e("sur", Integer.toString(surDay));
-                                    if (surDay == curDay) {
+
+                                    GregorianCalendar oldDate = new GregorianCalendar();
+                                    oldDate.set(GregorianCalendar.DAY_OF_MONTH, 1);
+                                    oldDate.set(GregorianCalendar.MONTH, 1);
+                                    oldDate.set(GregorianCalendar.YEAR, 1990);
+                                    GregorianCalendar curr = new GregorianCalendar();
+                                    curr.set(GregorianCalendar.DAY_OF_MONTH, curDay);
+                                    curr.set(GregorianCalendar.MONTH, curMonth);
+                                    curr.set(GregorianCalendar.YEAR, curYear);
+                                    GregorianCalendar surv = new GregorianCalendar();
+                                    surv.set(GregorianCalendar.DAY_OF_MONTH, surDay);
+                                    surv.set(GregorianCalendar.MONTH, surMonth);
+                                    surv.set(GregorianCalendar.YEAR, surYear);
+                                    int daysPassed=(curr.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR))-(surv.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR));
+
+
+
+                                    if (daysPassed<31) {
 
                                         Intent i = new Intent(SurveySelectionActivity.this, LifestyleFeedbackActivity.class);
                                         i.putExtra("month", surMonth); //number corresponds to survey
@@ -191,8 +207,23 @@ public class SurveySelectionActivity extends AppCompatActivity
                                     curDay = Integer.parseInt(currDate.substring(currDate.lastIndexOf("-") + 1, currDate.length()));
 
 
+                                    GregorianCalendar oldDate = new GregorianCalendar();
+                                    oldDate.set(GregorianCalendar.DAY_OF_MONTH, 1);
+                                    oldDate.set(GregorianCalendar.MONTH, 1);
+                                    oldDate.set(GregorianCalendar.YEAR, 1990);
+                                    GregorianCalendar curr = new GregorianCalendar();
+                                    curr.set(GregorianCalendar.DAY_OF_MONTH, curDay);
+                                    curr.set(GregorianCalendar.MONTH, curMonth);
+                                    curr.set(GregorianCalendar.YEAR, curYear);
+                                    GregorianCalendar surv = new GregorianCalendar();
+                                    surv.set(GregorianCalendar.DAY_OF_MONTH, surDay);
+                                    surv.set(GregorianCalendar.MONTH, surMonth);
+                                    surv.set(GregorianCalendar.YEAR, surYear);
+                                    int daysPassed=(curr.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR))-(surv.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR));
 
-                                    if (surDay == curDay) {
+
+
+                                    if (daysPassed<31) {
                                         Intent i = new Intent(SurveySelectionActivity.this, AdherenceFeedbackActivity.class);
                                         i.putExtra("month", surMonth); //number corresponds to survey
                                         i.putExtra("day", surDay); //number corresponds to survey
@@ -261,7 +292,23 @@ public class SurveySelectionActivity extends AppCompatActivity
 
 
 
-                                    if ((curMonth==surMonth & curYear==surYear)) {
+                                    GregorianCalendar oldDate = new GregorianCalendar();
+                                    oldDate.set(GregorianCalendar.DAY_OF_MONTH, 1);
+                                    oldDate.set(GregorianCalendar.MONTH, 1);
+                                    oldDate.set(GregorianCalendar.YEAR, 1990);
+                                    GregorianCalendar curr = new GregorianCalendar();
+                                    curr.set(GregorianCalendar.DAY_OF_MONTH, curDay);
+                                    curr.set(GregorianCalendar.MONTH, curMonth);
+                                    curr.set(GregorianCalendar.YEAR, curYear);
+                                    GregorianCalendar surv = new GregorianCalendar();
+                                    surv.set(GregorianCalendar.DAY_OF_MONTH, surDay);
+                                    surv.set(GregorianCalendar.MONTH, surMonth);
+                                    surv.set(GregorianCalendar.YEAR, surYear);
+                                    int daysPassed=(curr.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR))-(surv.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR));
+
+
+
+                                    if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in x days.", Toast.LENGTH_SHORT).show();
 
                                     } else {
