@@ -47,7 +47,6 @@
                     android:layout_height="match_parent"
                     android:id="@+id/LifestyleFeedbackView"
                     android:layout_gravity="center_horizontal"
-                    android:dividerHeight="5dp"
                     />
             </LinearLayout>
         </ScrollView>
