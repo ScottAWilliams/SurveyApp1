@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity
 */
 
         initializeMessagesList();
-        startAlarm(this);
+        //startAlarm(this);
     }
 
 

@@ -369,6 +369,9 @@ public class HealthSurvey extends AppCompatActivity
 
                     ((MyApplication) HealthSurvey.this.getApplication()).setLiteracySurveyAnswersRW(answers);
                     Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
+                    i.putExtra("month", month); //number corresponds to survey
+                    i.putExtra("day", day); //number corresponds to survey
+                    i.putExtra("year", year); //number corresponds to survey
                     startActivity(i);
                 }
                 else{

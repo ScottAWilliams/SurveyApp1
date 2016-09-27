@@ -433,7 +433,9 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
 
                     mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
                     Intent i = new Intent(LifestyleSurvey.this, LifestyleFeedbackActivity.class);
-                    i.putExtra("surveyResponse",answers);
+                    i.putExtra("month", month); //number corresponds to survey
+                    i.putExtra("day", day); //number corresponds to survey
+                    i.putExtra("year", year); //number corresponds to survey
                     startActivity(i);
                 }
                 else{

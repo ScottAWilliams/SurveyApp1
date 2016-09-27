@@ -424,7 +424,9 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
 
 
                     Intent i = new Intent(MedicationAdherenceSurvey.this, AdherenceFeedbackActivity.class);
-                    i.putExtra("surveyResponse",answers);
+                    i.putExtra("month", month); //number corresponds to survey
+                    i.putExtra("day", day); //number corresponds to survey
+                    i.putExtra("year", year); //number corresponds to survey
                     startActivity(i);
                 }
                 else{

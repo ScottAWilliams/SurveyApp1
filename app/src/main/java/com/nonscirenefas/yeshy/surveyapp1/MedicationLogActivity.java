@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 
@@ -34,7 +35,9 @@ public class MedicationLogActivity extends AppCompatActivity {
     String medicine;
     String date;
     ArrayList<Medication> medicationList;
-    String [] records = new String [ ]{ " ", " "," "," ", " "};
+    String [] mArray;
+    String [] passedArray;
+    //String [] records = new String [ ]{ " ", " "," "," ", " "};
 
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
@@ -67,6 +70,7 @@ public class MedicationLogActivity extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList<String> records = new ArrayList<>();
                         //records = new String[]{" "," "," "," "};
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
                         System.out.println(dataSnapshot);
@@ -74,10 +78,14 @@ public class MedicationLogActivity extends AppCompatActivity {
                         while (it.hasNext()) {
                             DataSnapshot medicine = (DataSnapshot) it.next();
                             String attempts =  medicine.child("name").getValue().toString();
-                            records[g] = attempts;
+                            records.add(attempts);
                             //records[g] = (medicine.child("name").getValue().toString());
                             g++;
                         }
+                        mArray = new String[records.size()];
+                        mArray = records.toArray(mArray);
+                        setArray(mArray);
+                        Log.e("mArray1", Arrays.toString(mArray));
                     }
 
                     @Override
@@ -88,7 +96,7 @@ public class MedicationLogActivity extends AppCompatActivity {
 
 
 
-
+Log.e("mArray2", Arrays.toString(passedArray));
 
 
         //System.out.println(Arrays.toString(medNames));
@@ -102,14 +110,16 @@ public class MedicationLogActivity extends AppCompatActivity {
         //System.out.println(Arrays.toString(medNames));
         //Log.e("hey","whats up");
 // Selection of the spinner
+        /*
         final Spinner spinner = (Spinner) findViewById(R.id.medicationSpinner);
-
 // Application of the Array to the Spinner
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, records);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(MedicationLogActivity.this, android.R.layout.simple_spinner_item, colors);
         //ArrayAdapter<CharSequence> spinnerArrayAdapter= ArrayAdapter.createFromResource(this,R.array.medicationArray,android.R.layout.simple_spinner_item);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spinner.setAdapter(spinnerArrayAdapter);
-        spinner.setPrompt(records[0]);
+
+
+        //spinner.setPrompt(records[0]);
 
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -123,13 +133,43 @@ public class MedicationLogActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                spinner.setPrompt(records[0]);
+                //spinner.setPrompt(records[0]);
             }
         });
+        */
 
         //mDatabase = FirebaseDatabase.getInstance().getReference();
         //String UID = ((MyApplication) this.getApplication()).getUID();
         //mDatabase.child("app").child("users").child(UID).child("medicine");
+    }
+
+    public void setArray(String [] x){
+
+        final Spinner spinner = (Spinner) findViewById(R.id.medicationSpinner);
+// Application of the Array to the Spinner
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(MedicationLogActivity.this, android.R.layout.simple_spinner_item, x);
+        //ArrayAdapter<CharSequence> spinnerArrayAdapter= ArrayAdapter.createFromResource(this,R.array.medicationArray,android.R.layout.simple_spinner_item);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+        //spinner.setPrompt(records[0]);
+
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                // TODO Auto-generated method stub
+                //Log.v("item", (String) parent.getItemAtPosition(position));
+                medicine = parent.getItemAtPosition(position).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                //spinner.setPrompt(records[0]);
+            }
+        });
     }
 
     public void submit(View v) {
