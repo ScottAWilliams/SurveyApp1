@@ -82,6 +82,29 @@
         <item index="7">0</item>
     </string-array>
 
+
+    <string-array name="AdherencePositiveMessagesArray">
+        <item index="0">It sounds like are doing a great job remembering to take your medications.  Keep up your hard work!</item>
+        <item index="1"></item>
+        <item index="2"></item>
+        <item index="3"></item>
+        <item index="4">You are doing a nice job taking your medications as prescribed.</item>
+        <item index="5"></item>
+        <item index="6"></item>
+        <item index="7"></item>
+       </string-array>
+
+    <string-array name="AdherenceNegativeMessagesArray">
+        <item index="0">Even though you may not have any symptoms when your blood pressure is high, it is important to take your medications as directed by your healthcare provider. Consider using a pill box, setting an alarm, using the alerts on this mobile application, or combining your pill taking with a routine task (for example: brushing your teeth or eating your meals) to remember taking your medication. High blood pressure increases the risk of heart disease and stroke which are two of the leading causes of death in America. </item>
+        <item index="1">Even though you may not have any symptoms when your blood pressure is high, it is important to take your medications as directed by your healthcare provider. If you are having any problems with your medication please contact your healthcare practitioner or pharmacist. Taking your blood pressure medication lowers your risk of serious health conditions. </item>
+        <item index="2">If your medication is causing you to feel poorly contact your healthcare provider as soon as possible. Your healthcare provider may give you recommendations for taking your current medication or prescribe a different product. Taking your blood pressure medication lowers your risk of serious health conditions. </item>
+        <item index="3">Consider packing a pill box for your suitcase to decrease the chance of forgetting to bring your blood pressure medications on trips.  If you do forget your medications, contact a local pharmacy where you are traveling as you may be able to fill the prescription away from home.  Taking your blood pressure medication lowers your risk of serious health conditions. </item>
+        <item index="4">Even though you may not have any symptoms when your blood pressure is high, it is important to take your medications as directed by your healthcare provider. High blood pressure increases the risk of heart disease and stroke which are two of the leading causes of death in America. </item>
+        <item index="5">Even though you may not have any symptoms when your blood pressure is high, it is important to take your medications as directed by your healthcare provider. High blood pressure is often called a silent killer because there are not usually many symptoms with it. High blood pressure increases the risk of heart disease and stroke which are two of the leading causes of death in America. </item>
+        <item index="6">Talk with your healthcare practitioner or pharmacist about your medications to see if he or she can make your plan simpler. Taking your blood pressure medications as directed decreases your risk of heart disease and stroke which are two of the leading causes of death in America. Even though you may not have any symptoms your organs may be damaged if your blood pressure is above your goal. </item>
+        <item index="7">Using a pill box, setting a reminder on your cell phone or alarm clock, or even taking your medications when you complete another routine daily activity may help you remember to take your medications.  Taking your medications as prescribed by your healthcare provider is important to successfully manage your diabetes and decrease your risk for diabetes-related health problems.</item>
+    </string-array>
+
     <string-array name="AdherenceSurvey">
         <item index="0">Do you sometimes forget to take your blood pressure medications(s)?_Yes_No</item>
         <item index="1">People sometimes miss taking their medications for reasons other than forgetting. Thinking over the past two weeks, were there any days when you did not take your blood pressure medication(s)?_Yes_No</item>

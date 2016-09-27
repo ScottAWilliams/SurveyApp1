@@ -29,11 +29,12 @@ import java.io.IOException;
  */
 public class LoginActivity extends Activity {
 
-    public boolean check = false;
     public static final String PREFS_NAME = "MyPrefsFile";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    CheckBox check;
+    AutoCompleteTextView mEdit;
     Context ctx;
     View v;
     String USER_FILENAME = "user_file";
@@ -44,6 +45,10 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ctx = this;
+
+        mEdit = (AutoCompleteTextView)findViewById(R.id.username);
+        check = (CheckBox)findViewById(R.id.checkbox);
+
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String UIDstored = settings.getString("UID", "Default");
@@ -96,13 +101,20 @@ public class LoginActivity extends Activity {
             }
             Log.e("Login Attempt", temp);
             if (temp.length()>1){
-                login(temp+ "@mercer.edu","password",v);
+                mEdit.setText(temp);
+                check.setChecked(true);
+                //login(temp+ "@mercer.edu","password",v);
+            }
+            else{
+                check.setChecked(false);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
         //fucntion that uses silent setSilent(silent);
     }
@@ -123,8 +135,8 @@ public class LoginActivity extends Activity {
 
 
     public void startMain(View v) {
-        AutoCompleteTextView mEdit = (AutoCompleteTextView)findViewById(R.id.username);
-        CheckBox check = (CheckBox)findViewById(R.id.checkbox);
+        mEdit = (AutoCompleteTextView)findViewById(R.id.username);
+        check = (CheckBox)findViewById(R.id.checkbox);
         if (check.isChecked()){
             try {
                 FileOutputStream fos = openFileOutput(USER_FILENAME, Context.MODE_WORLD_READABLE);
@@ -135,6 +147,9 @@ public class LoginActivity extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        else{
+            deleteFile(USER_FILENAME);
         }
 
 
