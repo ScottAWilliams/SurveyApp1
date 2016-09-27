@@ -423,8 +423,8 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                     mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").child(year+"-"+month+"-"+day).setValue(Arrays.toString(answers));
 
 
-
-                    Intent i = new Intent(MedicationAdherenceSurvey.this, SurveySelectionActivity.class);
+                    Intent i = new Intent(MedicationAdherenceSurvey.this, AdherenceFeedbackActivity.class);
+                    i.putExtra("surveyResponse",answers);
                     startActivity(i);
                 }
                 else{
