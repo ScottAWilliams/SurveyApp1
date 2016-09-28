@@ -109,6 +109,12 @@ public class BloodPressureLogActivity extends AppCompatActivity {
         }
     }
 
+    public void returnToCal(View v){
+        Intent i = new Intent(this, BloodPressureActivity.class);
+        startActivity(i);
+    }
+
+
     public void checkLogs(View v) {
         Intent i = new Intent(this, BloodPressureLogReadActivity.class);
         i.putExtra("date", date);
