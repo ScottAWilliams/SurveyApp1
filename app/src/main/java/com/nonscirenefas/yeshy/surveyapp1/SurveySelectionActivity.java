@@ -139,7 +139,7 @@ public class SurveySelectionActivity extends AppCompatActivity
 
 
                                     if (daysPassed<31) {
-
+                                        Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
                                         Intent i = new Intent(SurveySelectionActivity.this, LifestyleFeedbackActivity.class);
                                         i.putExtra("month", surMonth); //number corresponds to survey
                                         i.putExtra("day", surDay); //number corresponds to survey
@@ -224,6 +224,8 @@ public class SurveySelectionActivity extends AppCompatActivity
 
 
                                     if (daysPassed<31) {
+                                        Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
+
                                         Intent i = new Intent(SurveySelectionActivity.this, AdherenceFeedbackActivity.class);
                                         i.putExtra("month", surMonth); //number corresponds to survey
                                         i.putExtra("day", surDay); //number corresponds to survey
@@ -309,7 +311,7 @@ public class SurveySelectionActivity extends AppCompatActivity
 
 
                                     if (daysPassed<31) {
-                                        Toast.makeText(ctx, "You've taken this survey in the past month, please take again in x days.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
 
                                     } else {
                                         Intent i = new Intent(SurveySelectionActivity.this, HealthLitParagraphActivity.class);
