@@ -7,22 +7,60 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    tools:context="com.nonscirenefas.yeshy.surveyapp1.StudyContactsActivity">
 
     <include
         layout="@layout/app_bar_health_lit_paragraph"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
+    <ScrollView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:paddingTop="60dp">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:gravity="center"
         android:padding="45dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
         >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:textAlignment="center"
+            android:text="Kendra Manigault \n manigault_km@mercer.edu "
+            android:textSize="16dp"
+            android:textColor="#000000"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Call Kendra Manigault"
+            android:id="@+id/callContactKendra"
+            android:onClick="callContactKendra"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:textAlignment="center"
+            android:text="Maria Thurston  \n thurston_mm@mercer.edu"
+            android:textSize="16dp"
+            android:textColor="#000000"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Call Maria Thurston"
+            android:id="@+id/callContactMaria"
+            android:onClick="callContactMaria"
+            android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -30,14 +68,21 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
             android:textAlignment="center"
-            android:text="STOFHLA Comprehension Paragraph"
-            android:textSize="30dp"
+            android:text="Sweta Patel \n patel_sm@mercer.edu "
+            android:textSize="16dp"
             android:textColor="#000000"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:textAlignment="center"
+            android:text="Lydia Newsom \n newsom_lc@mercer.edu"
+            android:textSize="16dp"
+            android:textColor="#000000"/>
     </LinearLayout>
-
-
-
+</ScrollView>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

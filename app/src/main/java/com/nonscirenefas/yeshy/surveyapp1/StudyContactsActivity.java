@@ -12,6 +12,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,8 +49,28 @@ public class StudyContactsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        final ViewGroup container = (ViewGroup) findViewById(R.id.container);
 
+        Button callContactMa = (Button)findViewById(R.id.callContactMaria);
+        Button callContactKe = (Button)findViewById(R.id.callContactKendra);
     }
+
+    public void callContactMaria (View view){
+        Intent i = new Intent(Intent.ACTION_DIAL);
+        i.setData(Uri.parse("tel:678-547-6253"));
+        startActivity(i);
+    }
+
+
+    public void callContactKendra (View view){
+        Intent i = new Intent(Intent.ACTION_DIAL);
+        i.setData(Uri.parse("tel:678-547-6216"));
+        startActivity(i);
+    }
+
+
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
