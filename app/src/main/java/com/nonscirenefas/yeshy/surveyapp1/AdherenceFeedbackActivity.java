@@ -103,6 +103,7 @@ public class AdherenceFeedbackActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 Intent i = new Intent(AdherenceFeedbackActivity.this, SurveySelectionActivity.class);
                                 startActivity(i);
+                                finish();
                             }
                         });
 

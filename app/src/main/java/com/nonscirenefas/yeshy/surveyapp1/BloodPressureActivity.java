@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -46,16 +45,8 @@ public class BloodPressureActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String USER_FILENAME = "user_file";
-
-        deleteFile(USER_FILENAME);
-
-
-
         mDatabase= FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
-
 
 
         mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").addValueEventListener(
@@ -64,7 +55,6 @@ public class BloodPressureActivity extends AppCompatActivity
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //records = new String[]{" "," "," "," "};
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
-                        System.out.println(dataSnapshot);
                         int g=0;
                         while (it.hasNext()) {
                             DataSnapshot bpDate = (DataSnapshot) it.next();
@@ -100,8 +90,6 @@ public class BloodPressureActivity extends AppCompatActivity
                     }
                 });
 
-
-        //finish();
     }
     public void setBPValues(ArrayList<String> bpDates, ArrayList<String> recordedBP){
         for(int i = 0; i< bpDates.size(); i++){
@@ -243,7 +231,6 @@ public class BloodPressureActivity extends AppCompatActivity
                 i.putExtra("date", String.format("%d-%d-%d", date.getYear(),date.getMonth(), date.getDay()));
                 //Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
                 startActivity(i);
-
                 //Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
             }
@@ -298,7 +285,6 @@ public class BloodPressureActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
-                        Log.e("Phone",phonenumber);
                         ((MyApplication) BloodPressureActivity.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -313,47 +299,42 @@ public class BloodPressureActivity extends AppCompatActivity
         if (id  == R.id.nav_home){
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
+            finish();
         }
         else if (id == R.id.nav_bloodpressure) {
             //Intent i = new Intent(this, BloodPressureActivity.class);
             //startActivity(i);
         }  else if (id == R.id.nav_medication) {
-            this.finish();
             Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
-
+            finish();
         }else if (id == R.id.nav_surveys) {
             Intent i = new Intent(this, SurveySelectionActivity.class);
             startActivity(i);
-
+            finish();
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
+            finish();
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
-
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
 
             UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();
         }
-        else if (id == R.id.nav_hipaa) {
-            Intent i = new Intent(this, HIPAAActivity.class);
+        else if (id == R.id.nav_study_contact) {
+            Intent i = new Intent(this, StudyContactsActivity.class);
             startActivity(i);
+            finish();
+        }
 
-        }
-        else if (id == R.id.nav_informedconsent) {
-            Intent i = new Intent(this, InformedConsentActivity.class);
-            startActivity(i);
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

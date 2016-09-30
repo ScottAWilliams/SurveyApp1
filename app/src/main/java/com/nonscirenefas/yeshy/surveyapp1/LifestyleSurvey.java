@@ -437,6 +437,7 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
                     i.putExtra("day", day); //number corresponds to survey
                     i.putExtra("year", year); //number corresponds to survey
                     startActivity(i);
+                    finish();
                 }
                 else{
                     Snackbar.make(v, "Please complete all 8 questions. "+nonselected+" questions remain. Please scroll through the buttons above.", Snackbar.LENGTH_LONG)
@@ -475,22 +476,25 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
         if (id  == R.id.nav_home){
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
+            finish();
         }
         else if (id == R.id.nav_bloodpressure) {
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
+            finish();
         }else if (id == R.id.nav_medication) {
             Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
-
+            finish();
         }else if (id == R.id.nav_surveys) {
             Intent i = new Intent(this, SurveySelectionActivity.class);
             startActivity(i);
-
+            finish();
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
+            finish();
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
@@ -506,14 +510,10 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
             startActivity(i);
             finish();
         }
-        else if (id == R.id.nav_hipaa) {
-            Intent i = new Intent(this, HIPAAActivity.class);
+        else if (id == R.id.nav_study_contact) {
+            Intent i = new Intent(this, StudyContactsActivity.class);
             startActivity(i);
-
-        }
-        else if (id == R.id.nav_informedconsent) {
-            Intent i = new Intent(this, InformedConsentActivity.class);
-            startActivity(i);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

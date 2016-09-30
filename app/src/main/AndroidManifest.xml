@@ -42,12 +42,8 @@
         </activity>
 
         <activity
-            android:name=".InformedConsentActivity"
+            android:name=".StudyContactsActivity"
             android:label="Informed Consent"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".HIPAAActivity"
-            android:label="HIPAA Waiver"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".MedicationAdherenceSurvey"

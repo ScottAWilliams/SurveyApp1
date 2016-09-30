@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -210,33 +211,33 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeMessagesList(){
-        ArrayList<String> messages = new ArrayList<>();
+
+
         String [] LifestylePositiveMessages = getResources().getStringArray(R.array.LifestylePositiveMessagesArray);
         String [] LifestyleNegativeMessages = getResources().getStringArray(R.array.LifestyleNegativeMessagesArray);
-        int[] LifestyleAnswers = ((MyApplication) MainActivity.this.getApplication()).getLifestyleSurveyAnswers();
+        final int[] lifestylecorrectChoice = {5,1,2,2,1,2,2,5};
+        final int[] lifestylewrongChoice = {0,0,1,1,0,1,1,0};
+        String[] adherencePositiveMessages = getResources().getStringArray(R.array.AdherencePositiveMessagesArray);
+        String[] adherenceNegativeMessages = getResources().getStringArray(R.array.AdherenceNegativeMessagesArray);
+        final int[] adherencecorrectChoice = {2,0,0,0,1,0,0,0};
+        final int[] adherencewrongChoice = {1,1,1,1,2,1,1,0};
 
-        int counter = 0;
-        for(int e: LifestyleAnswers) {
-            if(e == 0) { //if right
-                messages.add(LifestylePositiveMessages[counter]);
-            } else if(e == 1) { //if wrong
-                messages.add(LifestyleNegativeMessages[counter]);
-            }
-            counter++;
-        }
-
+        String [] messages = new String [16];
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+        
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_YEAR);
         //Random generator = new Random();
-        int num = day % messages.size();
+        int num = day % messages.length;
         //Log.e("num",Integer.toString(num));
 
         //String [] mArrayBefore = new String[messages.size()];
         //mArrayBefore = messages.toArray(mArrayBefore);
 
         String [] mArray = {"Messages will appear here once the survey data has loaded."};
-        if(num < messages.size()) {
-            mArray[0] = messages.get(num);
+        if(num < messages.length) {
+            mArray[0] = LifestylePositiveMessages[num];
         }
 
        adapter = new ArrayAdapter<String>(this,R.layout.tip_of_the_day,mArray);
@@ -287,17 +288,20 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_bloodpressure) {
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
+            finish();
         } else if (id == R.id.nav_medication) {
             Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
-
+            finish();
         } else if (id == R.id.nav_surveys) {
             Intent i = new Intent(this, SurveySelectionActivity.class);
             startActivity(i);
+            finish();
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
+            finish();
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
@@ -312,13 +316,10 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();
-        } else if (id == R.id.nav_hipaa) {
-            Intent i = new Intent(this, HIPAAActivity.class);
+        } else if (id == R.id.nav_study_contact) {
+            Intent i = new Intent(this, StudyContactsActivity.class);
             startActivity(i);
-
-        } else if (id == R.id.nav_informedconsent) {
-            Intent i = new Intent(this, InformedConsentActivity.class);
-            startActivity(i);
+            finish();
         }
 
 

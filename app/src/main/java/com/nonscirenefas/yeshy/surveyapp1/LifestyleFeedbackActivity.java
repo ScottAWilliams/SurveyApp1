@@ -104,6 +104,7 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 Intent i = new Intent(LifestyleFeedbackActivity.this, SurveySelectionActivity.class);
                                 startActivity(i);
+                                finish();
                             }
                         });
 

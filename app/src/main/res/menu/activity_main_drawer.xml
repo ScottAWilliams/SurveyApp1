@@ -20,13 +20,9 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Surveys" />
             <item
-                android:id="@+id/nav_hipaa"
+                android:id="@+id/nav_study_contact"
                 android:icon="@drawable/ic_menu_send"
-                android:title="HIPAA Waiver" />
-            <item
-                android:id="@+id/nav_informedconsent"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Informed Consent" />
+                android:title="Study Contact" />
 
         </menu>
     </item>

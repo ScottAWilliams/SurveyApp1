@@ -11,25 +11,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.nonscirenefas.yeshy.surveyapp1.MedicationActivity"
-    tools:showIn="@layout/app_bar_medication"
-    android:weightSum="1">
+    tools:showIn="@layout/app_bar_medication">
 
-
-
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Medication Information"
-        android:id="@+id/medinfobutton"
-        android:background="@drawable/button_bg"
-        android:layout_gravity="center_horizontal"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.16" />
 
     <CalendarView
         android:id="@+id/calendarMed"
