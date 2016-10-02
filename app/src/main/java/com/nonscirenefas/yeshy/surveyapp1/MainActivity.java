@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity
     int[] lifestyleArray = new int[8];
     int[] adherenceArray = new int[8];
     String[] surveyResponse = new String[16];
+    ArrayList<String> medArray= new ArrayList<String>();
+    ArrayList<String> medFrequency= new ArrayList<String>();
     //private ArrayList<Medication> medicationList = new ArrayList<>();
     public static final String PREFS_NAME = "MyPrefsFile";
     ArrayAdapter<String> adapter;
@@ -74,7 +76,10 @@ public class MainActivity extends AppCompatActivity
         //String attempt2 = ((MyApplication) MainActivity.this.getApplication()).getPhone();
 
         //Log.e("Phone2",attempt2);
-
+        getMeds(); // this creates a meds array and a frequency array from those meds
+        //TODO: in getMedFrequency function branch off to another function that creates the alarms
+        //Don't do it in this onCreate function, do it after the frequency array is finished being formed in the
+        //getMedFrequency function.
         /*
         mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -188,6 +193,58 @@ public class MainActivity extends AppCompatActivity
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    public void getMeds(){
+        String UID = ((MyApplication) this.getApplication()).getUID();
+        mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.e("reading", dataSnapshot.toString());
+
+                        Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
+                        while (it.hasNext()) {
+                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            Log.e("reading2", medicine.toString());
+                            Log.e("reading3", medicine.getKey());
+                            medArray.add(medicine.getKey().toString());
+                        }
+                        Log.e("meds", medArray.toString());
+
+                        getMedFrequency(medArray);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+    public void getMedFrequency(final ArrayList<String> medArray){
+        String UID = ((MyApplication) this.getApplication()).getUID();
+        for(int i=0;i<medArray.size();i++) {
+            final int finalI = i;
+            mDatabase.child("app").child("users").child(UID).child("medicine").child(medArray.get(i)).child("frequency").addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.e("currentMed", medArray.get(finalI));
+                            Log.e("reading", dataSnapshot.getValue().toString());
+                            medFrequency.add(dataSnapshot.getValue().toString());
+                            Log.e("medFrequency", medFrequency.toString());
+                            if (finalI==medArray.size()-1){
+                                Log.e("medFrequencyFinal", medFrequency.toString());
+                                //TODO: Add Alarm function here based on frequency array
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        }
+                    });
+        }
+    }
 
     public void startAlarm(Context context) {
         //first notification at 10 AM next day
