@@ -55,7 +55,7 @@ public class AdherenceFeedbackActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) AdherenceFeedbackActivity.this.getApplication()).getUID();
-        mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(surYear+"-"+surMonth+"-"+surDay).addValueEventListener(
+        mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").child(surYear+"-"+surMonth+"-"+surDay).addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -69,8 +69,6 @@ public class AdherenceFeedbackActivity extends AppCompatActivity {
                                 surveyResponse[i] = Integer.parseInt(responses.get(i).substring(1, (responses.get(i)).length()));
                             }
                         }
-
-                        Log.e("eee", Arrays.toString(surveyResponse));
 
                         for(int ind=0; ind<surveyResponse.length;ind++){
                             if (surveyResponse[ind]==correctChoice[ind]){

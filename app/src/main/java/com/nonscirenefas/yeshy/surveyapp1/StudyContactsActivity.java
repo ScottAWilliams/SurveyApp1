@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
@@ -49,7 +48,6 @@ public class StudyContactsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        final ViewGroup container = (ViewGroup) findViewById(R.id.container);
 
         Button callContactMa = (Button)findViewById(R.id.callContactMaria);
         Button callContactKe = (Button)findViewById(R.id.callContactKendra);

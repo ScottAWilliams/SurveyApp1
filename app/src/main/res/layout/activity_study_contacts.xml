@@ -7,28 +7,35 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:openDrawer="start"
-    tools:context="com.nonscirenefas.yeshy.surveyapp1.StudyContactsActivity">
+    tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_health_lit_paragraph"
+        layout="@layout/app_bar_study_contacts"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <ScrollView
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:paddingTop="60dp">
+
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:gravity="center"
-        android:padding="45dp"
+        android:layout_margin="30dp"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
         >
+        <ScrollView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:paddingTop="60dp">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,7 +89,8 @@
             android:textSize="16dp"
             android:textColor="#000000"/>
     </LinearLayout>
-</ScrollView>
+        </ScrollView>
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
