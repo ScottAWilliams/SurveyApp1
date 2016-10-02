@@ -4,16 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.icu.util.GregorianCalendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +49,9 @@ public class BloodPressureActivity extends AppCompatActivity
     final ArrayList<ArrayList<Integer>> sysMeasurements = new ArrayList<ArrayList<Integer>>();
     final ArrayList<ArrayList<Integer>> diaMeasurements = new ArrayList<ArrayList<Integer>>();
     public int changed= 0;
+    int curYear;
+    int curMonth;
+    int curDay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,12 +237,48 @@ public class BloodPressureActivity extends AppCompatActivity
         calendarBlood.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onDateClick(View view, DateData date) {
-                Intent i = new Intent(ctx, BloodPressureLogActivity.class);
-                i.putExtra("date", String.format("%d-%d-%d", date.getYear(),date.getMonth(), date.getDay()));
-                //Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
-                startActivity(i);
-                //Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                System.out.println(dateFormat.format(cal.getTime()));
+                final String currentDate = dateFormat.format(cal.getTime());
+                String currDate="";
+                if (Integer.parseInt(currentDate.substring(currentDate.indexOf("-")+1,currentDate.indexOf("-")+2))==0){
+                    currDate = currDate.concat(currentDate.substring(0,currentDate.indexOf("-")+1)).concat(currentDate.substring(currentDate.indexOf("-")+2,currentDate.length()));
+                }
+                else{
+                    currDate = currentDate;
+                }
+                curYear = Integer.parseInt(currDate.substring(0, currDate.indexOf("-")));
+                curMonth = Integer.parseInt(currDate.substring(currDate.indexOf("-") + 1, currDate.lastIndexOf("-")));
+                curDay = Integer.parseInt(currDate.substring(currDate.lastIndexOf("-") + 1, currDate.length()));
 
+
+
+                GregorianCalendar oldDate = new GregorianCalendar();
+                oldDate.set(GregorianCalendar.DAY_OF_MONTH, 1);
+                oldDate.set(GregorianCalendar.MONTH, 1);
+                oldDate.set(GregorianCalendar.YEAR, 1990);
+                GregorianCalendar curr = new GregorianCalendar();
+                curr.set(GregorianCalendar.DAY_OF_MONTH, curDay);
+                curr.set(GregorianCalendar.MONTH, curMonth);
+                curr.set(GregorianCalendar.YEAR, curYear);
+                GregorianCalendar old = new GregorianCalendar();
+                old.set(GregorianCalendar.DAY_OF_MONTH, date.getDay());
+                old.set(GregorianCalendar.MONTH, date.getMonth());
+                old.set(GregorianCalendar.YEAR, date.getYear());
+                int daysPassed=(curr.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR))-(old.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR));
+                Log.e("daysPassed",Integer.toString(daysPassed));
+
+                if (daysPassed>=0) {
+                    Intent i = new Intent(ctx, BloodPressureLogActivity.class);
+                    i.putExtra("date", String.format("%d-%d-%d", date.getYear(), date.getMonth(), date.getDay()));
+                    //Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
+                    startActivity(i);
+                    //Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+                else{
+                    Snackbar.make(view,"Please only edit the current or past days.",Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
 
