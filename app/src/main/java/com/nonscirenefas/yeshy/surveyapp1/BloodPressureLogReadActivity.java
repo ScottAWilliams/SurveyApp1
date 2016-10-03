@@ -98,7 +98,7 @@ public class BloodPressureLogReadActivity extends AppCompatActivity {
                                 records.add(HR + medicine.getKey().substring(colonNdx, colonNdx + 3) + "PM " + medicine.getValue().toString());
                                 Log.e("Corrected Time Reading", HR + medicine.getKey().substring(colonNdx, colonNdx + 3));
                             }else{
-                                records.add(medicine.getKey().toString()+ "PM " + medicine.getValue().toString());
+                                records.add(medicine.getKey().toString()+ "AM " + medicine.getValue().toString());
                             }
 
                             //Log.e("reading4", medicine.getValue().toString());
