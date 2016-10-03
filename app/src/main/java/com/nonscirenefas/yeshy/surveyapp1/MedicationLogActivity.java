@@ -15,11 +15,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 
 /**
@@ -27,9 +31,14 @@ import java.util.Arrays;
  */
 public class MedicationLogActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
+    Spinner spinner;
     String medicine;
     String date;
     ArrayList<Medication> medicationList;
+    String [] mArray;
+    String [] passedArray;
+    //String [] records = new String [ ]{ " ", " "," "," ", " "};
+
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
         date = i.getStringExtra("date");
@@ -47,46 +56,120 @@ public class MedicationLogActivity extends AppCompatActivity {
         int height = dm.heightPixels;
 
         //getWindow().setLayout((int)(width*.8),(int)(height*.55));
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
 
-        medicationList = ((MyApplication) this.getApplication()).getMedicationList();
-        String [] medNames = ((MyApplication) this.getApplication()).getMedicationNames();
+        //String c = ((MyApplication) this.getApplication()).getMedicationList().getValue
+        //Log.d("medicine", c);
+
+        //medicationList = ((MyApplication) this.getApplication()).getMedicationList();
+        final String [] medNames = ((MyApplication) this.getApplication()).getMedicationNames();
+
+
+        mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList<String> records = new ArrayList<>();
+                        //records = new String[]{" "," "," "," "};
+                        Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
+                        System.out.println(dataSnapshot);
+                        int g=0;
+                        while (it.hasNext()) {
+                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            String attempts =  medicine.child("name").getValue().toString();
+                            records.add(attempts);
+                            //records[g] = (medicine.child("name").getValue().toString());
+                            g++;
+                        }
+                        mArray = new String[records.size()];
+                        mArray = records.toArray(mArray);
+                        setArray(mArray);
+                        Log.e("mArray1", Arrays.toString(mArray));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+
+
+
+Log.e("mArray2", Arrays.toString(passedArray));
+
+
         //System.out.println(Arrays.toString(medNames));
         String colors[] = {"Red","Blue","White","Yellow","Black", "Green","Purple","Orange","Grey"};
         //String [] medNames = new String[medicationList.size()];
         //int counter = 0;
         //for(int counter = 0; counter < medicationList.size(); counter++) {
-        //    medNames[counter] = medicationList.get(counter).getName();
-        //    Log.e("hey",medicationList.get(counter).getName());
+            //medNames[counter] = medicationList.get(counter).getName();
+            //Log.e("hey",medicationList.get(counter).getName());
         //}
-        System.out.println(Arrays.toString(medNames));
+        //System.out.println(Arrays.toString(medNames));
+        //Log.e("hey","whats up");
 // Selection of the spinner
-        Spinner spinner = (Spinner) findViewById(R.id.medicationSpinner);
-
+        /*
+        final Spinner spinner = (Spinner) findViewById(R.id.medicationSpinner);
 // Application of the Array to the Spinner
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, medNames);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(MedicationLogActivity.this, android.R.layout.simple_spinner_item, colors);
+        //ArrayAdapter<CharSequence> spinnerArrayAdapter= ArrayAdapter.createFromResource(this,R.array.medicationArray,android.R.layout.simple_spinner_item);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spinner.setAdapter(spinnerArrayAdapter);
 
+
+        //spinner.setPrompt(records[0]);
+
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
                 // TODO Auto-generated method stub
-                Object item = arg0.getItemAtPosition(arg2);
-                if (item!=null) {
-                    medicine = item.toString();
-                }
+                //Log.v("item", (String) parent.getItemAtPosition(position));
+                medicine = parent.getItemAtPosition(position).toString();
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
+                //spinner.setPrompt(records[0]);
             }
         });
+        */
 
         //mDatabase = FirebaseDatabase.getInstance().getReference();
         //String UID = ((MyApplication) this.getApplication()).getUID();
         //mDatabase.child("app").child("users").child(UID).child("medicine");
+    }
+
+    public void setArray(String [] x){
+
+        final Spinner spinner = (Spinner) findViewById(R.id.medicationSpinner);
+// Application of the Array to the Spinner
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(MedicationLogActivity.this, android.R.layout.simple_spinner_item, x);
+        //ArrayAdapter<CharSequence> spinnerArrayAdapter= ArrayAdapter.createFromResource(this,R.array.medicationArray,android.R.layout.simple_spinner_item);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+        //spinner.setPrompt(records[0]);
+
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                // TODO Auto-generated method stub
+                //Log.v("item", (String) parent.getItemAtPosition(position));
+                medicine = parent.getItemAtPosition(position).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                //spinner.setPrompt(records[0]);
+            }
+        });
     }
 
     public void submit(View v) {
@@ -95,14 +178,30 @@ public class MedicationLogActivity extends AppCompatActivity {
         TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         String time;
         if (Build.VERSION.SDK_INT >= 23 ) {
-            time = timePicker.getHour() + ":" + timePicker.getMinute();
+            time = timePicker.getHour() + ":";
+            int minute = timePicker.getMinute();
+            if (minute <10){
+                time+="0"+minute;
+            }
+            else{
+                time+=minute;
+            }
+
         } else {
             time = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
         }
-        mDatabase.child("app").child("users").child(UID).child("medicineLog").child(date).child(time).setValue(medicine);
+        if (medicine !=" ") {
+            //medicine = records.get(0);
+            mDatabase.child("app").child("users").child(UID).child("medicineLog").child(date).child(time).setValue(medicine);
 
-        Snackbar.make(v, "Your medication has been logged at "+time, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+            Snackbar.make(v, "Your medication has been logged at " + time, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+        else{
+            Snackbar.make(v,
+                    "Please select a medication.",
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        }
 
     }
 

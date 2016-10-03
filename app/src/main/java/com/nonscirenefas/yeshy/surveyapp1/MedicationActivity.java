@@ -3,7 +3,6 @@ package com.nonscirenefas.yeshy.surveyapp1;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,24 +13,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
 
-import sun.bob.mcalendarview.MCalendarView;
-import sun.bob.mcalendarview.MarkStyle;
-import sun.bob.mcalendarview.listeners.OnDateClickListener;
-import sun.bob.mcalendarview.vo.DateData;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by Yeshy on 7/12/2016.
  */
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    private MedicationActivity medAct;
+    private DatabaseReference mDatabase;
+    Intent intent;
     Context ctx;
     public static final String PREFS_NAME = "MyPrefsFile";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Intent intent = getIntent();
         setContentView(R.layout.activity_medication);
         ctx = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,49 +54,26 @@ public class MedicationActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initializeCalendar();
-        initializeMedInfoButton();
-    }
-
-    public void initializeMedInfoButton(){
-        final Button button = (Button) findViewById(R.id.medinfobutton);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MedicationActivity.this, MedicationInformationActivity.class);
-                startActivity(i);
-            }
-        });
-
+        //finish();
     }
 
     public void initializeCalendar() {
-        MCalendarView calendar = (MCalendarView) findViewById(R.id.calendar);
+        CalendarView calendarMed = (CalendarView) findViewById(R.id.calendarMed);
 
-        // sets whether to show the week number.
-        //calendar.setShowWeekNumber(false);
+        //calendarMed.setBackground(getResources().getDrawable(R.drawable.common_google_signin_btn_icon_dark));
 
-        // sets the first day of week according to Calendar.
-        // here we set Monday as the first day of the Calendar
-        //calendar.setFirstDayOfWeek(1);
-
-        //have this part relay to the database
-        calendar.markDate(
-                new DateData(2016, 7, 2).setMarkStyle(new MarkStyle(MarkStyle.DOT, Color.GREEN)
-                ));
-
-
-        //sets the listener to be notified upon selected date change.
-
-
-
-        calendar.setOnDateClickListener(new OnDateClickListener() {
+        calendarMed.setSelectedDateVerticalBar(getResources().getDrawable(R.drawable.common_google_signin_btn_text_dark_normal));
+        //calendarMed.setDateTextAppearance(R.style.TextTheme);
+        calendarMed.setOnDateChangeListener(new OnDateChangeListener() {
             @Override
-            public void onDateClick(View view, DateData date) {
+            public void onSelectedDayChange(CalendarView view, int year, int month,int day) {
+                finish();
                 Intent i = new Intent(ctx, MedicationLogActivity.class);
-                i.putExtra("date", String.format("%d-%d", date.getMonth(), date.getDay()));
-                Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
+                i.putExtra("date", String.format("%d-%d-%d",year, month+1, day));
+                Log.e("nrp",String.format("%d-%d",year, month+1, day));
                 startActivity(i);
+                finish();
+
                 /*
                 Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -99,6 +82,7 @@ public class MedicationActivity extends AppCompatActivity
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {
@@ -137,15 +121,38 @@ public class MedicationActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+
+        mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String phonenumber = dataSnapshot.getValue().toString();
+                        Log.e("Phone",phonenumber);
+                        ((MyApplication) MedicationActivity.this.getApplication()).setPharmaPhone(phonenumber);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+        String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id  == R.id.nav_home){
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
+            finish();
         }
         else if (id == R.id.nav_bloodpressure) {
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
+            finish();
         }  else if (id == R.id.nav_medication) {
             //Intent i = new Intent(this, MedicationActivity.class);
             //startActivity(i);
@@ -153,12 +160,14 @@ public class MedicationActivity extends AppCompatActivity
         }else if (id == R.id.nav_surveys) {
             Intent i = new Intent(this, SurveySelectionActivity.class);
             startActivity(i);
-
+            finish();
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:6783600636"));
+            i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
+            finish();
         } else if (id == R.id.nav_logout) {
+            finish();
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
             Log.e("logout", UIDstored);
@@ -173,15 +182,12 @@ public class MedicationActivity extends AppCompatActivity
             startActivity(i);
             finish();
         }
-        else if (id == R.id.nav_hipaa) {
-            Intent i = new Intent(this, HIPAAActivity.class);
+        else if (id == R.id.nav_study_contact) {
+            Intent i = new Intent(this, StudyContactsActivity.class);
             startActivity(i);
+            finish();
+        }
 
-        }
-        else if (id == R.id.nav_informedconsent) {
-            Intent i = new Intent(this, InformedConsentActivity.class);
-            startActivity(i);
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

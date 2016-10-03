@@ -48,7 +48,7 @@ public class ReminderService extends IntentService
         //first notification at 10 AM next day
         Calendar cur_cal = new GregorianCalendar();
         cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
-
+/*
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(System.currentTimeMillis());
         cal.set(Calendar.HOUR_OF_DAY, 10); //18:32
@@ -64,8 +64,8 @@ public class ReminderService extends IntentService
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
-        //second notification at 12 PM next day
-        cal.set(Calendar.HOUR_OF_DAY, 12); //18:32
+        //second notification at 2 PM next day
+        cal.set(Calendar.HOUR_OF_DAY, 14); //18:32
         cal.set(Calendar.MINUTE, 0);
         alarmIntent = new Intent(this, MyAlarmReceiver.class);
         alarmIntent.putExtra("type", 2);
@@ -74,8 +74,8 @@ public class ReminderService extends IntentService
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
-        //third notification at 2 PM next day
-        cal.set(Calendar.HOUR_OF_DAY, 14); //18:32
+        //third notification at 8 PM next day
+        cal.set(Calendar.HOUR_OF_DAY, 20); //18:32
         cal.set(Calendar.MINUTE, 0);
         alarmIntent = new Intent(this, MyAlarmReceiver.class);
         alarmIntent.putExtra("type", 3);
@@ -83,11 +83,12 @@ public class ReminderService extends IntentService
         pendingIntent = PendingIntent.getBroadcast(this, _id2, alarmIntent, 0);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-        //first notification at 10 PM current day
+*/
+        /*
+        //third notification at 10 PM current day
         cal.set(Calendar.HOUR_OF_DAY, 10); //18:32
         cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) -1);
         alarmIntent = new Intent(this, MyAlarmReceiver.class);
         alarmIntent.putExtra("type", 1);
         final int _id3 = (int) cal.getTimeInMillis();
@@ -114,49 +115,7 @@ public class ReminderService extends IntentService
         pendingIntent = PendingIntent.getBroadcast(this, _id5, alarmIntent, 0);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-        //fourth notification at 4 PM current day
-        cal.set(Calendar.HOUR_OF_DAY, 16); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        //cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 4);
-        final int _id6 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id6, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-        //fifth notification at 6 PM current day
-        cal.set(Calendar.HOUR_OF_DAY, 18); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 5);
-        final int _id7 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id7, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-        //sixth notification at 8 PM current day
-        cal.set(Calendar.HOUR_OF_DAY, 20); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 6);
-        final int _id8 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id8, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-
-        //Monthly notification
-        cal.set(Calendar.MONTH,1);
-        cal.set(Calendar.HOUR_OF_DAY,8);
-        cal.set(Calendar.MINUTE, 27);
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 7);
-        final int _id9 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id9, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+*/
 
         int typeOfNotification =  intent.getIntExtra("type", 0);
 

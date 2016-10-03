@@ -6,28 +6,39 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by Yeshy on 3/8/2016.
  */
 public class LoginActivity extends Activity {
 
-    public boolean check = false;
     public static final String PREFS_NAME = "MyPrefsFile";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+    CheckBox check;
+    AutoCompleteTextView mEdit;
     Context ctx;
-
+    View v;
+    String USER_FILENAME = "user_file";
+    String PHONE_FILENAME = "phone_file";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +46,14 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
         ctx = this;
 
+        mEdit = (AutoCompleteTextView)findViewById(R.id.username);
+        check = (CheckBox)findViewById(R.id.checkbox);
+
+
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String UIDstored = settings.getString("UID", "Default");
         Log.d("UID", UIDstored);
+
 
 /*
         if(!UIDstored.equals("Default")) {
@@ -76,6 +92,29 @@ public class LoginActivity extends Activity {
         };
 
 
+        try {
+            FileInputStream fin = openFileInput(USER_FILENAME);
+            int c;
+            String temp="";
+            while( (c = fin.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            Log.e("Login Attempt", temp);
+            if (temp.length()>1){
+                mEdit.setText(temp);
+                check.setChecked(true);
+                //login(temp+ "@mercer.edu","password",v);
+            }
+            else{
+                check.setChecked(false);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         //fucntion that uses silent setSilent(silent);
     }
@@ -96,7 +135,23 @@ public class LoginActivity extends Activity {
 
 
     public void startMain(View v) {
-        AutoCompleteTextView mEdit = (AutoCompleteTextView)findViewById(R.id.username);
+        mEdit = (AutoCompleteTextView)findViewById(R.id.username);
+        check = (CheckBox)findViewById(R.id.checkbox);
+        if (check.isChecked()){
+            try {
+                FileOutputStream fos = openFileOutput(USER_FILENAME, Context.MODE_WORLD_READABLE);
+                fos.write(mEdit.getText().toString().getBytes());
+                fos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            deleteFile(USER_FILENAME);
+        }
+
 
         String email = mEdit.getText().toString() + "@mercer.edu";
         String password = "password";
@@ -120,8 +175,9 @@ public class LoginActivity extends Activity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w("authorization", "signInWithEmail:failed", task.getException());
-                            Snackbar.make(view, "Login Does Not Exist", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            Toast.makeText(ctx,"Login Does Not Exist", Toast.LENGTH_LONG).show();
+                            deleteFile(USER_FILENAME);
+
                         }
 
                         // ...
@@ -130,6 +186,7 @@ public class LoginActivity extends Activity {
 
 
     }
+
 
 }
 

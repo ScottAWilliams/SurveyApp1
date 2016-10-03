@@ -25,8 +25,16 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+
 
 /**
  * Created by lindsayherron on 9/14/16.
@@ -35,6 +43,16 @@ public class HealthSurvey extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Button btnTag;
     int qnum;
+    String questionParse;
+
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();;
+
+    final ArrayList<Integer> arrOpenParen = new ArrayList<>();
+    final ArrayList<Integer> arrCloseParen = new ArrayList<>();
+    final ArrayList<String> questionFilled = new ArrayList<>();
+    final ArrayList<String> answersFilled = new ArrayList<>();
+
+
     public static final String PREFS_NAME = "MyPrefsFile";
     Context ctx;
     final ArrayList<String> questions = new ArrayList<>();
@@ -143,7 +161,7 @@ public class HealthSurvey extends AppCompatActivity
                     ////TODO: Parse string here to change question into choices that have been made
 
 
-                    questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
+                    questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
                     opt1.setText(questionchoices.get(qnum)[0]);
@@ -214,6 +232,7 @@ public class HealthSurvey extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -242,6 +261,7 @@ public class HealthSurvey extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -270,6 +290,7 @@ public class HealthSurvey extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
                     opt4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -298,6 +319,7 @@ public class HealthSurvey extends AppCompatActivity
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
+                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -333,17 +355,106 @@ public class HealthSurvey extends AppCompatActivity
                     }
                 }
                 if (selected>35) {
+                    String UID = ((MyApplication) HealthSurvey.this.getApplication()).getUID();
+
                     Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                    Calendar now = Calendar.getInstance();
+                    String year = Integer.toString(now.get(Calendar.YEAR));
+                    String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
+                    String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+
+                    mDatabase.child("app").child("users").child(UID).child("literacysurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
+
+                    ((MyApplication) HealthSurvey.this.getApplication()).setLiteracySurveyAnswersRW(answers);
                     Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
+                    i.putExtra("month", month); //number corresponds to survey
+                    i.putExtra("day", day); //number corresponds to survey
+                    i.putExtra("year", year); //number corresponds to survey
                     startActivity(i);
+                    finish();
                 }
                 else{
                     Snackbar.make(v, "Please complete all 36 questions. "+nonselected+" questions remain. Please scroll through the buttons above.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             }
+
+
         });
+    }
+
+
+
+    public String parseQuestion(int z) {
+
+        arrOpenParen.clear();
+        arrCloseParen.clear();
+        questionFilled.clear();
+        answersFilled.clear();
+
+        int difference=0;
+        int posOfQuestion = 0;
+        String questionParse = questionArray[z];
+        String newQuestion="";
+        int closeParen = 0;
+        int openParen = 0;
+        closeParen = questionParse.indexOf(")");
+        openParen = questionParse.indexOf("(");
+
+        while (openParen!=-1){
+            arrOpenParen.add(openParen);
+            arrCloseParen.add(closeParen);
+            closeParen = questionParse.indexOf(")",closeParen+1);
+            openParen = questionParse.indexOf("(",openParen+1);
+        }
+        int total = arrOpenParen.size();
+        for (int i=0;i<arrCloseParen.size();i++){
+            if (arrOpenParen.get(i)==(arrCloseParen.get(i)-2)){
+                posOfQuestion = i;
+            }
+        }
+
+        for(int i=0;i<total;i++){
+            if (i==0) {
+                questionFilled.add(questionParse.substring(0, arrOpenParen.get(i)));
+            }
+            else{
+                questionFilled.add(questionParse.substring(arrCloseParen.get(i-1)+1, arrOpenParen.get(i)));
+            }
+        }
+        questionFilled.add(questionParse.substring(arrCloseParen.get(total-1)+1,questionParse.length()));
+        for (int i=0;i<total;i++){
+            difference = posOfQuestion-i;
+            if (difference==0){
+                if (answers[z] != -1){
+                    answersFilled.add(i,questionchoices.get(z)[answers[z]-1] );
+                }
+                else{
+                    answersFilled.add(i,"(?)");
+                }
+            }
+            else{
+                if (answers[z-difference] != -1){
+                    answersFilled.add(i,questionchoices.get(z-difference)[answers[z-difference]-1] );
+                }
+                else{
+                    answersFilled.add(i,"()");
+                }
+            }
+        }
+        for (int i=0;i<answersFilled.size();i++) {
+            if (answersFilled.get(i).indexOf("(") == -1){
+                newQuestion = newQuestion.concat(questionFilled.get(i)).concat("(").concat(answersFilled.get(i)).concat(")");
+            }
+            else {
+                newQuestion = newQuestion.concat(questionFilled.get(i)).concat(answersFilled.get(i));
+            }
+        }
+
+        newQuestion = newQuestion.concat(questionFilled.get(answersFilled.size()));
+        return newQuestion;
     }
 
 
@@ -354,27 +465,51 @@ public class HealthSurvey extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = ((MyApplication) this.getApplication()).getUID();
+
+        mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String phonenumber = dataSnapshot.getValue().toString();
+                        Log.e("Phone",phonenumber);
+                        ((MyApplication) HealthSurvey.this.getApplication()).setPharmaPhone(phonenumber);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+        String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id  == R.id.nav_home){
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
+            finish();
         }
         else if (id == R.id.nav_bloodpressure) {
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
+            finish();
         }else if (id == R.id.nav_medication) {
             Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
-
+            finish();
         }else if (id == R.id.nav_surveys) {
             Intent i = new Intent(this, SurveySelectionActivity.class);
             startActivity(i);
-
+            finish();
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:6783600636"));
+            i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
+            finish();
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
@@ -390,14 +525,10 @@ public class HealthSurvey extends AppCompatActivity
             startActivity(i);
             finish();
         }
-        else if (id == R.id.nav_hipaa) {
-            Intent i = new Intent(this, HIPAAActivity.class);
+        else if (id == R.id.nav_study_contact) {
+            Intent i = new Intent(this, StudyContactsActivity.class);
             startActivity(i);
-
-        }
-        else if (id == R.id.nav_informedconsent) {
-            Intent i = new Intent(this, InformedConsentActivity.class);
-            startActivity(i);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

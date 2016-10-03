@@ -2,12 +2,15 @@ package com.nonscirenefas.yeshy.surveyapp1;
 
 import android.app.Application;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 
 /**
  * Created by Yeshy on 3/11/2016.
  */
 public class MyApplication extends Application{
+    private DatabaseReference mDatabase;
     private String uid;
     private String name;
     private String birthDate;
@@ -17,6 +20,7 @@ public class MyApplication extends Application{
     private String clinicName;
     private String pharmaName;
     private String pharmaNumber;
+
 
 
     private int[] demographicsSurveyAnswers = {0,0,0,0,0,0,0};
@@ -60,6 +64,8 @@ public class MyApplication extends Application{
     }
 
     public String getPhone() {
+
+
         return phonenumber;
     }
 

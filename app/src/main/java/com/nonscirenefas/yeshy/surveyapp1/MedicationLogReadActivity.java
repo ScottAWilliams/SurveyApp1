@@ -5,13 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +29,7 @@ public class MedicationLogReadActivity extends AppCompatActivity {
     String date;
     String UID;
     ArrayList<Medication> medicationList;
+    ArrayAdapter<String> adapter;
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
         date = i.getStringExtra("date");
@@ -42,6 +39,8 @@ public class MedicationLogReadActivity extends AppCompatActivity {
         actionBar.hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication_log_read);
+
+
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -78,20 +77,27 @@ public class MedicationLogReadActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         ArrayList<String> records = new ArrayList<>();
-                        Log.e("hey","hey");
+                        records.add("Date: "+date);
+                        //Log.e("hey","hey");
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
                         System.out.println(dataSnapshot);
+                        if (it.hasNext()){
+                            records.add(" ");
+                        }
                         while (it.hasNext()) {
                             DataSnapshot medicine = (DataSnapshot) it.next();
-                            Log.e("reading2", medicine.toString());
-                            Log.e("reading3", medicine.getKey());
-                            Log.e("reading4", medicine.getValue().toString());
+                            //Log.e("reading2", medicine.toString());
+                            //Log.e("reading3", medicine.getKey());
+                            //Log.e("reading4", medicine.getValue().toString());
                             records.add(medicine.getKey() + " " + medicine.getValue().toString());
                         }
                         String [] mArray = new String[records.size()];
                         mArray = records.toArray(mArray);
                         final ListView lv = (ListView) findViewById(R.id.medicationListView);
-                        lv.setAdapter(new MedicationAdapter(MedicationLogReadActivity.this, mArray));
+                        adapter = new ArrayAdapter<String>(MedicationLogReadActivity.this,R.layout.log_read,mArray);
+                        //setListAdapter(adapter);
+                       // lv.setAdapter(new MedicationAdapter(MedicationLogReadActivity.this, mArray));
+                        lv.setAdapter(adapter);
                     }
 
                     @Override

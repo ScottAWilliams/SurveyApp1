@@ -42,6 +42,8 @@ public class QuestionLogActivity extends AppCompatActivity {
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.answersRadioGroup);
 
+
+
         int counter = 0;
         for(String e: answers) {
             final RadioButton rowRadioButton = new RadioButton(this);

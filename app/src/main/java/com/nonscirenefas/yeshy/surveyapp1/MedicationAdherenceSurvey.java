@@ -1,5 +1,6 @@
 package com.nonscirenefas.yeshy.surveyapp1;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -18,7 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -30,41 +33,46 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+
 
 /**
- * Created by lindsayherron on 9/14/16.
+ * Created by Javier 9/18/16.
  */
-public class healthLiteracyExampleActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    private DatabaseReference mDatabase;
+public class MedicationAdherenceSurvey extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String PREFS_NAME = "MyPrefsFile";
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();;
     Button btnTag;
     int qnum;
-    public static final String PREFS_NAME = "MyPrefsFile";
+    Context ctx;
     final ArrayList<String> questions = new ArrayList<>();
-
-    final ArrayList<Integer> arrOpenParen = new ArrayList<>();
-    final ArrayList<Integer> arrCloseParen = new ArrayList<>();
-    final ArrayList<String> questionFilled = new ArrayList<>();
-    final ArrayList<String> answersFilled = new ArrayList<>();
-
     String[] questionArray = new String[questions.size()];
+    String buttonID;
     Toolbar toolbar;
+    TextView amountOfQuestions;
+    ProgressBar progressBar;
+    final static int GET_RESULT_TEXT = 0;
     ArrayList<String[]> questionchoices = new ArrayList<>();
     ArrayList<String[]> key = new ArrayList<>();
     int [] naArray;
     int [] answers;
     int [] rightorwrong;
+    float textsize = 20;
     int selected =0;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_health_literacy_example);
-        //setTheme(R.style.myDialog);
-        //showLocationDialog();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public int questCount = 0;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_medication_adherence_survey);
+        //Button testButton = (Button) findViewById(R.id.TESTBUTTON);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -74,11 +82,12 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        toolbar.setSubtitle("Health Literacy Survey Example");
+        toolbar.setSubtitle("Medication Adherence Survey");
         LinearLayout layout_main = (LinearLayout) findViewById(R.id.main_ll);
         //get questions from xml file
-        String[] mArray = getResources().getStringArray(R.array.LiteracySurveyExample);
+        String[] mArray = getResources().getStringArray(R.array.AdherenceSurvey);
         final ArrayList<String> questions = new ArrayList<>();
+
 
         for (String full : mArray) {
             String[] split = full.split("_");
@@ -91,14 +100,14 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
         questionArray = questions.toArray(questionArray);
 
         //get key from xml file
-        final String[] keyArray = getResources().getStringArray(R.array.LitExampleSurveyAnswers);
+        final String[] keyArray = getResources().getStringArray(R.array.AdherenceSurveyAnswers);
         for (String full : keyArray) {
             String[] split = full.split("_");
             key.add(Arrays.copyOfRange(split, 0, split.length));
         }
 
         //get notApplicable list from xml file
-        String[] naArray1 = getResources().getStringArray(R.array.LitExampleSurveyAnswersNA);
+        String[] naArray1 = getResources().getStringArray(R.array.AdherenceSurveyAnswersNA);
         naArray = new int[naArray1.length];
         int counter = 0;
         for (String full : naArray1) {
@@ -112,84 +121,105 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
         rightorwrong = new int[mArray.length];
         Arrays.fill(rightorwrong, 1); //default for wrong
 
+        final HorizontalScrollView horScrollView = (HorizontalScrollView) findViewById(R.id.horizontal_scrollview);
         final TextView questionsView = (TextView) layout_main.findViewById(R.id.questionView);
+        //questionsView.setText("Click an above button to start the survey.");
+        final Button button = (Button) findViewById(R.id.submitButton);
         final Button buttonNext = (Button) findViewById(R.id.nextButton);
         final Button buttonPrev = (Button) findViewById(R.id.prevButton);
-        final Button button = (Button) findViewById(R.id.submitButton);
-
         LinearLayout layout = (LinearLayout) findViewById(R.id.lv);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 8; i++) {
             final Button btnTag = new Button(this);
             btnTag.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             btnTag.setText("Question " + (i + 1));
             btnTag.setId(Integer.parseInt(Integer.toString(i)));
             layout.addView(btnTag);
-
             btnTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     qnum = btnTag.getId();
-
-                    if (qnum<1){
+                    questCount = btnTag.getId();
+                    horScrollView.scrollTo(qnum*388,0);
+                    if (qnum<7){
                         if (qnum==0){
                             buttonPrev.setVisibility(view.INVISIBLE);
                         }
                         buttonNext.setVisibility(view.VISIBLE);
                     }
                     if (qnum>0){
-                        if (qnum==1){
+                        if (qnum==7){
                             buttonNext.setVisibility(view.INVISIBLE);
                         }
                         buttonPrev.setVisibility(view.VISIBLE);
                     }
-
-
-                    //questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
-                    questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
+                    questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
 
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
-                    opt1.setVisibility(view.VISIBLE);
-                    opt1.setText(questionchoices.get(qnum)[0]);
                     final RadioButton opt2 = (RadioButton) findViewById(R.id.opt2);
-                    opt2.setVisibility(view.VISIBLE);
-                    opt2.setText(questionchoices.get(qnum)[1]);
                     final RadioButton opt3 = (RadioButton) findViewById(R.id.opt3);
-                    opt3.setVisibility(view.VISIBLE);
-                    opt3.setText(questionchoices.get(qnum)[2]);
                     final RadioButton opt4 = (RadioButton) findViewById(R.id.opt4);
-                    opt4.setVisibility(view.VISIBLE);
-                    opt4.setText(questionchoices.get(qnum)[3]);
+                    final RadioButton opt5 = (RadioButton) findViewById(R.id.opt5);
+
+                    opt1.setText(questionchoices.get(qnum)[0]);
+                    opt1.setVisibility(view.VISIBLE);
+                    opt2.setText(questionchoices.get(qnum)[1]);
+                    opt2.setVisibility(view.VISIBLE);
+                    //Set other buttons invisible
+                    opt3.setVisibility(view.INVISIBLE);
+                    opt4.setVisibility(view.INVISIBLE);
+                    opt5.setVisibility(view.INVISIBLE);
+
+                    if (qnum == 7){
+                        opt3.setText(questionchoices.get(qnum)[2]);
+                        opt3.setVisibility(view.VISIBLE);
+                        opt4.setText(questionchoices.get(qnum)[3]);
+                        opt4.setVisibility(view.VISIBLE);
+                        opt5.setText(questionchoices.get(qnum)[4]);
+                        opt5.setVisibility(view.VISIBLE);
+                    }
+
                     if (answers[qnum] == 1) {
                         opt1.setChecked(true);
                         opt2.setChecked(false);
                         opt3.setChecked(false);
                         opt4.setChecked(false);
+                        opt5.setChecked(false);
                     }
                     else if (answers[qnum] == 2){
                         opt1.setChecked(false);
                         opt2.setChecked(true);
                         opt3.setChecked(false);
                         opt4.setChecked(false);
+                        opt5.setChecked(false);
                     }
                     else if (answers[qnum] == 3){
                         opt1.setChecked(false);
                         opt2.setChecked(false);
                         opt3.setChecked(true);
                         opt4.setChecked(false);
+                        opt5.setChecked(false);
                     }
                     else if (answers[qnum] == 4) {
                         opt1.setChecked(false);
                         opt2.setChecked(false);
                         opt3.setChecked(false);
                         opt4.setChecked(true);
-                    }
-                    else{
+                        opt5.setChecked(false);
+
+                    }else if(answers[qnum] == 5){
                         opt1.setChecked(false);
                         opt2.setChecked(false);
                         opt3.setChecked(false);
                         opt4.setChecked(false);
+                        opt5.setChecked(true);
+                    }else{
+                        opt1.setChecked(false);
+                        opt2.setChecked(false);
+                        opt3.setChecked(false);
+                        opt4.setChecked(false);
+                        opt5.setChecked(false);
                     }
 
 
@@ -200,6 +230,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                 opt2.setChecked(false);
                                 opt3.setChecked(false);
                                 opt4.setChecked(false);
+                                opt5.setChecked(false);
                                 if (btnTag.getId()==qnum){
                                     //btnTag.setBackgroundResource(R.drawable.button_bg);
                                     btnTag.setBackgroundColor(Color.TRANSPARENT);
@@ -214,11 +245,10 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                 if (x != -1) {
                                     selected++;
                                 }
-                                if (selected>1) {
+                                if (selected>7) {
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
-                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -230,6 +260,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                 opt1.setChecked(false);
                                 opt3.setChecked(false);
                                 opt4.setChecked(false);
+                                opt5.setChecked(false);
                                 if (btnTag.getId()==qnum){
                                     //btnTag.setBackgroundResource(R.drawable.button_bg);
                                     btnTag.setBackgroundColor(Color.TRANSPARENT);
@@ -243,11 +274,10 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                 if (x != -1) {
                                     selected++;
                                 }
-                                if (selected>1) {
+                                if (selected>7) {
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
-                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
 
@@ -259,6 +289,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                 opt1.setChecked(false);
                                 opt2.setChecked(false);
                                 opt4.setChecked(false);
+                                opt5.setChecked(false);
                                 if (btnTag.getId()==qnum){
                                     //btnTag.setBackgroundResource(R.drawable.horizontal_buttons_scroll);
                                     btnTag.setBackgroundColor(Color.TRANSPARENT);
@@ -272,11 +303,10 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                 if (x != -1) {
                                     selected++;
                                 }
-                                if (selected>1) {
+                                if (selected>7) {
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
-                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
                     opt4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -288,6 +318,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                 opt1.setChecked(false);
                                 opt2.setChecked(false);
                                 opt3.setChecked(false);
+                                opt5.setChecked(false);
                                 if (btnTag.getId()==qnum){
                                     //btnTag.setBackgroundResource(R.drawable.button_bg);
                                     btnTag.setBackgroundColor(Color.TRANSPARENT);
@@ -301,13 +332,42 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                                 if (x != -1) {
                                     selected++;
                                 }
-                                if (selected>1) {
+                                if (selected>7) {
                                     button.setVisibility(View.VISIBLE);
                                 }
                             }
-                            questionsView.setText(Integer.toString(qnum+1)+".  "+parseQuestion(qnum));
                         }
                     });
+                    opt5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            // TODO Auto-generated method stub
+                            if (isChecked) {
+
+                                answers[qnum] = 5;
+                                opt1.setChecked(false);
+                                opt2.setChecked(false);
+                                opt3.setChecked(false);
+                                opt4.setChecked(false);
+                                if (btnTag.getId()==qnum){
+                                    //btnTag.setBackgroundResource(R.drawable.button_bg);
+                                    btnTag.setBackgroundColor(Color.TRANSPARENT);
+                                    answers[qnum] = 5;
+                                }
+                                //TextView t;
+                                //t.setText("The option, Option 3, has been checked below.");
+                            }
+                            int selected = 0;
+                            for (int x : answers) {
+                                if (x != -1) {
+                                    selected++;
+                                }
+                                if (selected>7) {
+                                    button.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    });
+
 
                 }
             });
@@ -316,17 +376,26 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                questCount++;
                 btnTag = (Button) findViewById(qnum+1);
-                btnTag.performClick();
+                if (questCount < 8){
+                    btnTag.performClick();
+                }
+
             }
         });
 
         buttonPrev.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                questCount--;
                 btnTag = (Button) findViewById(qnum-1);
-                btnTag.performClick();
+                if (questCount >= 0) {
+                    btnTag.performClick();
+                }
             }
         });
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -340,100 +409,39 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                         nonselected++;
                     }
                 }
-                if (selected>1) {
-                    Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
+                if (selected>7) {
+                    Snackbar.make(v, "Medication Adherence Survey Successfully Completed", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    Intent i = new Intent(healthLiteracyExampleActivity.this, HealthSurvey.class);
+
+                    Calendar now = Calendar.getInstance();
+                    String year = Integer.toString(now.get(Calendar.YEAR));
+                    String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
+                    String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+                    String UID = ((MyApplication) MedicationAdherenceSurvey.this.getApplication()).getUID();
+
+
+                    mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").child(year+"-"+month+"-"+day).setValue(Arrays.toString(answers));
+
+
+                    Intent i = new Intent(MedicationAdherenceSurvey.this, AdherenceFeedbackActivity.class);
+                    i.putExtra("month", month); //number corresponds to survey
+                    i.putExtra("day", day); //number corresponds to survey
+                    i.putExtra("year", year); //number corresponds to survey
                     startActivity(i);
                     finish();
                 }
                 else{
-                    Snackbar.make(v, "Please complete all 36 questions. "+nonselected+" questions remain. Please scroll through the buttons above.", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "Please complete all 8 questions. "+nonselected+" questions remain. Please scroll through the buttons above.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             }
         });
 
 
+
     }
-
-    public String parseQuestion(int z) {
-        arrOpenParen.clear();
-        arrCloseParen.clear();
-        questionFilled.clear();
-        answersFilled.clear();
-
-        int difference=0;
-        int posOfQuestion = 0;
-        String questionParse = questionArray[z];
-        String newQuestion="";
-        int closeParen = 0;
-        int openParen = 0;
-        closeParen = questionParse.indexOf(")");
-        openParen = questionParse.indexOf("(");
-
-        while (openParen!=-1){
-            arrOpenParen.add(openParen);
-            arrCloseParen.add(closeParen);
-            closeParen = questionParse.indexOf(")",closeParen+1);
-            openParen = questionParse.indexOf("(",openParen+1);
-        }
-        int total = arrOpenParen.size();
-        for (int i=0;i<arrCloseParen.size();i++){
-            if (arrOpenParen.get(i)==(arrCloseParen.get(i)-2)){
-                posOfQuestion = i;
-            }
-        }
-
-
-        for(int i=0;i<total;i++){
-                if (i==0) {
-                    questionFilled.add(questionParse.substring(0, arrOpenParen.get(i)));
-                }
-                else{
-                   questionFilled.add(questionParse.substring(arrCloseParen.get(i-1)+1, arrOpenParen.get(i)));
-                }
-        }
-        questionFilled.add(questionParse.substring(arrCloseParen.get(total-1)+1,questionParse.length()));
-        for (int i=0;i<total;i++){
-            difference = posOfQuestion-i;
-            if (difference==0){
-                if (answers[z] != -1){
-                    answersFilled.add(i,questionchoices.get(z)[answers[z]-1] );
-                }
-                else{
-                    answersFilled.add(i,"(?)");
-                }
-            }
-            else{
-                if (answers[z-difference] != -1){
-                    answersFilled.add(i,questionchoices.get(z-difference)[answers[z-difference]-1] );
-                }
-                else{
-                    answersFilled.add(i,"()");
-                }
-            }
-        }
-
-        for (int i=0;i<answersFilled.size();i++) {
-            if (answersFilled.get(i).indexOf("(") == -1){
-                newQuestion = newQuestion.concat(questionFilled.get(i)).concat("(").concat(answersFilled.get(i)).concat(")");
-            }
-            else {
-                newQuestion = newQuestion.concat(questionFilled.get(i)).concat(answersFilled.get(i));
-            }
-        }
-        newQuestion = newQuestion.concat(questionFilled.get(answersFilled.size()));
-
-        return newQuestion;
-    }
-
-
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
 
@@ -444,7 +452,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
                         Log.e("Phone",phonenumber);
-                        ((MyApplication) healthLiteracyExampleActivity.this.getApplication()).setPharmaPhone(phonenumber);
+                        ((MyApplication) MedicationAdherenceSurvey.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
                     @Override
@@ -475,7 +483,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:6783600636"));
+            i.setData(Uri.parse("tel:"+tel));
             startActivity(i);
             finish();
         } else if (id == R.id.nav_logout) {
@@ -499,6 +507,7 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
             finish();
         }
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -512,7 +521,4 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
 }
-
-
