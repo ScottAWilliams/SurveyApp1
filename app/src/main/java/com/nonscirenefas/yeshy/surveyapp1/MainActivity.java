@@ -235,6 +235,7 @@ public class MainActivity extends AppCompatActivity
                             if (finalI==medArray.size()-1){
                                 Log.e("medFrequencyFinal", medFrequency.toString());
                                 //TODO: Add Alarm function here based on frequency array
+                                //setAlarm(medArray,medFrequency) to add the name of the medicine as well
                             }
                         }
 
