@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -86,8 +87,23 @@ public class BloodPressureLogReadActivity extends AppCompatActivity {
                             DataSnapshot medicine = (DataSnapshot) it.next();
                             //Log.e("reading2", medicine.toString());
                             //Log.e("reading3", medicine.getKey());
+                            int colonNdx = medicine.getKey().toString().indexOf(":");
+                            String subKey = medicine.getKey().toString().substring(0,colonNdx);
+                            int HR =Integer.parseInt(subKey);
+
+                            if(HR >= 12){
+                                if(HR > 12){
+                                    HR = HR - 12;
+                                }
+                                records.add(HR + medicine.getKey().substring(colonNdx, colonNdx + 3) + "PM " + medicine.getValue().toString());
+                                Log.e("Corrected Time Reading", HR + medicine.getKey().substring(colonNdx, colonNdx + 3));
+                            }else{
+                                records.add(medicine.getKey().toString()+ "PM " + medicine.getValue().toString());
+                            }
+
                             //Log.e("reading4", medicine.getValue().toString());
-                            records.add(medicine.getKey() + " " + medicine.getValue().toString());
+
+
                         }
                         String [] mArray = new String[records.size()];
                         mArray = records.toArray(mArray);
