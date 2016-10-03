@@ -122,7 +122,7 @@ public class MedicationActivity extends AppCompatActivity
                 Log.e("daysPassed",Integer.toString(daysPassed));
 
                 if (daysPassed>=0) {
-                    Intent i = new Intent(ctx, BloodPressureLogActivity.class);
+                    Intent i = new Intent(ctx, MedicationLogActivity.class);
                     i.putExtra("date", String.format("%d-%d-%d", date.getYear(), date.getMonth(), date.getDay()));
                     //Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
                     startActivity(i);
