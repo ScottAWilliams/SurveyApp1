@@ -287,6 +287,12 @@ public class MainActivity extends AppCompatActivity
         pendingIntent = PendingIntent.getBroadcast(this, _id2, alarmIntent, 0);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
+
+        Intent intent = new Intent(this,ReminderService.class);
+        int type = intent.getIntExtra("type", 0);
+        intent.putExtra("type", type);
+        startService(intent);
 /*
         //third notification at 10 PM current day
         cal.set(Calendar.HOUR_OF_DAY, 10); //18:32
