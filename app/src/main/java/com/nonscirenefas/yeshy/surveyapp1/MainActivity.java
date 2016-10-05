@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void startAlarm(Context context) {
-        //first notification at 10 AM next day
+        //first notification at 10 AM next day, this should always fire if they have prescribed medication
 
         Calendar cur_cal = new GregorianCalendar();
         cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
@@ -268,8 +268,8 @@ public class MainActivity extends AppCompatActivity
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
-        //second notification at 12 PM next day
-        cal.set(Calendar.HOUR_OF_DAY, 12); //18:32
+        //second notification at 8 PM next day, this should fire if one of their prescriptions is 2x daily
+        cal.set(Calendar.HOUR_OF_DAY, 20); //18:32
         cal.set(Calendar.MINUTE, 0);
         alarmIntent = new Intent(this, MyAlarmReceiver.class);
         alarmIntent.putExtra("type", 2);
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
-        //third notification at 2 PM next day
+        //third notification at 2 PM next day, this should fire if one of their prescriptions is 3x daily
         cal.set(Calendar.HOUR_OF_DAY, 14); //18:32
         cal.set(Calendar.MINUTE, 0);
         alarmIntent = new Intent(this, MyAlarmReceiver.class);
