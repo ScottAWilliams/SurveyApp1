@@ -427,9 +427,9 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
 
 
                     Calendar now = Calendar.getInstance();
-                    String year = Integer.toString(now.get(Calendar.YEAR));
-                    String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
-                    String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+                    int year = now.get(Calendar.YEAR);
+                    int month = now.get(Calendar.MONTH) + 1; // Note: zero based!
+                    int day = now.get(Calendar.DAY_OF_MONTH);
 
                     mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
                     Intent i = new Intent(LifestyleSurvey.this, LifestyleFeedbackActivity.class);

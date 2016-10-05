@@ -414,9 +414,9 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                             .setAction("Action", null).show();
 
                     Calendar now = Calendar.getInstance();
-                    String year = Integer.toString(now.get(Calendar.YEAR));
-                    String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
-                    String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+                    int year = now.get(Calendar.YEAR);
+                    int month = now.get(Calendar.MONTH) + 1; // Note: zero based!
+                    int day = now.get(Calendar.DAY_OF_MONTH);
                     String UID = ((MyApplication) MedicationAdherenceSurvey.this.getApplication()).getUID();
 
 

@@ -80,6 +80,9 @@ public class LoginActivity extends Activity {
 
                     ((MyApplication) LoginActivity.this.getApplication()).setUID(user.getUid());
 
+                    //Intent intent = new Intent(LoginActivity.this, ReminderService.class);
+                    //startActivity(intent);
+
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
                     finish(); //dunno if this'll fuck stuff up. shouldn't be a problem if the phone isn't shit

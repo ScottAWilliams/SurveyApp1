@@ -1,5 +1,6 @@
 package com.nonscirenefas.yeshy.surveyapp1;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -7,15 +8,30 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.concurrent.Executor;
 
 public class ReminderService extends IntentService
 {
@@ -27,13 +43,14 @@ public class ReminderService extends IntentService
 
     public static final String PREFS_UID = "MyPrefsFile";
     ArrayList<String[]> medicationList = new ArrayList<>();
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mDatabase;
     Context ctx;
+    String USER_FILENAME = "user_file";
 
     public ReminderService() {
         super("ReminderService");
+        //mDatabase = FirebaseDatabase.getInstance().getReference();
+        //Intent i = new Intent();
+        //onHandleIntent(i);
     }
 
     /**
@@ -42,8 +59,10 @@ public class ReminderService extends IntentService
      * stops the service, as appropriate.
      */
 
-    @Override
+
+    //@Override
     protected void onHandleIntent(Intent intent) {
+
 
         //first notification at 10 AM next day
         Calendar cur_cal = new GregorianCalendar();

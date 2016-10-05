@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         //String attempt2 = ((MyApplication) MainActivity.this.getApplication()).getPhone();
 
         //Log.e("Phone2",attempt2);
-        getMeds(); // this creates a meds array and a frequency array from those meds
+        //getMeds(); // this creates a meds array and a frequency array from those meds
         //TODO: in getMedFrequency function branch off to another function that creates the alarms
         //Don't do it in this onCreate function, do it after the frequency array is finished being formed in the
         //getMedFrequency function.
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    public void getMeds(){
+    public void getMeds() {
         String UID = ((MyApplication) this.getApplication()).getUID();
         mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
                 new ValueEventListener() {
