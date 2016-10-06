@@ -1,6 +1,5 @@
 package com.nonscirenefas.yeshy.surveyapp1;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -8,30 +7,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.concurrent.Executor;
 
 public class ReminderService extends IntentService
 {
@@ -39,18 +24,26 @@ public class ReminderService extends IntentService
     /**
      * A constructor is required, and must call the super IntentService(String)
      * constructor with a name for the worker thread.
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      */
-
+    public static final String MED_FILENAME = "med_file";
+    public static final String FREQ_FILENAME = "freq_file";
     public static final String PREFS_UID = "MyPrefsFile";
-    ArrayList<String[]> medicationList = new ArrayList<>();
+    ArrayList<String> medicationList = new ArrayList<>();
     Context ctx;
     String USER_FILENAME = "user_file";
 
     public ReminderService() {
         super("ReminderService");
-        //mDatabase = FirebaseDatabase.getInstance().getReference();
-        //Intent i = new Intent();
-        //onHandleIntent(i);
     }
 
     /**
@@ -62,7 +55,29 @@ public class ReminderService extends IntentService
 
     //@Override
     protected void onHandleIntent(Intent intent) {
-
+        try {
+            FileInputStream fin = openFileInput(MED_FILENAME);
+            int c;
+            String temp="";
+            while( (c = fin.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            //Log.e("Login Attempt", temp);
+            if (temp.length()>1){
+                Log.e("temp",temp);
+                while(temp.indexOf("\n")!=-1){
+                    medicationList.add(temp.substring(0,temp.indexOf("\n")));
+                    temp = temp.substring(temp.indexOf("\n")+1,temp.length());
+                }
+                medicationList.add(temp.substring(0,temp.length()));
+                Log.e("index",Integer.toString(temp.indexOf("\n")));
+                Log.e("medList",medicationList.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //first notification at 10 AM next day
         Calendar cur_cal = new GregorianCalendar();

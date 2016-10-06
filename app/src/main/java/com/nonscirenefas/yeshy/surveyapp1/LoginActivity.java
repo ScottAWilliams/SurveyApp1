@@ -38,7 +38,6 @@ public class LoginActivity extends Activity {
     Context ctx;
     View v;
     String USER_FILENAME = "user_file";
-    String PHONE_FILENAME = "phone_file";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

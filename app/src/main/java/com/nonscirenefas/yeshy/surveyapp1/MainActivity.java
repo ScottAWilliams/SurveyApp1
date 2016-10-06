@@ -28,19 +28,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static android.util.Log.e;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    String PHONE_FILENAME = "phone_file";
+    String MED_FILENAME = "med_file";
+    String FREQ_FILENAME = "freq_file";
     private DatabaseReference mDatabase;
 
     int[] lifestyleArray = new int[8];
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         //String attempt2 = ((MyApplication) MainActivity.this.getApplication()).getPhone();
 
         //Log.e("Phone2",attempt2);
-        //getMeds(); // this creates a meds array and a frequency array from those meds
+        getMeds(); // this creates a meds array and a frequency array from those meds
         //TODO: in getMedFrequency function branch off to another function that creates the alarms
         //Don't do it in this onCreate function, do it after the frequency array is finished being formed in the
         //getMedFrequency function.
@@ -190,7 +194,7 @@ public class MainActivity extends AppCompatActivity
 */
         findLifestyleFeedback();
         findAdherenceFeedback();
-        //startAlarm(this);
+        startAlarm(this);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -202,16 +206,16 @@ public class MainActivity extends AppCompatActivity
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        e("reading", dataSnapshot.toString());
+                        //e("reading", dataSnapshot.toString());
 
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
                         while (it.hasNext()) {
                             DataSnapshot medicine = (DataSnapshot) it.next();
-                            e("reading2", medicine.toString());
-                            e("reading3", medicine.getKey());
+                            //e("reading2", medicine.toString());
+                            //e("reading3", medicine.getKey());
                             medArray.add(medicine.getKey().toString());
                         }
-                        e("meds", medArray.toString());
+                        //Log.e("meds", medArray.toString());
 
                         getMedFrequency(medArray);
                     }
@@ -231,14 +235,14 @@ public class MainActivity extends AppCompatActivity
                     new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            e("currentMed", medArray.get(finalI));
-                            e("reading", dataSnapshot.getValue().toString());
+                            //e("currentMed", medArray.get(finalI));
+                            //e("reading", dataSnapshot.getValue().toString());
                             medFrequency.add(dataSnapshot.getValue().toString());
-                            e("medFrequency", medFrequency.toString());
+                            //e("medFrequency", medFrequency.toString());
                             if (finalI==medArray.size()-1){
-                                e("medFrequencyFinal", medFrequency.toString());
+                                //e("medFrequencyFinal", medFrequency.toString());
                                 //TODO: Add Alarm function here based on frequency array
-                                //setAlarm(medArray,medFrequency) to add the name of the medicine as well
+                                fileIO(medArray,medFrequency);//to add the name of the medicine as well
                             }
                         }
 
@@ -247,6 +251,51 @@ public class MainActivity extends AppCompatActivity
                             //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                         }
                     });
+        }
+    }
+
+    public void fileIO(ArrayList<String> medArray, ArrayList<String> medFrequency){
+        try {
+            Log.e("MedArray",medArray.toString());
+            FileInputStream fin = openFileInput(MED_FILENAME);
+            int c;
+            String temp="";
+            while( (c = fin.read()) != -1){
+                temp = temp.concat(Character.toString((char)c));
+            }
+            Log.e("temp length", Integer.toString(temp.length()));
+            if (temp.length()<1){
+                try {
+                    FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
+                    String text="";
+                    for(int i=0;i<medArray.size();i++){
+                        Log.e("file_med",Integer.toString(i));
+                        text = text.concat(medArray.get(i));
+                        if (i!= medArray.size()-1) {
+                            text = text.concat("\n");
+                        }
+                    }
+
+                    fos.write(text.getBytes());
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            try {
+                FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
+                fos.close();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

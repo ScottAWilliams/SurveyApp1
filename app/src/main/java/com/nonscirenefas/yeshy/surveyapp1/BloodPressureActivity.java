@@ -36,6 +36,8 @@ import sun.bob.mcalendarview.MarkStyle;
 import sun.bob.mcalendarview.listeners.OnDateClickListener;
 import sun.bob.mcalendarview.vo.DateData;
 
+import static com.nonscirenefas.yeshy.surveyapp1.ReminderService.MED_FILENAME;
+
 /**
  * Created by Yeshy on 7/12/2016.
  */
@@ -57,7 +59,6 @@ public class BloodPressureActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mDatabase= FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
-
 
         mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").addValueEventListener(
                 new ValueEventListener() {
