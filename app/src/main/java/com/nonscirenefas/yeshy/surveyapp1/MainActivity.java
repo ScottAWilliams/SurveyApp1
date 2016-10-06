@@ -34,6 +34,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static android.util.Log.e;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -199,16 +202,16 @@ public class MainActivity extends AppCompatActivity
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.e("reading", dataSnapshot.toString());
+                        e("reading", dataSnapshot.toString());
 
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
                         while (it.hasNext()) {
                             DataSnapshot medicine = (DataSnapshot) it.next();
-                            Log.e("reading2", medicine.toString());
-                            Log.e("reading3", medicine.getKey());
+                            e("reading2", medicine.toString());
+                            e("reading3", medicine.getKey());
                             medArray.add(medicine.getKey().toString());
                         }
-                        Log.e("meds", medArray.toString());
+                        e("meds", medArray.toString());
 
                         getMedFrequency(medArray);
                     }
@@ -228,12 +231,12 @@ public class MainActivity extends AppCompatActivity
                     new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.e("currentMed", medArray.get(finalI));
-                            Log.e("reading", dataSnapshot.getValue().toString());
+                            e("currentMed", medArray.get(finalI));
+                            e("reading", dataSnapshot.getValue().toString());
                             medFrequency.add(dataSnapshot.getValue().toString());
-                            Log.e("medFrequency", medFrequency.toString());
+                            e("medFrequency", medFrequency.toString());
                             if (finalI==medArray.size()-1){
-                                Log.e("medFrequencyFinal", medFrequency.toString());
+                                e("medFrequencyFinal", medFrequency.toString());
                                 //TODO: Add Alarm function here based on frequency array
                                 //setAlarm(medArray,medFrequency) to add the name of the medicine as well
                             }
@@ -338,10 +341,20 @@ public class MainActivity extends AppCompatActivity
         //String [] mArrayBefore = new String[messages.size()];
         //mArrayBefore = messages.toArray(mArrayBefore);
         String[] mArray = {"Messages will appear here once the survey data has loaded."};
+        //Log.e("list",Arrays.toString(surveyResponse));
         if (num < surveyResponse.length) {
+            while(surveyResponse[num]==null & num<surveyResponse.length-1){
+                if(surveyResponse[num]==null) {
+                    //Log.e("surveyRes", "null"+Integer.toString(num));
+                }
+                num++;
+                if (num == surveyResponse.length-1){
+                    num =0;
+                }
+            }
             mArray[0] = surveyResponse[num];
         }
-
+       Log.e("list",Arrays.toString(surveyResponse));
         adapter = new ArrayAdapter<String>(this, R.layout.tip_of_the_day, mArray);
         //setListAdapter(adapter);
         final ListView lv = (ListView) findViewById(R.id.messagesListView);
@@ -477,7 +490,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
-                        Log.e("Phone", phonenumber);
+                        e("Phone", phonenumber);
                         ((MyApplication) MainActivity.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -510,14 +523,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            e("logout", UIDstored);
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
 
             UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();
