@@ -39,6 +39,7 @@ public class ReminderService extends IntentService
     public static final String FREQ_FILENAME = "freq_file";
     public static final String PREFS_UID = "MyPrefsFile";
     ArrayList<String> medicationList = new ArrayList<>();
+    ArrayList<String> freqList = new ArrayList<>();
     Context ctx;
     String USER_FILENAME = "user_file";
 
@@ -73,12 +74,36 @@ public class ReminderService extends IntentService
                 Log.e("index",Integer.toString(temp.indexOf("\n")));
                 Log.e("medList",medicationList.toString());
             }
+            fin.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        try {
+            FileInputStream finfreq = openFileInput(FREQ_FILENAME);
+            int c;
+            String temp2="";
+            while( (c = finfreq.read()) != -1){
+                temp2 = temp2 + Character.toString((char)c);
+            }
+            //Log.e("Login Attempt", temp);
+            if (temp2.length()>1){
+                Log.e("temp2",temp2);
+                while(temp2.indexOf("\n")!=-1){
+                    freqList.add(temp2.substring(0,temp2.indexOf("\n")));
+                    temp2 = temp2.substring(temp2.indexOf("\n")+1,temp2.length());
+                }
+                freqList.add(temp2.substring(0,temp2.length()));
+                Log.e("index",Integer.toString(temp2.indexOf("\n")));
+                Log.e("freqList",freqList.toString());
+            }
+            finfreq.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //first notification at 10 AM next day
         Calendar cur_cal = new GregorianCalendar();
         cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
@@ -158,7 +183,6 @@ public class ReminderService extends IntentService
         String UIDstored = settings.getString("UID", "Default");
         //Log. d("UID", UIDstored);
 
-        if(UIDstored.equals("Default")) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_menu_camera)
                     .setContentTitle("BP-n-ME")
@@ -178,66 +202,6 @@ public class ReminderService extends IntentService
             NotificationManager mNotifyMgr =
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNotifyMgr.notify(mNotificationId, mBuilder.build());
-        } else {
-            //if I've received something from the previous broadcast, maybe just continue that one.
-            SharedPreferences settings1 = getSharedPreferences("Medication", 0);
-            String oneDay = settings1.getString("onePerDay", "Default").replace("[", "").replace("]", "");
-            String twoDay = settings1.getString("twoPerDay", "Default").replace("[", "").replace("]", "");
-            String threeDay = settings1.getString("threePerDay", "Default").replace("[", "").replace("]", "");
-            String fourDay = settings1.getString("fourPerDay", "Default").replace("[", "").replace("]", "");
-
-            String listOfMeds = "";
-            if(typeOfNotification == 1) {
-                if(!oneDay.equals("Default")) {
-                    listOfMeds = listOfMeds + " " + oneDay;
-                }
-
-                if(!twoDay.equals("Default")) {
-                    listOfMeds = listOfMeds + " " + twoDay;
-                }
-
-                if(!threeDay.equals("Default")) {
-                    listOfMeds = listOfMeds + " " + threeDay;
-                }
-            } else if(typeOfNotification == 2) {
-                if(!twoDay.equals("Default")) {
-                    listOfMeds = listOfMeds + " " + twoDay;
-                }
-
-                if(!threeDay.equals("Default")) {
-                    listOfMeds = listOfMeds + " " + threeDay;
-                }
-            } else if(typeOfNotification == 3) {
-                if(!threeDay.equals("Default")) {
-                    listOfMeds = listOfMeds + " " + threeDay;
-                }
-            } else {
-                //something went wrong
-                listOfMeds =  " " +oneDay + " " + twoDay + " " + threeDay + "<= list";
-                Log.e("error","soemthing went wrong with reminders");
-                return;
-            }
-
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_menu_camera)
-                    .setContentTitle("BP-n-ME")
-                    .setContentText("It is time to take the following medication:" + listOfMeds);
-            Intent resultIntent = new Intent(this, LoginActivity.class);
-
-            PendingIntent resultPendingIntent =
-                    PendingIntent.getActivity(
-                            this,
-                            0,
-                            resultIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-
-            mBuilder.setContentIntent(resultPendingIntent);
-            int mNotificationId = 001;
-            NotificationManager mNotifyMgr =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            mNotifyMgr.notify(mNotificationId, mBuilder.build());
-        }
 
 
         /*

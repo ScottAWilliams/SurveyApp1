@@ -263,8 +263,9 @@ public class MainActivity extends AppCompatActivity
             while( (c = fin.read()) != -1){
                 temp = temp.concat(Character.toString((char)c));
             }
+            fin.close();
             Log.e("temp length", Integer.toString(temp.length()));
-            if (temp.length()<1){
+            if (temp.length()>1){
                 try {
                     FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
                     String text="";
@@ -287,6 +288,49 @@ public class MainActivity extends AppCompatActivity
         } catch (FileNotFoundException e) {
             try {
                 FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
+                fos.close();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Frequency Array
+        try {
+            Log.e("FreqArray",medFrequency.toString());
+            FileInputStream finFreq = openFileInput(FREQ_FILENAME);
+            int c;
+            String temp="";
+            while( (c = finFreq.read()) != -1){
+                temp = temp.concat(Character.toString((char)c));
+            }
+            finFreq.close();
+            Log.e("temp length", Integer.toString(temp.length()));
+            if (temp.length()>1){
+                try {
+                    FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
+                    String text="";
+                    for(int i=0;i<medFrequency.size();i++){
+                        Log.e("file_med",Integer.toString(i));
+                        text = text.concat(medFrequency.get(i));
+                        if (i!= medFrequency.size()-1) {
+                            text = text.concat("\n");
+                        }
+                    }
+                    fos.write(text.getBytes());
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            try {
+                FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
                 fos.close();
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
