@@ -26,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -65,6 +64,22 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        try {
+            FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
+            fos.close();
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -143,93 +158,44 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void fileIO(ArrayList<String> medArray, ArrayList<String> medFrequency){
+    public void fileIO(ArrayList<String> medArray, ArrayList<String> medFrequency) {
         try {
-            Log.e("MedArray",medArray.toString());
-            FileInputStream fin = openFileInput(MED_FILENAME);
-            int c;
-            String temp="";
-            while( (c = fin.read()) != -1){
-                temp = temp.concat(Character.toString((char)c));
-            }
-            fin.close();
-            Log.e("temp length", Integer.toString(temp.length()));
-            if (temp.length()>1){
-                try {
-                    FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
-                    String text="";
-                    for(int i=0;i<medArray.size();i++){
-                        Log.e("file_med",Integer.toString(i));
-                        text = text.concat(medArray.get(i));
-                        if (i!= medArray.size()-1) {
-                            text = text.concat("\n");
-                        }
-                    }
 
-                    fos.write(text.getBytes());
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
+            String text = "";
+            for (int i = 0; i < medArray.size(); i++) {
+                text = text.concat(medArray.get(i));
+                if (i != medArray.size() - 1) {
+                    text = text.concat("\n");
                 }
             }
+            fos.write(text.getBytes());
+            fos.close();
         } catch (FileNotFoundException e) {
-            try {
-                FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
-                fos.close();
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         //Frequency Array
+
         try {
-            Log.e("FreqArray",medFrequency.toString());
-            FileInputStream finFreq = openFileInput(FREQ_FILENAME);
-            int c;
-            String temp="";
-            while( (c = finFreq.read()) != -1){
-                temp = temp.concat(Character.toString((char)c));
-            }
-            finFreq.close();
-            Log.e("temp length", Integer.toString(temp.length()));
-            if (temp.length()>1){
-                try {
-                    FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
-                    String text="";
-                    for(int i=0;i<medFrequency.size();i++){
-                        Log.e("file_med",Integer.toString(i));
-                        text = text.concat(medFrequency.get(i));
-                        if (i!= medFrequency.size()-1) {
-                            text = text.concat("\n");
-                        }
-                    }
-                    fos.write(text.getBytes());
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
+            String text = "";
+            for (int i = 0; i < medFrequency.size(); i++) {
+                text = text.concat(medFrequency.get(i));
+                if (i != medFrequency.size() - 1) {
+                    text = text.concat("\n");
                 }
             }
+            fos.write(text.getBytes());
+            fos.close();
         } catch (FileNotFoundException e) {
-            try {
-                FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
-                fos.close();
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void startAlarm(Context context) {

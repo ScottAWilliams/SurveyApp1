@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nonscirenefas.yeshy.surveyapp1">
 
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,12 +15,12 @@
         android:theme="@style/AppTheme">
         <service android:name=".ReminderService" />
         <service android:name=".MonthlyReminderService" />
-        <receiver android:name=".MyAlarmReceiver">
+        <receiver android:process=":remote" android:name=".MyAlarmReceiver">
             <intent-filter>
                 <action android:name="com.nonscirenefas.yeshy.surveyapp1.MyAlarmReceiver" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".MyAlarmReceiverTwo">
+        <receiver android:process=":remote" android:name=".MyAlarmReceiverTwo">
             <intent-filter>
                 <action android:name="com.nonscirenefas.yeshy.surveyapp1.MyAlarmReceiverTwo" />
             </intent-filter>
@@ -27,6 +28,7 @@
         <receiver
             android:name=".StartMyServiceAtBootReceiver"
             android:enabled="true"
+            android:process=":remote"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
