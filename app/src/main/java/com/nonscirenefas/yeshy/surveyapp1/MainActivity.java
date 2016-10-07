@@ -1,7 +1,5 @@
 package com.nonscirenefas.yeshy.surveyapp1;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,7 +33,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import static android.util.Log.e;
@@ -346,49 +343,10 @@ public class MainActivity extends AppCompatActivity
     public void startAlarm(Context context) {
         //first notification at 10 AM next day, this should always fire if they have prescribed medication
 
-        Calendar cur_cal = new GregorianCalendar();
-        cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
-
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        cal.set(Calendar.HOUR_OF_DAY, 10); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
-
-        Intent alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 1);
-        final int _id = (int) cal.getTimeInMillis();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, _id, alarmIntent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-        //second notification at 8 PM next day, this should fire if one of their prescriptions is 2x daily
-        cal.set(Calendar.HOUR_OF_DAY, 20); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 2);
-        final int _id1 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id1, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-        //third notification at 2 PM next day, this should fire if one of their prescriptions is 3x daily
-        cal.set(Calendar.HOUR_OF_DAY, 14); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 3);
-        final int _id2 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id2, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-
-        Intent intent = new Intent(this,ReminderService.class);
-        int type = intent.getIntExtra("type", 0);
-        intent.putExtra("type", type);
-        startService(intent);
+        Intent intent1 = new Intent(this,ReminderService.class);
+        int type = intent1.getIntExtra("type", 0);
+        intent1.putExtra("type", type);
+        startService(intent1);
 /*
         //third notification at 10 PM current day
         cal.set(Calendar.HOUR_OF_DAY, 10); //18:32

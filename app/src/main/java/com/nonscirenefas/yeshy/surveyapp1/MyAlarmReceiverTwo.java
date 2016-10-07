@@ -8,13 +8,13 @@ import android.util.Log;
 /**
  * Created by Yeshy on 4/13/2016.
  */
-public class MyAlarmReceiver extends BroadcastReceiver
+public class MyAlarmReceiverTwo extends BroadcastReceiver
 {
     @Override
     public void onReceive(Context context, Intent intent) {
         int type = intent.getIntExtra("type", 0);
-        Log.d("Alarm Recieved!", "YAAAY");
-        Intent i = new Intent(context, ReminderService.class);
+        Log.d("Alarm2 Recieved!", "YAAAY");
+        Intent i = new Intent(context, MonthlyReminderService.class);
         i.putExtra("type", type);
         context.startService(i);
     }

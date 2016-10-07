@@ -39,7 +39,7 @@ import java.util.Calendar;
 /**
  * Created by Javier 9/18/16.
  */
-public class LifestyleSurvey extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class LifestyleSurvey extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DatabaseReference mDatabase ;
 
     public static final String PREFS_NAME = "MyPrefsFile";
@@ -430,7 +430,10 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
                     int year = now.get(Calendar.YEAR);
                     int month = now.get(Calendar.MONTH) + 1; // Note: zero based!
                     int day = now.get(Calendar.DAY_OF_MONTH);
-
+//***********************************************************************************************
+//This is the attempt to start the month out reminder
+                    startAlarm(ctx);
+//*********************************************************************************************
                     mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
                     Intent i = new Intent(LifestyleSurvey.this, LifestyleFeedbackActivity.class);
                     i.putExtra("month", month); //number corresponds to survey
@@ -449,6 +452,16 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
 
 
     }
+    public void startAlarm(Context context){
+        Intent intent = new Intent(this,MonthlyReminderService.class);
+        int type = intent.getIntExtra("type", 0);
+        Log.e("SurveyType", Integer.toString(type));
+        intent.putExtra("type", type);
+        //Calendar now = Calendar.getInstance();
+        //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
+        startService(intent);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {
 
