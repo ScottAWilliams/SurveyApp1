@@ -110,7 +110,7 @@ public class SurveySelectionActivity extends AppCompatActivity
                                     else{
                                         currDate = currentDate;
                                     }
-
+Log.e("surv",surveyDate);
 
                                     surYear = Integer.parseInt(surveyDate.substring(0, surveyDate.indexOf("-")));
                                     surMonth = Integer.parseInt(surveyDate.substring(surveyDate.indexOf("-") + 1, surveyDate.lastIndexOf("-")));

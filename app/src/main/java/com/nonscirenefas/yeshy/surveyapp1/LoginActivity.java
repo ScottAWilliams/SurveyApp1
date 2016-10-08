@@ -51,7 +51,7 @@ public class LoginActivity extends Activity {
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String UIDstored = settings.getString("UID", "Default");
-        Log.d("UID", UIDstored);
+        //Log.d("UID", UIDstored);
 
 
 /*
@@ -71,7 +71,7 @@ public class LoginActivity extends Activity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d("auth", "onAuthStateChanged:signed_in:" + user.getUid());
+                    //Log.d("auth", "onAuthStateChanged:signed_in:" + user.getUid());
                     SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("UID", user.getUid());
@@ -87,7 +87,7 @@ public class LoginActivity extends Activity {
                     finish(); //dunno if this'll fuck stuff up. shouldn't be a problem if the phone isn't shit
                 } else {
                     // User is signed out
-                    Log.d("auth", "onAuthStateChanged:signed_out");
+                    //Log.d("auth", "onAuthStateChanged:signed_out");
                 }
                 // ...
             }
@@ -101,7 +101,7 @@ public class LoginActivity extends Activity {
             while( (c = fin.read()) != -1){
                 temp = temp + Character.toString((char)c);
             }
-            Log.e("Login Attempt", temp);
+            //Log.e("Login Attempt", temp);
             if (temp.length()>1){
                 mEdit.setText(temp);
                 check.setChecked(true);
@@ -157,8 +157,8 @@ public class LoginActivity extends Activity {
 
         String email = mEdit.getText().toString() + "@mercer.edu";
         String password = "password";
-        Log.d("username", email);
-        Log.d("password", password);
+        //Log.d("username", email);
+        //Log.d("password", password);
 
         login(email, password, v);
     }
@@ -176,7 +176,7 @@ public class LoginActivity extends Activity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w("authorization", "signInWithEmail:failed", task.getException());
+                            //Log.w("authorization", "signInWithEmail:failed", task.getException());
                             Toast.makeText(ctx,"Login Does Not Exist", Toast.LENGTH_LONG).show();
                             deleteFile(USER_FILENAME);
 

@@ -27,7 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static sun.bob.mcalendarview.utils.CalendarUtil.date;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Yeshy on 7/12/2016.
@@ -93,38 +94,31 @@ public class MedicationActivity extends AppCompatActivity
                 System.out.println(dateFormat.format(cal.getTime()));
                 final String currentDate = dateFormat.format(cal.getTime());
                 String currDate="";
-                if (Integer.parseInt(currentDate.substring(currentDate.indexOf("-")+1,currentDate.indexOf("-")+2))==0){
-                    currDate = currDate.concat(currentDate.substring(0,currentDate.indexOf("-")+1)).concat(currentDate.substring(currentDate.indexOf("-")+2,currentDate.length()));
-                }
-                else{
                     currDate = currentDate;
-                }
+
                 curYear = Integer.parseInt(currDate.substring(0, currDate.indexOf("-")));
                 curMonth = Integer.parseInt(currDate.substring(currDate.indexOf("-") + 1, currDate.lastIndexOf("-")));
                 curDay = Integer.parseInt(currDate.substring(currDate.lastIndexOf("-") + 1, currDate.length()));
 
 
-
-                GregorianCalendar oldDate = new GregorianCalendar();
-                oldDate.set(GregorianCalendar.DAY_OF_MONTH, 1);
-                oldDate.set(GregorianCalendar.MONTH, 1);
-                oldDate.set(GregorianCalendar.YEAR, 1990);
-
-                GregorianCalendar curr = new GregorianCalendar();
-                curr.set(GregorianCalendar.DAY_OF_MONTH, curDay);
-                curr.set(GregorianCalendar.MONTH, curMonth);
-                curr.set(GregorianCalendar.YEAR, curYear);
                 GregorianCalendar old = new GregorianCalendar();
-                old.set(GregorianCalendar.DAY_OF_MONTH, date.getDay());
-                old.set(GregorianCalendar.MONTH, date.getMonth());
-                old.set(GregorianCalendar.YEAR, date.getYear());
-                int daysPassed=(curr.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR))-(old.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR));
-                Log.e("daysPassed",Integer.toString(daysPassed));
+                old.set(GregorianCalendar.DAY_OF_MONTH, day);
+                old.set(GregorianCalendar.MONTH, month);
+                old.set(GregorianCalendar.YEAR, year);
+                Date current = new Date(curYear,curMonth,curDay);// some Dat
+                Date survey = new Date(year,month+1,day);// some Date
+                Date oldDateTime = new Date(1,1,2010);
+                Log.e("surveyMonth",Integer.toString(month));
+                int one = (int)getDifferenceDays(oldDateTime,current);
+                int two = (int)getDifferenceDays(oldDateTime,survey);
 
-                if (daysPassed>=0) {
+
+                int daysSince = one-two;
+
+                if (daysSince>=0) {
                     Intent i = new Intent(ctx, MedicationLogActivity.class);
-                    i.putExtra("date", String.format("%d-%d-%d", date.getYear(), date.getMonth(), date.getDay()));
-                    //Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
+                    //old.set(GregorianCalendar.MONTH, date.getMonth()-1);
+                    i.putExtra("date", dateFormat.format(old));//Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
                     startActivity(i);
                     //Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
@@ -144,6 +138,10 @@ public class MedicationActivity extends AppCompatActivity
         });
     }
 
+    public static long getDifferenceDays(Date d1, Date d2) {
+        long diff = d2.getTime() - d1.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
 
     @Override
     public void onBackPressed() {

@@ -27,6 +27,8 @@ public class onBootService extends IntentService
     public static final String FREQ_FILENAME = "freq_file";
     public static final String PREFS_UID = "MyPrefsFile";
     public static final String LSURVEY_FILENAME = "lsurvey_file";
+    public static final String MSURVEY_FILENAME = "msurvey_file";
+    public static final String HSURVEY_FILENAME = "hsurvey_file";
     ArrayList<String> medicationList = new ArrayList<>();
     ArrayList<String> freqList = new ArrayList<>();
     Context ctx;
@@ -36,7 +38,8 @@ public class onBootService extends IntentService
     String twoPmMeds="";
     String eightPmMeds="";
     String lsurveydate="";
-
+    String hsurveydate="";
+    String msurveydate="";
     /**
      * The IntentService calls this method from the default worker thread with
      * the intent that started the service. When this method returns, IntentService
@@ -109,12 +112,39 @@ public class onBootService extends IntentService
             e.printStackTrace();
         }
 
+        try {
+            FileInputStream finLSurvey = openFileInput(HSURVEY_FILENAME);
+            int c;
+            hsurveydate="";
+            while( (c = finLSurvey.read()) != -1){
+                hsurveydate = hsurveydate + Character.toString((char)c);
+            }
+            Log.e("Health Date",hsurveydate);
+            finLSurvey.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        Log.e("Lifestyle Date2",lsurveydate);
+        try {
+            FileInputStream finLSurvey = openFileInput(MSURVEY_FILENAME);
+            int c;
+            msurveydate="";
+            while( (c = finLSurvey.read()) != -1){
+                msurveydate = msurveydate + Character.toString((char)c);
+            }
+            Log.e("Med Adherence Date",msurveydate);
+            finLSurvey.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        Log.e("medArrayFinal",medicationList.toString());
+        //Log.e("medArrayFinal",medicationList.toString());
 
-        Log.e("medFreqFinal",freqList.toString());
+        //Log.e("medFreqFinal",freqList.toString());
 
         //first notification at 10 AM next day
         Calendar cur_cal = new GregorianCalendar();
@@ -205,6 +235,8 @@ public class onBootService extends IntentService
 
         int typeOfNotification =  intent.getIntExtra("type", 0);
 
+
+
         SharedPreferences settings = getSharedPreferences(PREFS_UID, 0);
         //there should be a second settings for the medications list
         String UIDstored = settings.getString("UID", "Default");
@@ -245,6 +277,18 @@ public class onBootService extends IntentService
 
         //***********************Create Monthly**********************
         cal.set(Calendar.DAY_OF_YEAR, Integer.parseInt(lsurveydate) + 32);
+        cal.set(Calendar.HOUR_OF_DAY, 11); //18:32
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.SECOND, 0);
+
+        cal.set(Calendar.DAY_OF_YEAR, Integer.parseInt(hsurveydate) + 32);
+        cal.set(Calendar.HOUR_OF_DAY, 11); //18:32
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.SECOND, 0);
+
+        cal.set(Calendar.DAY_OF_YEAR, Integer.parseInt(msurveydate) + 32);
         cal.set(Calendar.HOUR_OF_DAY, 11); //18:32
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.MILLISECOND, 0);

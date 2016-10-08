@@ -31,6 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -42,6 +45,7 @@ import java.util.Calendar;
 public class MedicationAdherenceSurvey extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String PREFS_NAME = "MyPrefsFile";
+    public static final String MSURVEY_FILENAME = "msurvey_file";
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();;
     Button btnTag;
     int qnum;
@@ -419,7 +423,21 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                     int day = now.get(Calendar.DAY_OF_MONTH);
                     String UID = ((MyApplication) MedicationAdherenceSurvey.this.getApplication()).getUID();
 
-
+//***********************************************************************************************
+//This is the attempt to start the month out reminder
+                    String dayofyear = Integer.toString(now.get(Calendar.DAY_OF_YEAR));
+                    deleteFile(MSURVEY_FILENAME);
+                    try {
+                        FileOutputStream fos = openFileOutput(MSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
+                        fos.write(dayofyear.getBytes());
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    startAlarm(ctx);
+//*********************************************************************************************
                     mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").child(year+"-"+month+"-"+day).setValue(Arrays.toString(answers));
 
 
@@ -440,6 +458,18 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
 
 
     }
+
+
+    public void startAlarm(Context context){
+        Intent intent = new Intent(this,MonthlyReminderService.class);
+        int type = intent.getIntExtra("type", 0);
+        Log.e("SurveyType", Integer.toString(type));
+        intent.putExtra("type", type);
+        //Calendar now = Calendar.getInstance();
+        //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
+        startService(intent);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {
         mDatabase = FirebaseDatabase.getInstance().getReference();

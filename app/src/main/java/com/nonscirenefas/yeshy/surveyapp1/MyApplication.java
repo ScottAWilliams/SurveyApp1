@@ -12,10 +12,7 @@ import java.util.ArrayList;
 public class MyApplication extends Application{
     private DatabaseReference mDatabase;
     private String uid;
-    private String name;
-    private String birthDate;
     private String email;
-    private String phonenumber;
     private String bloodPressureGoal;
     private String clinicName;
     private String pharmaName;
@@ -35,21 +32,6 @@ public class MyApplication extends Application{
 
 
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -59,15 +41,6 @@ public class MyApplication extends Application{
         return email;
     }
 
-    public void setPhone(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
-    public String getPhone() {
-
-
-        return phonenumber;
-    }
 
     public void setBloodPressureGoal(String bloodPressureGoal) {
         this.bloodPressureGoal = bloodPressureGoal;

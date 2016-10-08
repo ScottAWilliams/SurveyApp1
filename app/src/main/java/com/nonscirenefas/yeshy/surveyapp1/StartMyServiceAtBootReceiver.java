@@ -3,6 +3,7 @@ package com.nonscirenefas.yeshy.surveyapp1;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 
 public class StartMyServiceAtBootReceiver extends BroadcastReceiver {
@@ -26,6 +27,7 @@ public class StartMyServiceAtBootReceiver extends BroadcastReceiver {
             }
             */
             int type = serviceIntent.getIntExtra("type", 0);
+            Log.e("Type",Integer.toString(type));
             serviceIntent.putExtra("type", type);
             context.startService(serviceIntent);
         }

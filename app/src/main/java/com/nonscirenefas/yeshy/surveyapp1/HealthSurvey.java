@@ -31,6 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -44,7 +47,7 @@ public class HealthSurvey extends AppCompatActivity
     Button btnTag;
     int qnum;
     String questionParse;
-
+    public static final String HSURVEY_FILENAME = "hsurvey_file";
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();;
 
     final ArrayList<Integer> arrOpenParen = new ArrayList<>();
@@ -365,6 +368,22 @@ public class HealthSurvey extends AppCompatActivity
                     String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
                     String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
 
+                    //***********************************************************************************************
+//This is the attempt to start the month out reminder
+                    String dayofyear = Integer.toString(now.get(Calendar.DAY_OF_YEAR));
+                    deleteFile(HSURVEY_FILENAME);
+                    try {
+                        FileOutputStream fos = openFileOutput(HSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
+                        fos.write(dayofyear.getBytes());
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    startAlarm(ctx);
+//*********************************************************************************************
+
                     mDatabase.child("app").child("users").child(UID).child("literacysurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
 
                     ((MyApplication) HealthSurvey.this.getApplication()).setLiteracySurveyAnswersRW(answers);
@@ -385,7 +404,15 @@ public class HealthSurvey extends AppCompatActivity
         });
     }
 
-
+    public void startAlarm(Context context){
+        Intent intent = new Intent(this,MonthlyReminderService.class);
+        int type = intent.getIntExtra("type", 0);
+        Log.e("SurveyType", Integer.toString(type));
+        intent.putExtra("type", type);
+        //Calendar now = Calendar.getInstance();
+        //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
+        startService(intent);
+    }
 
     public String parseQuestion(int z) {
 
