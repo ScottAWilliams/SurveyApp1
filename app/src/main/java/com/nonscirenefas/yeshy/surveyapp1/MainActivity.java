@@ -41,7 +41,13 @@ public class MainActivity extends AppCompatActivity
 
     String MED_FILENAME = "med_file";
     String FREQ_FILENAME = "freq_file";
+    public static final String LSURVEY_FILENAME = "lsurvey_file";
+    public static final String MSURVEY_FILENAME = "msurvey_file";
+    public static final String HSURVEY_FILENAME = "hsurvey_file";
     private DatabaseReference mDatabase;
+    public String lsurv = "";
+    public String msurv = "";
+    public String hsurv = "";
 
     int[] lifestyleArray = new int[8];
     int[] adherenceArray = new int[8];
@@ -64,22 +70,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        try {
-            FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
-            fos.close();
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -98,12 +88,81 @@ public class MainActivity extends AppCompatActivity
         getMeds(); // this creates a meds array and a frequency array from those meds
         findLifestyleFeedback();
         findAdherenceFeedback();
-        startAlarm(this);
+        //getMSurvey();
+        //getLSurvey();
+        //getHSurvey();
+        //startAlarm(this);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+    public void getMSurvey() {
+    String UID = ((MyApplication) this.getApplication()).getUID();
+    mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").addListenerForSingleValueEvent(
+            new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
+                    while (it.hasNext()) {
+                        DataSnapshot surv = (DataSnapshot) it.next();
+                        if (!it.hasNext()) {
+                            msurv = surv.getKey().toString();
+                        }
+                    }
+                    Log.e("MSURV", msurv);
+                   fileIOMSurv(msurv);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                }
+            });
+}
+    public void getLSurvey() {
+        String UID = ((MyApplication) this.getApplication()).getUID();
+        mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
+                        while (it.hasNext()) {
+                            DataSnapshot surv = (DataSnapshot) it.next();
+                            if (!it.hasNext()) {
+                                lsurv = surv.getKey().toString();
+                            }
+                        }
+                        Log.e("LSURV", lsurv);
+                        fileIOLSurv(lsurv);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+    public void getHSurvey() {
+        String UID = ((MyApplication) this.getApplication()).getUID();
+        mDatabase.child("app").child("users").child(UID).child("literacysurveyanswersRW").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
+                        while (it.hasNext()) {
+                            DataSnapshot surv = (DataSnapshot) it.next();
+                            if (!it.hasNext()) {
+                                hsurv = surv.getKey().toString();
+                            }
+                        }
+                        Log.e("HSURV", hsurv);
+                        fileIOHSurv(hsurv);
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
     public void getMeds() {
         String UID = ((MyApplication) this.getApplication()).getUID();
         mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
@@ -130,7 +189,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
     }
-
     public void getMedFrequency(final ArrayList<String> medArray){
         String UID = ((MyApplication) this.getApplication()).getUID();
         for(int i=0;i<medArray.size();i++) {
@@ -146,7 +204,7 @@ public class MainActivity extends AppCompatActivity
                             if (finalI==medArray.size()-1){
                                 //e("medFrequencyFinal", medFrequency.toString());
                                 //TODO: Add Alarm function here based on frequency array
-                                fileIO(medArray,medFrequency);//to add the name of the medicine as well
+                                fileIOMeds(medArray,medFrequency);//to add the name of the medicine as well
                             }
                         }
 
@@ -157,8 +215,43 @@ public class MainActivity extends AppCompatActivity
                     });
         }
     }
-
-    public void fileIO(ArrayList<String> medArray, ArrayList<String> medFrequency) {
+    public void fileIOMSurv(String msurv){
+        try {
+            FileOutputStream fos = openFileOutput(MSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
+            fos.write(msurv.getBytes());
+            fos.close();
+            //startMonthlyAlarm(this,1);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void fileIOHSurv(String hsurv){
+        try {
+            FileOutputStream fos = openFileOutput(HSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
+            fos.write(hsurv.getBytes());
+            fos.close();
+            //startMonthlyAlarm(this,2);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void fileIOLSurv(String lsurv){
+        try {
+            FileOutputStream fos = openFileOutput(LSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
+            fos.write(lsurv.getBytes());
+            fos.close();
+            //startMonthlyAlarm(this,3);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void fileIOMeds(ArrayList<String> medArray, ArrayList<String> medFrequency) {
         try {
 
             FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
@@ -169,6 +262,7 @@ public class MainActivity extends AppCompatActivity
                     text = text.concat("\n");
                 }
             }
+            Log.e("Meds",text);
             fos.write(text.getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
@@ -188,6 +282,7 @@ public class MainActivity extends AppCompatActivity
                     text = text.concat("\n");
                 }
             }
+            Log.e("Freq",text);
             fos.write(text.getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
@@ -196,48 +291,19 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+        startAlarm(this);
     }
 
     public void startAlarm(Context context) {
-        //first notification at 10 AM next day, this should always fire if they have prescribed medication
 
+        //first notification at 10 AM next day, this should always fire if they have prescribed medication
         Intent intent1 = new Intent(this,ReminderService.class);
         int type = intent1.getIntExtra("type", 0);
         intent1.putExtra("type", type);
         startService(intent1);
-/*
-        //third notification at 10 PM current day
-        cal.set(Calendar.HOUR_OF_DAY, 10); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) -1);
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 1);
-        final int _id3 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id3, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
-        //second notification at 12 PM current day
-        cal.set(Calendar.HOUR_OF_DAY, 12); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 2);
-        final int _id4 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id4, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
-        //third notification at 2 PM current day
-        cal.set(Calendar.HOUR_OF_DAY, 14); //18:32
-        cal.set(Calendar.MINUTE, 0);
-        alarmIntent = new Intent(this, MyAlarmReceiver.class);
-        alarmIntent.putExtra("type", 3);
-        final int _id5 = (int) cal.getTimeInMillis();
-        pendingIntent = PendingIntent.getBroadcast(this, _id5, alarmIntent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        */
     }
+
 
     private void initializeMessagesList() {
 
@@ -415,20 +481,16 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_bloodpressure) {
             Intent i = new Intent(this, BloodPressureActivity.class);
             startActivity(i);
-            finish();
         } else if (id == R.id.nav_medication) {
             Intent i = new Intent(this, MedicationActivity.class);
             startActivity(i);
-            finish();
         } else if (id == R.id.nav_surveys) {
             Intent i = new Intent(this, SurveySelectionActivity.class);
             startActivity(i);
-            finish();
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:" + tel));
             startActivity(i);
-            finish();
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
@@ -446,7 +508,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_study_contact) {
             Intent i = new Intent(this, StudyContactsActivity.class);
             startActivity(i);
-            finish();
         }
 
 

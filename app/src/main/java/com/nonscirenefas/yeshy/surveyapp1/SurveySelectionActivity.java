@@ -28,21 +28,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
+
+import static sun.bob.mcalendarview.utils.CalendarUtil.date;
 
 public class SurveySelectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseReference mDatabase;
     Context ctx;
     public static final String PREFS_NAME = "MyPrefsFile";
-    final ArrayList<String> surveyFinalDate = new ArrayList<>();
-    String surveyDate;
     int surYear;
     int surMonth;
     int surDay;
     int curYear;
     int curMonth;
     int curDay;
+    String surveyDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +65,12 @@ public class SurveySelectionActivity extends AppCompatActivity
         initializeSurveyButtons();
     }
 
-    public void setDatesArray(ArrayList<String> surveyDates){
-        //ArrayList<String> surveyReturnDates = new ArrayList<>();
-        Log.e("SurveyDates",surveyDates.toString());
-        surveyFinalDate.addAll(surveyDates);
-    }
-
-
     public void initializeSurveyButtons() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
-        System.out.println(dateFormat.format(cal.getTime()));
-        final String currentDate = dateFormat.format(cal.getTime());
-        Log.e("is0",currentDate.substring(currentDate.indexOf("-")+1,currentDate.indexOf("-")+2));
-
+        Log.e("printed data",dateFormat.format(cal.getTime()));
+        final String currDate = dateFormat.format(cal.getTime());
+        Log.e("currentDateSurvSelect",currDate);
 
         Button lifestyleSurvey = (Button) findViewById(R.id.lifestylesurveybutton);
         Button medicalAdherenceSurvey = (Button) findViewById(R.id.medicaladherencesurveybutton);
@@ -103,14 +98,7 @@ public class SurveySelectionActivity extends AppCompatActivity
                                     mArray = records.toArray(mArray);
                                     surveyDate = mArray[mArray.length - 1];
 
-                                    String currDate="";
-                                    if (Integer.parseInt(currentDate.substring(currentDate.indexOf("-")+1,currentDate.indexOf("-")+2))==0){
-                                        currDate = currDate.concat(currentDate.substring(0,currentDate.indexOf("-")+1)).concat(currentDate.substring(currentDate.indexOf("-")+2,currentDate.length()));
-                                    }
-                                    else{
-                                        currDate = currentDate;
-                                    }
-Log.e("surv",surveyDate);
+                                    Log.e("survey Date",surveyDate);
 
                                     surYear = Integer.parseInt(surveyDate.substring(0, surveyDate.indexOf("-")));
                                     surMonth = Integer.parseInt(surveyDate.substring(surveyDate.indexOf("-") + 1, surveyDate.lastIndexOf("-")));
@@ -122,29 +110,29 @@ Log.e("surv",surveyDate);
 
 
 
-                                    GregorianCalendar oldDate = new GregorianCalendar();
-                                    oldDate.set(GregorianCalendar.DAY_OF_MONTH, 1);
-                                    oldDate.set(GregorianCalendar.MONTH, 1);
-                                    oldDate.set(GregorianCalendar.YEAR, 1990);
-                                    GregorianCalendar curr = new GregorianCalendar();
-                                    curr.set(GregorianCalendar.DAY_OF_MONTH, curDay);
-                                    curr.set(GregorianCalendar.MONTH, curMonth);
-                                    curr.set(GregorianCalendar.YEAR, curYear);
-                                    GregorianCalendar surv = new GregorianCalendar();
-                                    surv.set(GregorianCalendar.DAY_OF_MONTH, surDay);
-                                    surv.set(GregorianCalendar.MONTH, surMonth);
-                                    surv.set(GregorianCalendar.YEAR, surYear);
-                                    int daysPassed=(curr.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR))-(surv.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR));
+                                    GregorianCalendar old = new GregorianCalendar();
+                                    old.set(GregorianCalendar.DAY_OF_MONTH, 1);
+                                    old.set(GregorianCalendar.MONTH, 1);
+                                    old.set(GregorianCalendar.YEAR, 2010);
+                                    Date current = new Date(curYear,curMonth,curDay);// some Dat
+                                    Date survey = new Date(surYear,surMonth,surDay);// some Date
+                                    Date oldDateTime = new Date(1,1,2010);
+                                    int one = (int)getDifferenceDays(oldDateTime,current);
+                                    int two = (int)getDifferenceDays(oldDateTime,survey);
 
 
+                                    int daysPassed = one-two;
+
+                                    Log.e("days since survey",Integer.toString(daysPassed));
 
                                     if (daysPassed<31) {
+                                        Log.e("What's","Going On?");
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(SurveySelectionActivity.this, LifestyleFeedbackActivity.class);
-                                        i.putExtra("month", surMonth); //number corresponds to survey
-                                        i.putExtra("day", surDay); //number corresponds to survey
-                                        i.putExtra("year", surYear); //number corresponds to survey
+                                        Intent i = new Intent(ctx, LifestyleFeedbackActivity.class);
+                                        i.putExtra("date",surveyDate);
+                                        //i.putExtra("date", surveyDate); //number corresponds to survey
                                         startActivity(i);
+                                        finish();
 
                                     } else {
                                         Intent i = new Intent(SurveySelectionActivity.this, LifestyleSurvey.class);
@@ -189,15 +177,6 @@ Log.e("surv",surveyDate);
                                     mArray = records.toArray(mArray);
                                     surveyDate = mArray[mArray.length - 1];
 
-                                    String currDate="";
-                                    if (Integer.parseInt(currentDate.substring(currentDate.indexOf("-")+1,currentDate.indexOf("-")+2))==0){
-                                        currDate = currDate.concat(currentDate.substring(0,currentDate.indexOf("-")+1)).concat(currentDate.substring(currentDate.indexOf("-")+2,currentDate.length()));
-                                    }
-                                    else{
-                                        currDate = currentDate;
-                                    }
-
-
                                     surYear = Integer.parseInt(surveyDate.substring(0, surveyDate.indexOf("-")));
                                     surMonth = Integer.parseInt(surveyDate.substring(surveyDate.indexOf("-") + 1, surveyDate.lastIndexOf("-")));
                                     surDay = Integer.parseInt(surveyDate.substring(surveyDate.lastIndexOf("-") + 1, surveyDate.length()));
@@ -207,29 +186,27 @@ Log.e("surv",surveyDate);
                                     curDay = Integer.parseInt(currDate.substring(currDate.lastIndexOf("-") + 1, currDate.length()));
 
 
-                                    GregorianCalendar oldDate = new GregorianCalendar();
-                                    oldDate.set(GregorianCalendar.DAY_OF_MONTH, 1);
-                                    oldDate.set(GregorianCalendar.MONTH, 1);
-                                    oldDate.set(GregorianCalendar.YEAR, 1990);
-                                    GregorianCalendar curr = new GregorianCalendar();
-                                    curr.set(GregorianCalendar.DAY_OF_MONTH, curDay);
-                                    curr.set(GregorianCalendar.MONTH, curMonth);
-                                    curr.set(GregorianCalendar.YEAR, curYear);
-                                    GregorianCalendar surv = new GregorianCalendar();
-                                    surv.set(GregorianCalendar.DAY_OF_MONTH, surDay);
-                                    surv.set(GregorianCalendar.MONTH, surMonth);
-                                    surv.set(GregorianCalendar.YEAR, surYear);
-                                    int daysPassed=(curr.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR))-(surv.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR));
+
+                                    GregorianCalendar old = new GregorianCalendar();
+                                    old.set(GregorianCalendar.DAY_OF_MONTH, 1);
+                                    old.set(GregorianCalendar.MONTH, 1);
+                                    old.set(GregorianCalendar.YEAR, 2010);
+                                    Date current = new Date(curYear,curMonth,curDay);// some Dat
+                                    Date survey = new Date(surYear,surMonth,surDay);// some Date
+                                    Date oldDateTime = new Date(1,1,2010);
+                                    int one = (int)getDifferenceDays(oldDateTime,current);
+                                    int two = (int)getDifferenceDays(oldDateTime,survey);
 
 
+                                    int daysPassed = one-two;
+
+                                    Log.e("days since survey",Integer.toString(daysPassed));
 
                                     if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
 
                                         Intent i = new Intent(SurveySelectionActivity.this, AdherenceFeedbackActivity.class);
-                                        i.putExtra("month", surMonth); //number corresponds to survey
-                                        i.putExtra("day", surDay); //number corresponds to survey
-                                        i.putExtra("year", surYear); //number corresponds to survey
+                                        i.putExtra("date", surveyDate);
                                         startActivity(i);
 
                                     } else {
@@ -275,15 +252,6 @@ Log.e("surv",surveyDate);
                                     mArray = records.toArray(mArray);
                                     surveyDate = mArray[mArray.length - 1];
 
-                                    String currDate="";
-                                    if (Integer.parseInt(currentDate.substring(currentDate.indexOf("-")+1,currentDate.indexOf("-")+2))==0){
-                                        currDate = currDate.concat(currentDate.substring(0,currentDate.indexOf("-")+1)).concat(currentDate.substring(currentDate.indexOf("-")+2,currentDate.length()));
-                                    }
-                                    else{
-                                        currDate = currentDate;
-                                    }
-
-
                                     surYear = Integer.parseInt(surveyDate.substring(0, surveyDate.indexOf("-")));
                                     surMonth = Integer.parseInt(surveyDate.substring(surveyDate.indexOf("-") + 1, surveyDate.lastIndexOf("-")));
                                     surDay = Integer.parseInt(surveyDate.substring(surveyDate.lastIndexOf("-") + 1, surveyDate.length()));
@@ -294,21 +262,20 @@ Log.e("surv",surveyDate);
 
 
 
-                                    GregorianCalendar oldDate = new GregorianCalendar();
-                                    oldDate.set(GregorianCalendar.DAY_OF_MONTH, 1);
-                                    oldDate.set(GregorianCalendar.MONTH, 1);
-                                    oldDate.set(GregorianCalendar.YEAR, 1990);
-                                    GregorianCalendar curr = new GregorianCalendar();
-                                    curr.set(GregorianCalendar.DAY_OF_MONTH, curDay);
-                                    curr.set(GregorianCalendar.MONTH, curMonth);
-                                    curr.set(GregorianCalendar.YEAR, curYear);
-                                    GregorianCalendar surv = new GregorianCalendar();
-                                    surv.set(GregorianCalendar.DAY_OF_MONTH, surDay);
-                                    surv.set(GregorianCalendar.MONTH, surMonth);
-                                    surv.set(GregorianCalendar.YEAR, surYear);
-                                    int daysPassed=(curr.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR))-(surv.get(GregorianCalendar.DAY_OF_YEAR)-oldDate.get(GregorianCalendar.DAY_OF_YEAR));
+                                    GregorianCalendar old = new GregorianCalendar();
+                                    old.set(GregorianCalendar.DAY_OF_MONTH, 1);
+                                    old.set(GregorianCalendar.MONTH, 1);
+                                    old.set(GregorianCalendar.YEAR, 2010);
+                                    Date current = new Date(curYear,curMonth,curDay);// some Dat
+                                    Date survey = new Date(surYear,surMonth,surDay);// some Date
+                                    Date oldDateTime = new Date(1,1,2010);
+                                    int one = (int)getDifferenceDays(oldDateTime,current);
+                                    int two = (int)getDifferenceDays(oldDateTime,survey);
 
 
+                                    int daysPassed = one-two;
+
+                                    Log.e("days since survey",Integer.toString(daysPassed));
 
                                     if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
@@ -344,29 +311,12 @@ Log.e("surv",surveyDate);
         }
     }
 
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+
+    public long getDifferenceDays(Date d1, Date d2) {
+        long diff = d2.getTime() - d1.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    */
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

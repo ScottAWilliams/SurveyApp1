@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -48,14 +47,12 @@ public class AdherenceFeedbackActivity extends AppCompatActivity {
         int month=0;
         int day=0;
 
-        int surMonth = i.getIntExtra("month",month);
-        int surDay = i.getIntExtra("day",day);
-        int surYear = i.getIntExtra("year",year);
+        String surveyDate = i.getStringExtra("date");
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) AdherenceFeedbackActivity.this.getApplication()).getUID();
-        mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").child(surYear+"-"+surMonth+"-"+surDay).addValueEventListener(
+        mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").child(surveyDate).addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

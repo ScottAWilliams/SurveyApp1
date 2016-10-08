@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -363,14 +365,13 @@ public class HealthSurvey extends AppCompatActivity
                     Snackbar.make(v, "Literacy Survey Successfully Completed", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
-                    Calendar now = Calendar.getInstance();
-                    String year = Integer.toString(now.get(Calendar.YEAR));
-                    String month = Integer.toString(now.get(Calendar.MONTH) + 1); // Note: zero based!
-                    String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
-
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    android.icu.util.Calendar cal = android.icu.util.Calendar.getInstance();
+                    System.out.println(dateFormat.format(cal.getTime()));
+                    final String currentDate = dateFormat.format(cal.getTime());
                     //***********************************************************************************************
 //This is the attempt to start the month out reminder
-                    String dayofyear = Integer.toString(now.get(Calendar.DAY_OF_YEAR));
+                    String dayofyear = Integer.toString(cal.get(Calendar.DAY_OF_YEAR));
                     deleteFile(HSURVEY_FILENAME);
                     try {
                         FileOutputStream fos = openFileOutput(HSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
@@ -384,13 +385,11 @@ public class HealthSurvey extends AppCompatActivity
                     startAlarm(ctx);
 //*********************************************************************************************
 
-                    mDatabase.child("app").child("users").child(UID).child("literacysurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
+                    mDatabase.child("app").child("users").child(UID).child("literacysurveyanswersRW").child(currentDate) .setValue(Arrays.toString(answers));
 
                     ((MyApplication) HealthSurvey.this.getApplication()).setLiteracySurveyAnswersRW(answers);
                     Intent i = new Intent(HealthSurvey.this, SurveySelectionActivity.class);
-                    i.putExtra("month", month); //number corresponds to survey
-                    i.putExtra("day", day); //number corresponds to survey
-                    i.putExtra("year", year); //number corresponds to survey
+                    i.putExtra("date",currentDate);
                     startActivity(i);
                     finish();
                 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -31,12 +33,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+
+import static sun.bob.mcalendarview.utils.CalendarUtil.date;
 
 
 /**
@@ -430,11 +431,11 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
                             .setAction("Action", null).show();
 
 
-                    Calendar now = Calendar.getInstance();
-                    int year = now.get(Calendar.YEAR);
-                    int month = now.get(Calendar.MONTH) + 1; // Note: zero based!
-                    int day = now.get(Calendar.DAY_OF_MONTH);
-//***********************************************************************************************
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    android.icu.util.Calendar cal = android.icu.util.Calendar.getInstance();
+                    System.out.println(dateFormat.format(cal.getTime()));
+                    final String currentDate = dateFormat.format(cal.getTime());
+/***********************************************************************************************
 //This is the attempt to start the month out reminder
                     String dayofyear = Integer.toString(now.get(Calendar.DAY_OF_YEAR));
                     deleteFile(LSURVEY_FILENAME);
@@ -448,12 +449,11 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
                         e.printStackTrace();
                     }
                     startAlarm(ctx);
+ */
 //*********************************************************************************************
-                    mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(year+"-"+month+"-"+day) .setValue(Arrays.toString(answers));
+                    mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(currentDate) .setValue(Arrays.toString(answers));
                     Intent i = new Intent(LifestyleSurvey.this, LifestyleFeedbackActivity.class);
-                    i.putExtra("month", month); //number corresponds to survey
-                    i.putExtra("day", day); //number corresponds to survey
-                    i.putExtra("year", year); //number corresponds to survey
+                    i.putExtra("date",currentDate);
                     startActivity(i);
                     finish();
                 }

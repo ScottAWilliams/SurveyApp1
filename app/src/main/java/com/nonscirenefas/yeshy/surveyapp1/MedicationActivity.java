@@ -126,14 +126,6 @@ public class MedicationActivity extends AppCompatActivity
                     Snackbar.make(view,"Please only edit the current or past days.",Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
 
-
-
-
-                /*
-                Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Toast.makeText(BloodPressureActivity.this, String.format("%d-%d", date.getMonth(), date.getDay()), Toast.LENGTH_SHORT).show();
-                */
             }
         });
     }

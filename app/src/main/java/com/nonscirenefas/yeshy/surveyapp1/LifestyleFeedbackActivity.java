@@ -37,24 +37,22 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
         final TextView tv = (TextView) findViewById(R.id.TitleFeedback);
         tv.setText("Lifestyle Survey Feedback");
 
+        Log.e("Is in","Lifestyle");
         final String[] posArray = getResources().getStringArray(R.array.LifestylePositiveMessagesArray);
         final String[] negArray = getResources().getStringArray(R.array.LifestyleNegativeMessagesArray);
         final int[] surveyResponse = new int[8];
         final int[] correctChoice = {5,1,2,2,1,2,2,5};
         final int[] wrongChoice = {0,0,1,1,0,1,1,0};
-        int year=0;
-        int month=0;
-        int day=0;
 
         Intent i = getIntent();
-        int surMonth = i.getIntExtra("month",month);
-        int surDay = i.getIntExtra("day",day);
-        int surYear = i.getIntExtra("year",year);
+        String surDate = i.getStringExtra("date");
+
+        Log.e("Feedback surDate",surDate);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) LifestyleFeedbackActivity.this.getApplication()).getUID();
-        mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(surYear+"-"+surMonth+"-"+surDay).addValueEventListener(
+        mDatabase.child("app").child("users").child(UID).child("lifestylesurveyanswersRW").child(surDate).addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

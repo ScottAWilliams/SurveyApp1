@@ -244,11 +244,7 @@ public class BloodPressureActivity extends AppCompatActivity
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Calendar cal = Calendar.getInstance();
                 System.out.println(dateFormat.format(cal.getTime()));
-                final String currentDate = dateFormat.format(cal.getTime());
-
-                String currDate="";
-
-                    currDate = currentDate;
+                final String currDate = dateFormat.format(cal.getTime());
 
                 curYear = Integer.parseInt(currDate.substring(0, currDate.indexOf("-")));
                 curMonth = Integer.parseInt(currDate.substring(currDate.indexOf("-") + 1, currDate.lastIndexOf("-")));
