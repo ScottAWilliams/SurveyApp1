@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -44,14 +46,22 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ctx = this;
+        ConnectivityManager cm =
+                (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        mEdit = (AutoCompleteTextView)findViewById(R.id.username);
-        check = (CheckBox)findViewById(R.id.checkbox);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
 
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        String UIDstored = settings.getString("UID", "Default");
-        //Log.d("UID", UIDstored);
+            mEdit = (AutoCompleteTextView) findViewById(R.id.username);
+            check = (CheckBox) findViewById(R.id.checkbox);
+
+
+if (isConnected){
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            String UIDstored = settings.getString("UID", "Default");
+            //Log.d("UID", UIDstored);
 
 
 /*
@@ -62,69 +72,98 @@ public class LoginActivity extends Activity {
             finish();
         }
 */
-        FirebaseAuth.getInstance().signOut();
-        mAuth = FirebaseAuth.getInstance();
+            FirebaseAuth.getInstance().signOut();
+            mAuth = FirebaseAuth.getInstance();
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        // User is signed in
+                        //Log.d("auth", "onAuthStateChanged:signed_in:" + user.getUid());
+                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("UID", user.getUid());
+                        editor.commit();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    //Log.d("auth", "onAuthStateChanged:signed_in:" + user.getUid());
-                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("UID", user.getUid());
-                    editor.commit();
+                        ((MyApplication) LoginActivity.this.getApplication()).setUID(user.getUid());
 
-                    ((MyApplication) LoginActivity.this.getApplication()).setUID(user.getUid());
+                        //Intent intent = new Intent(LoginActivity.this, ReminderService.class);
+                        //startActivity(intent);
 
-                    //Intent intent = new Intent(LoginActivity.this, ReminderService.class);
-                    //startActivity(intent);
-
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(i);
-                    finish(); //dunno if this'll fuck stuff up. shouldn't be a problem if the phone isn't shit
-                } else {
-                    // User is signed out
-                    //Log.d("auth", "onAuthStateChanged:signed_out");
+                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(i);
+                        finish(); //dunno if this'll fuck stuff up. shouldn't be a problem if the phone isn't shit
+                    } else {
+                        // User is signed out
+                        //Log.d("auth", "onAuthStateChanged:signed_out");
+                    }
+                    // ...
                 }
-                // ...
+            };
+
+
+            try {
+                FileInputStream fin = openFileInput(USER_FILENAME);
+                int c;
+                String temp = "";
+                while ((c = fin.read()) != -1) {
+                    temp = temp + Character.toString((char) c);
+                }
+                //Log.e("Login Attempt", temp);
+                if (temp.length() > 1) {
+                    mEdit.setText(temp);
+                    check.setChecked(true);
+                    //login(temp+ "@mercer.edu","password",v);
+                } else {
+                    check.setChecked(false);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        };
 
+        }
+        else {
+            Toast.makeText(ctx, "Please Connect to the Internet", Toast.LENGTH_LONG).show();
+    reload();
+        }
+        //fucntion that uses silent setSilent(silent);
+    }
 
+    public void reload(){
+        long mil = 2000;
         try {
-            FileInputStream fin = openFileInput(USER_FILENAME);
-            int c;
-            String temp="";
-            while( (c = fin.read()) != -1){
-                temp = temp + Character.toString((char)c);
-            }
-            //Log.e("Login Attempt", temp);
-            if (temp.length()>1){
-                mEdit.setText(temp);
-                check.setChecked(true);
-                //login(temp+ "@mercer.edu","password",v);
-            }
-            else{
-                check.setChecked(false);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            wait(mil);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        ConnectivityManager cm =
+                (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-
-        //fucntion that uses silent setSilent(silent);
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (isConnected) {
+            mAuth.addAuthStateListener(mAuthListener);
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        ConnectivityManager cm =
+                (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (isConnected) {
+            mAuth.addAuthStateListener(mAuthListener);
+        }
+
     }
 
     @Override
@@ -135,32 +174,41 @@ public class LoginActivity extends Activity {
         }
     }
 
-
     public void startMain(View v) {
-        mEdit = (AutoCompleteTextView)findViewById(R.id.username);
-        check = (CheckBox)findViewById(R.id.checkbox);
-        if (check.isChecked()){
-            try {
-                FileOutputStream fos = openFileOutput(USER_FILENAME, Context.MODE_WORLD_READABLE);
-                fos.write(mEdit.getText().toString().getBytes());
-                fos.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        ConnectivityManager cm =
+                (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (isConnected) {
+            mEdit = (AutoCompleteTextView) findViewById(R.id.username);
+            check = (CheckBox) findViewById(R.id.checkbox);
+            if (check.isChecked()) {
+                try {
+                    FileOutputStream fos = openFileOutput(USER_FILENAME, Context.MODE_WORLD_READABLE);
+                    fos.write(mEdit.getText().toString().getBytes());
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                deleteFile(USER_FILENAME);
             }
+
+
+            String email = mEdit.getText().toString() + "@mercer.edu";
+            String password = "password";
+            //Log.d("username", email);
+            //Log.d("password", password);
+
+            login(email, password, v);
         }
         else{
-            deleteFile(USER_FILENAME);
+            Toast.makeText(ctx, "Please Connect to the Internet", Toast.LENGTH_LONG).show();
         }
-
-
-        String email = mEdit.getText().toString() + "@mercer.edu";
-        String password = "password";
-        //Log.d("username", email);
-        //Log.d("password", password);
-
-        login(email, password, v);
     }
 
     public void login(String email, String password, View v) {
