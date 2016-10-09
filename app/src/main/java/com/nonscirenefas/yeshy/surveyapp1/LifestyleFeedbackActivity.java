@@ -17,12 +17,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LifestyleFeedbackActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     Context ctx;
+    public static final String LSURVEY_FILENAME = "lsurvey_file";
     public static final String PREFS_NAME = "MyPrefsFile";
     ArrayList<String> responsePosArray = new ArrayList<>();
     ArrayList<String> responseNegArray = new ArrayList<>();
@@ -37,7 +41,6 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
         final TextView tv = (TextView) findViewById(R.id.TitleFeedback);
         tv.setText("Lifestyle Survey Feedback");
 
-        Log.e("Is in","Lifestyle");
         final String[] posArray = getResources().getStringArray(R.array.LifestylePositiveMessagesArray);
         final String[] negArray = getResources().getStringArray(R.array.LifestyleNegativeMessagesArray);
         final int[] surveyResponse = new int[8];
@@ -46,9 +49,20 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         String surDate = i.getStringExtra("date");
+        deleteFile(LSURVEY_FILENAME);
+        try {
+            FileOutputStream fos = openFileOutput(LSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
+            fos.write(surDate.getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Log.e("Feedback surDate",surDate);
 
+        startAlarm(ctx);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) LifestyleFeedbackActivity.this.getApplication()).getUID();
@@ -116,6 +130,18 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
 
 
 
+    }
+    public void startAlarm(Context context){
+
+        Intent i = getIntent();
+        String surDate = i.getStringExtra("date");
+        Intent intent = new Intent(this,MonthlyReminderService.class);
+        //int type = intent.getIntExtra("type", 0);
+        //Log.e("SurveyType", Integer.toString(type));
+        //intent.putExtra("type", type);
+        //Calendar now = Calendar.getInstance();
+        //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
+        startService(intent);
     }
 
 }

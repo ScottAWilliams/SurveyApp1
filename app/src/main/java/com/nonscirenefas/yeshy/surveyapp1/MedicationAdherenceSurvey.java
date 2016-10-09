@@ -427,6 +427,7 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
 
 //***********************************************************************************************
 //This is the attempt to start the month out reminder
+                    /*
                     String dayofyear = Integer.toString(cal.get(Calendar.DAY_OF_YEAR));
                     deleteFile(MSURVEY_FILENAME);
                     try {
@@ -438,7 +439,7 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    startAlarm(ctx);
+                    */
 //*********************************************************************************************
                     mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").child(currentDate).setValue(Arrays.toString(answers));
 
@@ -460,15 +461,6 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
     }
 
 
-    public void startAlarm(Context context){
-        Intent intent = new Intent(this,MonthlyReminderService.class);
-        int type = intent.getIntExtra("type", 0);
-        Log.e("SurveyType", Integer.toString(type));
-        intent.putExtra("type", type);
-        //Calendar now = Calendar.getInstance();
-        //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
-        startService(intent);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {

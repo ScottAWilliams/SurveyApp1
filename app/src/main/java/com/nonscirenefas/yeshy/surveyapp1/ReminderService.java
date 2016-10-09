@@ -217,7 +217,7 @@ public class ReminderService extends IntentService
                     );
 
             mBuilder.setContentIntent(resultPendingIntent);
-            int mNotificationId = 001;
+            int mNotificationId = typeOfNotification+4;
             NotificationManager mNotifyMgr =
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNotifyMgr.notify(mNotificationId, mBuilder.build());

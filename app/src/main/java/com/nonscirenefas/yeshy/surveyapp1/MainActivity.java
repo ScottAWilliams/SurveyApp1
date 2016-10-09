@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+    /*
     public void getMSurvey() {
     String UID = ((MyApplication) this.getApplication()).getUID();
     mDatabase.child("app").child("users").child(UID).child("adherencesurveyanswersRW").addListenerForSingleValueEvent(
@@ -163,6 +164,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
     }
+    */
     public void getMeds() {
         String UID = ((MyApplication) this.getApplication()).getUID();
         mDatabase.child("app").child("users").child(UID).child("medicine").addListenerForSingleValueEvent(
@@ -215,6 +217,7 @@ public class MainActivity extends AppCompatActivity
                     });
         }
     }
+    /*
     public void fileIOMSurv(String msurv){
         try {
             FileOutputStream fos = openFileOutput(MSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
@@ -251,6 +254,7 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
+    */
     public void fileIOMeds(ArrayList<String> medArray, ArrayList<String> medFrequency) {
         try {
 

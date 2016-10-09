@@ -467,15 +467,6 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
 
 
     }
-    public void startAlarm(Context context){
-        Intent intent = new Intent(this,MonthlyReminderService.class);
-        int type = intent.getIntExtra("type", 0);
-        Log.e("SurveyType", Integer.toString(type));
-        intent.putExtra("type", type);
-        //Calendar now = Calendar.getInstance();
-        //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
-        startService(intent);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {

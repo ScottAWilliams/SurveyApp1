@@ -27,17 +27,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
-import static sun.bob.mcalendarview.utils.CalendarUtil.date;
-
 public class SurveySelectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseReference mDatabase;
     Context ctx;
+    public static final String HSURVEY_FILENAME = "msurvey_file";
     public static final String PREFS_NAME = "MyPrefsFile";
     int surYear;
     int surMonth;
@@ -126,7 +128,6 @@ public class SurveySelectionActivity extends AppCompatActivity
                                     Log.e("days since survey",Integer.toString(daysPassed));
 
                                     if (daysPassed<31) {
-                                        Log.e("What's","Going On?");
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
                                         Intent i = new Intent(ctx, LifestyleFeedbackActivity.class);
                                         i.putExtra("date",surveyDate);
@@ -280,6 +281,18 @@ public class SurveySelectionActivity extends AppCompatActivity
                                     if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
 
+                                        deleteFile(HSURVEY_FILENAME);
+                                        try {
+                                            FileOutputStream fos = openFileOutput(HSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
+                                            fos.write(surveyDate.getBytes());
+                                            fos.close();
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        startAlarm(ctx);
                                     } else {
                                         Intent i = new Intent(SurveySelectionActivity.this, HealthLitParagraphActivity.class);
                                         startActivity(i);
@@ -296,10 +309,26 @@ public class SurveySelectionActivity extends AppCompatActivity
                                 //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                             }
                         });
+
             }
         });
     }
 
+
+    public void startAlarm(Context context){
+
+        Intent i = getIntent();
+        String surDate = i.getStringExtra("date");
+        Intent intent = new Intent(this,MonthlyReminderService.class);
+        //int type = intent.getIntExtra("type", 0);
+        //Log.e("SurveyType", Integer.toString(type));
+        //intent.putExtra("type", type);
+        //intent.putExtra("date", surveyDate);
+        //intent.putExtra("type", "Health Literacy");
+        //Calendar now = Calendar.getInstance();
+        //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
+        startService(intent);
+    }
 
     @Override
     public void onBackPressed() {
