@@ -148,10 +148,11 @@ public class MonthlyReminderService extends IntentService
                 cal.set(Calendar.SECOND, 0);
 
                 Intent alarmIntent = new Intent(this, MyAlarmReceiverTwo.class);
-                final int _id = (int) cal.getTimeInMillis();
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, _id, alarmIntent, 0);
+                //final int _id = (int) cal.getTimeInMillis();
+                int id = i*314;
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, alarmIntent,PendingIntent.FLAG_NO_CREATE);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
                 //alarmManager.set(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),pendingIntent);
                 if (received==1) {
@@ -159,6 +160,7 @@ public class MonthlyReminderService extends IntentService
                             .setSmallIcon(R.drawable.ic_menu_send)
                             .setContentTitle("BP-n-ME")
                             .setContentText("Take Survey: " + type)
+                            .setAutoCancel(true)
                             .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bp_logo_hd));
 
                     Intent resultIntent = new Intent(this, LoginActivity.class);
