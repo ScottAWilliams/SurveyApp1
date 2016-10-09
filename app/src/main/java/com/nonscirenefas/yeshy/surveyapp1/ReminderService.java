@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -202,7 +203,8 @@ public class ReminderService extends IntentService
         }
         if (typeOfNotification==1|typeOfNotification==2|typeOfNotification==3) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.bpnmenotif)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bp_logo_hd))//
+                    .setSmallIcon(R.drawable.ic_menu_send)
                     .setContentTitle("BP-n-ME")
                     .setContentText("Please take your medication(s): " + printedMeds);
 

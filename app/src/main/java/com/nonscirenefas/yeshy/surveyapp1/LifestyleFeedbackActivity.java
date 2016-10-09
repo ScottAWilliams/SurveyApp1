@@ -62,7 +62,7 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
 
         Log.e("Feedback surDate",surDate);
 
-        startAlarm(ctx);
+        startAlarm(this);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) LifestyleFeedbackActivity.this.getApplication()).getUID();
@@ -133,9 +133,11 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
     }
     public void startAlarm(Context context){
 
-        Intent i = getIntent();
-        String surDate = i.getStringExtra("date");
+        //Intent i = getIntent();
+        //String surDate = i.getStringExtra("date");
         Intent intent = new Intent(this,MonthlyReminderService.class);
+        int received = intent.getIntExtra("recieved", 0);
+        intent.putExtra("received", received);
         //int type = intent.getIntExtra("type", 0);
         //Log.e("SurveyType", Integer.toString(type));
         //intent.putExtra("type", type);

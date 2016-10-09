@@ -62,7 +62,7 @@ public class AdherenceFeedbackActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        startAlarm(ctx);
+        startAlarm(this);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) AdherenceFeedbackActivity.this.getApplication()).getUID();
@@ -130,14 +130,16 @@ public class AdherenceFeedbackActivity extends AppCompatActivity {
 
     public void startAlarm(Context context){
 
-        Intent i = getIntent();
-        String surDate = i.getStringExtra("date");
+        //Intent i = getIntent();
+        //String surDate = i.getStringExtra("date");
         Intent intent = new Intent(this,MonthlyReminderService.class);
+        int received = intent.getIntExtra("recieved", 0);
+        intent.putExtra("received", received);
         //int type = intent.getIntExtra("type", 0);
         //Log.e("SurveyType", Integer.toString(type));
         //intent.putExtra("type", type);
-        intent.putExtra("date", surDate);
-        intent.putExtra("type", "Medication Adherence");
+        //intent.putExtra("date", surDate);
+        //intent.putExtra("type", "Medication Adherence");
         //Calendar now = Calendar.getInstance();
         //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
         startService(intent);

@@ -1,12 +1,12 @@
 package com.nonscirenefas.yeshy.surveyapp1;
 
-import android.app.IntentService;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import static android.R.attr.y;
 
 public class MonthlyReminderService extends IntentService
 {
@@ -44,15 +42,17 @@ public class MonthlyReminderService extends IntentService
     //@Override
     protected void onHandleIntent(Intent intent) {
 
+        int received = intent.getIntExtra("received",0);
+
         try {
-            FileInputStream hfin= openFileInput(MSURVEY_FILENAME);
+            FileInputStream mfin= openFileInput(MSURVEY_FILENAME);
             int c;
             String temp="";
-            while( (c = hfin.read()) != -1){
+            while( (c = mfin.read()) != -1){
                 temp = temp + Character.toString((char)c);
             }
             dateList.add(0,temp);
-            hfin.close();
+            mfin.close();
         } catch (FileNotFoundException e) {
             dateList.add(0,"");
             e.printStackTrace();
@@ -70,6 +70,7 @@ public class MonthlyReminderService extends IntentService
             dateList.add(1,temp);
             hfin.close();
         } catch (FileNotFoundException e) {
+            Log.e("tryin","doesn't exist?");
             dateList.add(1,"");
             e.printStackTrace();
         } catch (IOException e) {
@@ -77,14 +78,14 @@ public class MonthlyReminderService extends IntentService
             e.printStackTrace();
         }
         try {
-            FileInputStream hfin= openFileInput(LSURVEY_FILENAME);
+            FileInputStream lfin= openFileInput(LSURVEY_FILENAME);
             int c;
             String temp="";
-            while( (c = hfin.read()) != -1){
+            while( (c = lfin.read()) != -1){
                 temp = temp + Character.toString((char)c);
             }
             dateList.add(2,temp);
-            hfin.close();
+            lfin.close();
         } catch (FileNotFoundException e) {
             dateList.add(2,"");
             e.printStackTrace();
@@ -152,26 +153,30 @@ public class MonthlyReminderService extends IntentService
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
-                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.bp_logo_hd)
-                        .setContentTitle("BP-n-ME")
-                        .setContentText("Take Survey: " + type);
+                //alarmManager.set(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),pendingIntent);
+                if (received==1) {
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_menu_send)
+                            .setContentTitle("BP-n-ME")
+                            .setContentText("Take Survey: " + type)
+                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bp_logo_hd));
 
-                Intent resultIntent = new Intent(this, LoginActivity.class);
+                    Intent resultIntent = new Intent(this, LoginActivity.class);
 
-                PendingIntent resultPendingIntent =
-                        PendingIntent.getActivity(
-                                this,
-                                0,
-                                resultIntent,
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        );
+                    PendingIntent resultPendingIntent =
+                            PendingIntent.getActivity(
+                                    this,
+                                    0,
+                                    resultIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT
+                            );
 
-                mBuilder.setContentIntent(resultPendingIntent);
-                int mNotificationId = minute+1;
-                NotificationManager mNotifyMgr =
-                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                    mBuilder.setContentIntent(resultPendingIntent);
+                    int mNotificationId = minute + 1;
+                    NotificationManager mNotifyMgr =
+                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                }
             }
 
         }

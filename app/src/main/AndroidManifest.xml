@@ -15,12 +15,8 @@
         android:theme="@style/AppTheme">
         <service android:name=".ReminderService" />
         <service android:name=".MonthlyReminderService" />
-        <receiver android:name=".MyAlarmReceiver">
-
-        </receiver>
-        <receiver android:name=".MyAlarmReceiverTwo">
-
-        </receiver>
+        <receiver android:name=".MyAlarmReceiver"></receiver>
+        <receiver android:name=".MyAlarmReceiverTwo"></receiver>
         <receiver
             android:name=".StartMyServiceAtBootReceiver"
             android:enabled="true"

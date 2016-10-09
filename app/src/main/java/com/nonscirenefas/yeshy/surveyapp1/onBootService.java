@@ -53,7 +53,7 @@ public class onBootService extends IntentService
 
     //@Override
     protected void onHandleIntent(Intent intent) {
-
+/*
         //************************ Survey Notificaitons ******************
 
         try {
@@ -189,7 +189,7 @@ public class onBootService extends IntentService
         }
 
         //**************************END SURVEY *************************
-
+*/
 
 
 

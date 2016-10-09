@@ -39,7 +39,7 @@ public class SurveySelectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseReference mDatabase;
     Context ctx;
-    public static final String HSURVEY_FILENAME = "msurvey_file";
+    public static final String HSURVEY_FILENAME = "hsurvey_file";
     public static final String PREFS_NAME = "MyPrefsFile";
     int surYear;
     int surMonth;
@@ -281,18 +281,20 @@ public class SurveySelectionActivity extends AppCompatActivity
                                     if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
 
-                                        deleteFile(HSURVEY_FILENAME);
+                                        Log.e("tryin",surveyDate);
                                         try {
                                             FileOutputStream fos = openFileOutput(HSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
                                             fos.write(surveyDate.getBytes());
                                             fos.close();
                                         } catch (FileNotFoundException e) {
                                             e.printStackTrace();
+                                            Log.e("tryin1","doesn't exist?");
+
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
 
-                                        startAlarm(ctx);
+                                        startAlarm(SurveySelectionActivity.this);
                                     } else {
                                         Intent i = new Intent(SurveySelectionActivity.this, HealthLitParagraphActivity.class);
                                         startActivity(i);
@@ -317,9 +319,11 @@ public class SurveySelectionActivity extends AppCompatActivity
 
     public void startAlarm(Context context){
 
-        Intent i = getIntent();
-        String surDate = i.getStringExtra("date");
+        //Intent i = getIntent();
+        //String surDate = i.getStringExtra("date");
         Intent intent = new Intent(this,MonthlyReminderService.class);
+        int received = intent.getIntExtra("recieved", 0);
+        intent.putExtra("received", received);
         //int type = intent.getIntExtra("type", 0);
         //Log.e("SurveyType", Integer.toString(type));
         //intent.putExtra("type", type);
