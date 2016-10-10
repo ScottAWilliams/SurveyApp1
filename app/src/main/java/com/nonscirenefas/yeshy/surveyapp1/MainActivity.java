@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -266,7 +265,7 @@ public class MainActivity extends AppCompatActivity
                     text = text.concat("\n");
                 }
             }
-            Log.e("Meds",text);
+            //Log.e("Meds",text);
             fos.write(text.getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
@@ -286,7 +285,7 @@ deleteFile(FREQ_FILENAME);
                     text = text.concat("\n");
                 }
             }
-            Log.e("Freq",text);
+            //Log.e("Freq",text);
             fos.write(text.getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
@@ -344,8 +343,8 @@ deleteFile(FREQ_FILENAME);
     public void setLifestyleResponse(int[] intArray1) {
         String[] posArray = getResources().getStringArray(R.array.LifestylePositiveMessagesArray);
         String[] negArray = getResources().getStringArray(R.array.LifestyleNegativeMessagesArray);
-        final int[] correctChoice = {5, 1, 2, 2, 1, 2, 2, 5};
-        final int[] wrongChoice = {0, 0, 1, 1, 0, 1, 1, 0};
+        final int[] correctChoice = {5,1,3,3,1,3,3,5};
+        final int[] wrongChoice = {0,0,2,2,0,2,2,0};
 
         for (int ind = 0; ind < intArray1.length; ind++) {
             if (intArray1[ind] == correctChoice[ind]) {
@@ -362,9 +361,14 @@ deleteFile(FREQ_FILENAME);
         final int[] correctChoice1 = {2, 0, 0, 0, 1, 0, 0, 0};
         final int[] wrongChoice1 = {1, 1, 1, 1, 2, 1, 1, 0};
         for (int ind = 0; ind < intArray2.length; ind++) {
+
             if (intArray2[ind] == correctChoice1[ind]) {
                 surveyResponse[ind] = posArray1[ind];
-            } else if (wrongChoice1[ind]==0 | intArray2[ind] == wrongChoice1[ind]) {
+            } else if ((wrongChoice1[ind]==0 | intArray2[ind] == wrongChoice1[ind]) & ind!=7){
+                surveyResponse[ind] = negArray1[ind];
+            }
+
+            if (ind == 7 & (intArray2[ind] != 1 | intArray2[ind] != 2)) {
                 surveyResponse[ind] = negArray1[ind];
             }
         }

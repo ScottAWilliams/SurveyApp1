@@ -43,8 +43,8 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
         final String[] posArray = getResources().getStringArray(R.array.LifestylePositiveMessagesArray);
         final String[] negArray = getResources().getStringArray(R.array.LifestyleNegativeMessagesArray);
         final int[] surveyResponse = new int[8];
-        final int[] correctChoice = {5,1,2,2,1,2,2,5};
-        final int[] wrongChoice = {0,0,1,1,0,1,1,0};
+        final int[] correctChoice = {5,1,3,3,1,3,3,5};
+        final int[] wrongChoice = {0,0,2,2,0,2,2,0};
 
         Intent i = getIntent();
         String surDate = i.getStringExtra("date");

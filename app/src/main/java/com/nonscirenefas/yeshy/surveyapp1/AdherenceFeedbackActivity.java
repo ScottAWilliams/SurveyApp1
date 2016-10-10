@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -61,7 +62,7 @@ public class AdherenceFeedbackActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+Log.e("Date",surveyDate);
         startAlarm(this);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -85,9 +86,16 @@ public class AdherenceFeedbackActivity extends AppCompatActivity {
                             if (surveyResponse[ind]==correctChoice[ind]){
                                 responsePosArray.add(Integer.toString(ind+1)+". "+posArray[ind]);
                             }
-                            else if (wrongChoice[ind]==0 | surveyResponse[ind]==wrongChoice[ind]){
+                            else if ((wrongChoice[ind]==0 | surveyResponse[ind]==wrongChoice[ind]) & ind!=7){
                                 responseNegArray.add(Integer.toString(ind+1)+". "+negArray[ind]);
                             }
+
+                            if (ind == 7 & surveyResponse[ind]!= 1){
+                                if (surveyResponse[ind] != 2) {
+                                    responseNegArray.add(Integer.toString(ind + 1) + ". " + negArray[negArray.length - 1]);
+                                }
+                            }
+
                         }
                         if( !responsePosArray.isEmpty()) {
                             responseArray.add("Positive Feedback");
