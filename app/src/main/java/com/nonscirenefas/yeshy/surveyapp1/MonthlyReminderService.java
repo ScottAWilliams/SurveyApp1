@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -73,7 +72,6 @@ public class MonthlyReminderService extends IntentService
             dateList.add(1, temp);
             hfin.close();
         } catch (FileNotFoundException e) {
-            Log.e("tryin", "doesn't exist?");
             dateList.add(1, "");
             e.printStackTrace();
         } catch (IOException e) {
@@ -98,7 +96,6 @@ public class MonthlyReminderService extends IntentService
         }
 
         for (int i = 0; i < 3; i++) {
-            Log.e("i", Integer.toString(i));
             if (dateList.get(i).length() > 1) {
                 if (i == 0) {
                     type = "Medication Adherence";
@@ -110,16 +107,16 @@ public class MonthlyReminderService extends IntentService
                     type = "Lifestyle";
                     minute = 2;
                 }
-                Log.e("Type", type);
+                //Log.e("Type", type);
                 date = dateList.get(i);
                 //date = intent.getStringExtra("date");
                 //type = intent.getStringExtra("type");
                 String y = date.substring(0, 4);
                 String m = date.substring(5, 7);
                 String d = date.substring(8, 10);//date.length()-1);
-                Log.e("year", y);
-                Log.e("month", m);
-                Log.e("day", d);
+                //Log.e("year", y);
+                //Log.e("month", m);
+                //Log.e("day", d);
 
 
                 year = Integer.parseInt(y);
@@ -210,14 +207,6 @@ public class MonthlyReminderService extends IntentService
 
         //alarmManager.set(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),pendingIntent);
         if (received == 3 | received == 1 | received == 2) {
-            boolean alarmUp = (PendingIntent.getBroadcast(this, 0, intent,
-                    PendingIntent.FLAG_NO_CREATE) != null);
-            if(alarmUp){
-                Log.e("Alarm","UP");
-            }
-            else{
-                Log.e("Alarm","DOWN");
-            }
 
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_menu_send)

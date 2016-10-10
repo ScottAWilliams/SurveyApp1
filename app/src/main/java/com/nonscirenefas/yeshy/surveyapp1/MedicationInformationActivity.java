@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -147,7 +146,7 @@ public class MedicationInformationActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
-                        Log.e("Phone",phonenumber);
+                        //Log.e("Phone",phonenumber);
                         ((MyApplication) MedicationInformationActivity.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -186,14 +185,14 @@ public class MedicationInformationActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
 
             UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();

@@ -2,7 +2,6 @@ package com.nonscirenefas.yeshy.surveyapp1;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 
 /**
@@ -13,7 +12,7 @@ public class MyAlarmReceiverTwo extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent) {
         int received = intent.getIntExtra("received", 0);
-        Log.d("Alarm2 Recieved!", "YAAAY");
+        //Log.d("Alarm2 Recieved!", "YAAAY");
         Intent i = new Intent(context, MonthlyReminderService.class);
         i.putExtra("received", received);
         context.startService(i);

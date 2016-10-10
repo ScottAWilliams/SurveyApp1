@@ -473,7 +473,7 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
-                        Log.e("Phone",phonenumber);
+                        //Log.e("Phone",phonenumber);
                         ((MyApplication) MedicationAdherenceSurvey.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -511,14 +511,14 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
 
             UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();

@@ -57,14 +57,14 @@ public class ReminderService extends IntentService
             }
             //Log.e("Login Attempt", temp);
             if (temp.length()>1){
-                Log.e("temp",temp);
+                //Log.e("temp",temp);
                 while(temp.indexOf("\n")!=-1){
                     medicationList.add(temp.substring(0,temp.indexOf("\n")));
                     temp = temp.substring(temp.indexOf("\n")+1,temp.length());
                 }
                 medicationList.add(temp.substring(0,temp.length()));
-                Log.e("index",Integer.toString(temp.indexOf("\n")));
-                Log.e("medList",medicationList.toString());
+                //Log.e("index",Integer.toString(temp.indexOf("\n")));
+                //Log.e("medList",medicationList.toString());
             }
             fin.close();
         } catch (FileNotFoundException e) {
@@ -81,14 +81,14 @@ public class ReminderService extends IntentService
             }
             //Log.e("Login Attempt", temp);
             if (temp2.length()>1){
-                Log.e("temp2",temp2);
+                //Log.e("temp2",temp2);
                 while(temp2.indexOf("\n")!=-1){
                     freqList.add(temp2.substring(0,temp2.indexOf("\n")));
                     temp2 = temp2.substring(temp2.indexOf("\n")+1,temp2.length());
                 }
                 freqList.add(temp2.substring(0,temp2.length()));
-                Log.e("index",Integer.toString(temp2.indexOf("\n")));
-                Log.e("freqList",freqList.toString());
+                //Log.e("index",Integer.toString(temp2.indexOf("\n")));
+                //Log.e("freqList",freqList.toString());
             }
             finfreq.close();
         } catch (FileNotFoundException e) {
@@ -96,9 +96,9 @@ public class ReminderService extends IntentService
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.e("medArrayFinal",medicationList.toString());
+        //Log.e("medArrayFinal",medicationList.toString());
 
-        Log.e("medFreqFinal",freqList.toString());
+        //Log.e("medFreqFinal",freqList.toString());
 
         //first notification at 10 AM next day
         Calendar cur_cal = new GregorianCalendar();

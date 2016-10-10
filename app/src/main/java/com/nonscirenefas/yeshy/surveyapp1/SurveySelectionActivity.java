@@ -125,7 +125,7 @@ public class SurveySelectionActivity extends AppCompatActivity
 
                                     int daysPassed = one-two;
 
-                                    Log.e("days since survey",Integer.toString(daysPassed));
+                                    //Log.e("days since survey",Integer.toString(daysPassed));
 
                                     if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
@@ -201,7 +201,7 @@ public class SurveySelectionActivity extends AppCompatActivity
 
                                     int daysPassed = one-two;
 
-                                    Log.e("days since survey",Integer.toString(daysPassed));
+                                    //Log.e("days since survey",Integer.toString(daysPassed));
 
                                     if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
@@ -209,6 +209,7 @@ public class SurveySelectionActivity extends AppCompatActivity
                                         Intent i = new Intent(SurveySelectionActivity.this, AdherenceFeedbackActivity.class);
                                         i.putExtra("date", surveyDate);
                                         startActivity(i);
+                                        finish();
 
                                     } else {
                                         Intent i = new Intent(SurveySelectionActivity.this, MedicationAdherenceSurvey.class);
@@ -276,19 +277,19 @@ public class SurveySelectionActivity extends AppCompatActivity
 
                                     int daysPassed = one-two;
 
-                                    Log.e("days since survey",Integer.toString(daysPassed));
+                                    //Log.e("days since survey",Integer.toString(daysPassed));
 
                                     if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
 
-                                        Log.e("tryin",surveyDate);
+                                        //Log.e("tryin",surveyDate);
                                         try {
                                             FileOutputStream fos = openFileOutput(HSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
                                             fos.write(surveyDate.getBytes());
                                             fos.close();
                                         } catch (FileNotFoundException e) {
                                             e.printStackTrace();
-                                            Log.e("tryin1","doesn't exist?");
+                                            //Log.e("tryin1","doesn't exist?");
 
                                         } catch (IOException e) {
                                             e.printStackTrace();
@@ -365,7 +366,7 @@ public class SurveySelectionActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
-                        Log.e("Phone",phonenumber);
+                        //Log.e("Phone",phonenumber);
                         ((MyApplication) SurveySelectionActivity.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -402,12 +403,12 @@ public class SurveySelectionActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
             UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();

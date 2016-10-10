@@ -10,30 +10,17 @@ public class StartMyServiceAtBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-/*
-            Intent serviceIntent = new Intent(context, onBootService.class);
 
-            java.util.Calendar cal = new GregorianCalendar();
-            int hour = cal.get(Calendar.HOUR_OF_DAY);
-            if (hour<10 | (20<=hour&hour<24)){
-                serviceIntent.putExtra("type",1);
-            }
-            else if (hour<14){
-                serviceIntent.putExtra("type",2);
-            }
-            else if (hour<20){
-                serviceIntent.putExtra("type",3);
-            }
+            Intent intent2 = new Intent(context,ReminderService.class);
+            int type = intent2.getIntExtra("type", 0);
+            intent2.putExtra("type", type);
+            context.startService(intent2);
 
-            int type = serviceIntent.getIntExtra("type", 0);
-            Log.e("Type",Integer.toString(type));
-            serviceIntent.putExtra("type", type);
-            context.startService(serviceIntent);
-            */
-            Intent serviceIntent = new Intent(context, MonthlyReminderService.class);
-            context.startService(serviceIntent);
-            Intent serviceIntent2 = new Intent(context, ReminderService.class);
-            context.startService(serviceIntent2);
+
+            Intent intent1 = new Intent(context,MonthlyReminderService.class);
+            int received = intent1.getIntExtra("recieved", 0);
+            intent1.putExtra("received", received);
+            context.startService(intent1);
         }
     }
 }

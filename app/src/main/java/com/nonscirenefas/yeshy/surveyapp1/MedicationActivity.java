@@ -108,7 +108,7 @@ public class MedicationActivity extends AppCompatActivity
                 Date current = new Date(curYear,curMonth,curDay);// some Dat
                 Date survey = new Date(year,month+1,day);// some Date
                 Date oldDateTime = new Date(1,1,2010);
-                Log.e("surveyMonth",Integer.toString(month));
+                //Log.e("surveyMonth",Integer.toString(month));
                 int one = (int)getDifferenceDays(oldDateTime,current);
                 int two = (int)getDifferenceDays(oldDateTime,survey);
 
@@ -182,7 +182,7 @@ public class MedicationActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
-                        Log.e("Phone",phonenumber);
+                        //Log.e("Phone",phonenumber);
                         ((MyApplication) MedicationActivity.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -221,14 +221,14 @@ public class MedicationActivity extends AppCompatActivity
             finish();
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
 
             UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();

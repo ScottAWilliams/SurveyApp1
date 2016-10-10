@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -31,19 +29,19 @@ public class BloodPressureLogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
         date = i.getStringExtra("date");
-        Log.e("date",date);
+        //Log.e("date",date);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blood_pressure_log);
-
+/*
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-
+*/
         //getWindow().setLayout((int)(width*.8),(int)(height*.55));
 
         //medicationList = ((MyApplication) this.getApplication()).getMedicationList();
@@ -112,6 +110,7 @@ public class BloodPressureLogActivity extends AppCompatActivity {
     public void returnToCal(View v){
         Intent i = new Intent(this, BloodPressureActivity.class);
         startActivity(i);
+        finish();
     }
 
 

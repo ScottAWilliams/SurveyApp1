@@ -17,10 +17,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,8 +37,7 @@ import sun.bob.mcalendarview.MarkStyle;
 import sun.bob.mcalendarview.listeners.OnDateClickListener;
 import sun.bob.mcalendarview.vo.DateData;
 
-import static android.R.attr.y;
-import static com.nonscirenefas.yeshy.surveyapp1.ReminderService.MED_FILENAME;
+import static com.nonscirenefas.yeshy.surveyapp1.R.id.calendarBlood;
 
 /**
  * Created by Yeshy on 7/12/2016.
@@ -186,6 +184,10 @@ public class BloodPressureActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView tv = (TextView) findViewById(R.id.bp_goal);
+        tv.setText("My Blood Pressure Goal: "+goal);
+
         MCalendarView calendarBlood = (MCalendarView) findViewById(R.id.calendarBlood);
 
 
@@ -264,7 +266,7 @@ public class BloodPressureActivity extends AppCompatActivity
 
 
                 int daysSince = one-two;
-                Log.e("Days Since",Integer.toString(daysSince));
+                //Log.e("Days Since",Integer.toString(daysSince));
                 if (daysSince>=0) {
                     Intent i = new Intent(ctx, BloodPressureLogActivity.class);
                     old.set(GregorianCalendar.MONTH, date.getMonth()-1);

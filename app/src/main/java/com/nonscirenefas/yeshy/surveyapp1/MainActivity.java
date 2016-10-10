@@ -333,7 +333,7 @@ deleteFile(FREQ_FILENAME);
             }
             mArray[0] = surveyResponse[num];
         }
-       Log.e("list",Arrays.toString(surveyResponse));
+       //Log.e("list",Arrays.toString(surveyResponse));
         adapter = new ArrayAdapter<String>(this, R.layout.tip_of_the_day, mArray);
         //setListAdapter(adapter);
         final ListView lv = (ListView) findViewById(R.id.messagesListView);

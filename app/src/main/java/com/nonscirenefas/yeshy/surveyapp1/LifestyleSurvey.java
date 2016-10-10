@@ -480,7 +480,7 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
-                        Log.e("Phone",phonenumber);
+                        //Log.e("Phone",phonenumber);
                         ((MyApplication) LifestyleSurvey.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -517,14 +517,14 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
 
             UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();

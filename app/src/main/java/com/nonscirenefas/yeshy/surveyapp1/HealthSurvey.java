@@ -406,7 +406,7 @@ public class HealthSurvey extends AppCompatActivity
     public void startAlarm(Context context){
         Intent intent = new Intent(this,MonthlyReminderService.class);
         int type = intent.getIntExtra("type", 0);
-        Log.e("SurveyType", Integer.toString(type));
+        //Log.e("SurveyType", Integer.toString(type));
         intent.putExtra("type", type);
         //Calendar now = Calendar.getInstance();
         //intent.putExtra("dayofYear",now.get(Calendar.DAY_OF_YEAR));
@@ -501,7 +501,7 @@ public class HealthSurvey extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String phonenumber = dataSnapshot.getValue().toString();
-                        Log.e("Phone",phonenumber);
+                        //Log.e("Phone",phonenumber);
                         ((MyApplication) HealthSurvey.this.getApplication()).setPharmaPhone(phonenumber);
                     }
 
@@ -539,14 +539,14 @@ public class HealthSurvey extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             String UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("UID", "Default");
             editor.commit();
 
             UIDstored = settings.getString("UID", "Default");
-            Log.e("logout", UIDstored);
+            //Log.e("logout", UIDstored);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();

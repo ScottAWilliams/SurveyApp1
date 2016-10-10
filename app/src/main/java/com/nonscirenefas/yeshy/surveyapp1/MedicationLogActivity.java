@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -22,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 
@@ -42,7 +40,7 @@ public class MedicationLogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
         date = i.getStringExtra("date");
-        Log.e("date",date);
+        //Log.e("date",date);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
@@ -85,7 +83,7 @@ public class MedicationLogActivity extends AppCompatActivity {
                         mArray = new String[records.size()];
                         mArray = records.toArray(mArray);
                         setArray(mArray);
-                        Log.e("mArray1", Arrays.toString(mArray));
+                        //Log.e("mArray1", Arrays.toString(mArray));
                     }
 
                     @Override
@@ -96,51 +94,9 @@ public class MedicationLogActivity extends AppCompatActivity {
 
 
 
-Log.e("mArray2", Arrays.toString(passedArray));
+//Log.e("mArray2", Arrays.toString(passedArray));
 
 
-        //System.out.println(Arrays.toString(medNames));
-        String colors[] = {"Red","Blue","White","Yellow","Black", "Green","Purple","Orange","Grey"};
-        //String [] medNames = new String[medicationList.size()];
-        //int counter = 0;
-        //for(int counter = 0; counter < medicationList.size(); counter++) {
-            //medNames[counter] = medicationList.get(counter).getName();
-            //Log.e("hey",medicationList.get(counter).getName());
-        //}
-        //System.out.println(Arrays.toString(medNames));
-        //Log.e("hey","whats up");
-// Selection of the spinner
-        /*
-        final Spinner spinner = (Spinner) findViewById(R.id.medicationSpinner);
-// Application of the Array to the Spinner
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(MedicationLogActivity.this, android.R.layout.simple_spinner_item, colors);
-        //ArrayAdapter<CharSequence> spinnerArrayAdapter= ArrayAdapter.createFromResource(this,R.array.medicationArray,android.R.layout.simple_spinner_item);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        spinner.setAdapter(spinnerArrayAdapter);
-
-
-        //spinner.setPrompt(records[0]);
-
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                // TODO Auto-generated method stub
-                //Log.v("item", (String) parent.getItemAtPosition(position));
-                medicine = parent.getItemAtPosition(position).toString();
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                //spinner.setPrompt(records[0]);
-            }
-        });
-        */
-
-        //mDatabase = FirebaseDatabase.getInstance().getReference();
-        //String UID = ((MyApplication) this.getApplication()).getUID();
-        //mDatabase.child("app").child("users").child(UID).child("medicine");
     }
 
     public void setArray(String [] x){

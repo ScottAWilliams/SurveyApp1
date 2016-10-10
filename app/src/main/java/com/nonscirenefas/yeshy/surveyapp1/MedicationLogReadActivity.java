@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -17,7 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 
@@ -42,29 +39,18 @@ public class MedicationLogReadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_medication_log_read);
 
 
-
+/*
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-
+*/
         mDatabase = FirebaseDatabase.getInstance().getReference();
         UID = ((MyApplication) this.getApplication()).getUID();
 
         //getWindow().setLayout((int)(width*.8),(int)(height*.55));
 
-        medicationList = ((MyApplication) this.getApplication()).getMedicationList();
-        String [] medNames = ((MyApplication) this.getApplication()).getMedicationNames();
-        //System.out.println(Arrays.toString(medNames));
-        String colors[] = {"Red","Blue","White","Yellow","Black", "Green","Purple","Orange","Grey"};
-        //String [] medNames = new String[medicationList.size()];
-        //int counter = 0;
-        //for(int counter = 0; counter < medicationList.size(); counter++) {
-        //    medNames[counter] = medicationList.get(counter).getName();
-        //    Log.e("hey",medicationList.get(counter).getName());
-        //}
-        System.out.println(Arrays.toString(medNames));
         update();
 
         //mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -101,19 +87,10 @@ public class MedicationLogReadActivity extends AppCompatActivity {
                                     HR = HR - 12;
                                 }
                                 records.add(HR + medicine.getKey().substring(colonNdx, colonNdx + 3) + "PM " + medicine.getValue().toString());
-                                Log.e("Corrected Time Reading", HR + medicine.getKey().substring(colonNdx, colonNdx + 3));
+                                //Log.e("Corrected Time Reading", HR + medicine.getKey().substring(colonNdx, colonNdx + 3));
                             }else{
                                 records.add(medicine.getKey().toString()+ "AM " + medicine.getValue().toString());
                             }
-
-
-
-
-
-
-
-
-
 
                         }
                         String [] mArray = new String[records.size()];

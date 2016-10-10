@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,7 +59,7 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.e("Feedback surDate",surDate);
+        //Log.e("Feedback surDate",surDate);
 
         startAlarm(this);
 
@@ -81,7 +80,7 @@ public class LifestyleFeedbackActivity extends AppCompatActivity {
                             }
                         }
 
-                        Log.e("eee", Arrays.toString(surveyResponse));
+                        //Log.e("eee", Arrays.toString(surveyResponse));
 
                         for(int ind=0; ind<surveyResponse.length;ind++){
                             if (surveyResponse[ind]==correctChoice[ind]){
