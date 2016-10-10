@@ -12,7 +12,7 @@ public class MyAlarmReceiverTwo extends BroadcastReceiver
 {
     @Override
     public void onReceive(Context context, Intent intent) {
-        int received = intent.getIntExtra("received", 1);
+        int received = intent.getIntExtra("received", 0);
         Log.d("Alarm2 Recieved!", "YAAAY");
         Intent i = new Intent(context, MonthlyReminderService.class);
         i.putExtra("received", received);

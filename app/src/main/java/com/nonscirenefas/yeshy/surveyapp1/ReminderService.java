@@ -159,7 +159,7 @@ public class ReminderService extends IntentService
         Intent alarmIntent = new Intent(this, MyAlarmReceiver.class);
         alarmIntent.putExtra("type", 1);
         final int _id = (int) cal.getTimeInMillis();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, _id, alarmIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, _id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
@@ -170,7 +170,7 @@ public class ReminderService extends IntentService
             alarmIntent = new Intent(this, MyAlarmReceiver.class);
             alarmIntent.putExtra("type", 2);
             final int _id1 = (int) cal.getTimeInMillis();
-            pendingIntent = PendingIntent.getBroadcast(this, _id1, alarmIntent, 0);
+            pendingIntent = PendingIntent.getBroadcast(this, _id1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
         }
@@ -181,7 +181,7 @@ public class ReminderService extends IntentService
             alarmIntent = new Intent(this, MyAlarmReceiver.class);
             alarmIntent.putExtra("type", 3);
             final int _id2 = (int) cal.getTimeInMillis();
-            pendingIntent = PendingIntent.getBroadcast(this, _id2, alarmIntent, 0);
+            pendingIntent = PendingIntent.getBroadcast(this, _id2, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
         }
@@ -202,6 +202,7 @@ public class ReminderService extends IntentService
             printedMeds = eightPmMeds;
         }
         if (typeOfNotification==1|typeOfNotification==2|typeOfNotification==3) {
+
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bp_logo_hd))//
                     .setSmallIcon(R.drawable.ic_menu_send)

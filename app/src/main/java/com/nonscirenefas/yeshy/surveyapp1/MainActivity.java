@@ -256,8 +256,8 @@ public class MainActivity extends AppCompatActivity
     }
     */
     public void fileIOMeds(ArrayList<String> medArray, ArrayList<String> medFrequency) {
+        deleteFile(MED_FILENAME);
         try {
-
             FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
             String text = "";
             for (int i = 0; i < medArray.size(); i++) {
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         //Frequency Array
-
+deleteFile(FREQ_FILENAME);
         try {
             FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
             String text = "";
