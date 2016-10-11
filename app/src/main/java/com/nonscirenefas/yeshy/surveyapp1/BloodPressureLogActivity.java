@@ -15,6 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import static com.nonscirenefas.yeshy.surveyapp1.R.id.bp_diastolic;
+import static com.nonscirenefas.yeshy.surveyapp1.R.id.timePicker;
+
 
 /**
  * Created by Yeshy on 7/13/2016.
@@ -90,11 +93,25 @@ public class BloodPressureLogActivity extends AppCompatActivity {
 
         TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         String time;
-        if (Build.VERSION.SDK_INT >= 23 ) {
-            time = timePicker.getHour() + ":" + timePicker.getMinute();
-        } else {
-            time = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
+        String minute;
+        String hour;
+
+        if(timePicker.getHour()<10){
+            hour = "0"+ Integer.toString(timePicker.getHour());
         }
+        else{
+            hour = Integer.toString(timePicker.getHour());
+        }
+        if(timePicker.getMinute()<10){
+            minute = "0"+ Integer.toString(timePicker.getMinute());
+        }
+        else{
+            minute = Integer.toString(timePicker.getMinute());
+        }
+
+        time = hour + ":" + minute;
+
+
         if (bp_systolic.length()>0&bp_diastolic.length()>0) {
             mDatabase.child("app").child("users").child(UID).child("bloodPressureLog").child(date).child(time).setValue(bpSystolic + "-" + bpDiastolic);
 

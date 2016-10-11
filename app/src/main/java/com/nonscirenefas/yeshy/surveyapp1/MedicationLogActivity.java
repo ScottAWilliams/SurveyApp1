@@ -128,6 +128,12 @@ public class MedicationLogActivity extends AppCompatActivity {
         });
     }
 
+    public void returnToCal(View v){
+        Intent i = new Intent(this, MedicationActivity.class);
+        startActivity(i);
+        finish();
+    }
+
     public void submit(View v) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
