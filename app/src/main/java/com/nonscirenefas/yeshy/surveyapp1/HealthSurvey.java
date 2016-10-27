@@ -511,7 +511,7 @@ public class HealthSurvey extends AppCompatActivity
                     }
                 });
         String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
-
+        Log.e("Tel",tel);
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id  == R.id.nav_home){

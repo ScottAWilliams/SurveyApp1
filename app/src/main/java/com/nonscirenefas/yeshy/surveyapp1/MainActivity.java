@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -32,6 +33,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
+
+
+
 
 import static android.util.Log.e;
 
@@ -82,6 +86,23 @@ public class MainActivity extends AppCompatActivity
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = ((MyApplication) this.getApplication()).getUID();
         //String attempt2 = ((MyApplication) MainActivity.this.getApplication()).getPhone();
+
+        mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String phonenumber = dataSnapshot.getValue().toString();
+                        ((MyApplication) MainActivity.this.getApplication()).setPharmaPhone(phonenumber);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+
+
 
         //Log.e("Phone2",attempt2);
         getMeds(); // this creates a meds array and a frequency array from those meds
@@ -464,24 +485,6 @@ deleteFile(FREQ_FILENAME);
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        String UID = ((MyApplication) this.getApplication()).getUID();
-
-        mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
-                new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String phonenumber = dataSnapshot.getValue().toString();
-                        e("Phone", phonenumber);
-                        ((MyApplication) MainActivity.this.getApplication()).setPharmaPhone(phonenumber);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                    }
-                });
         String tel = ((MyApplication) this.getApplication()).getPharmaPhone();
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -497,6 +500,7 @@ deleteFile(FREQ_FILENAME);
             startActivity(i);
         } else if (id == R.id.nav_callmypharmacist) {
             Intent i = new Intent(Intent.ACTION_DIAL);
+            Log.e("Tel",tel);
             i.setData(Uri.parse("tel:" + tel));
             startActivity(i);
         } else if (id == R.id.nav_logout) {
