@@ -150,15 +150,15 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
                     horScrollView.scrollTo(qnum*388,0);
                     if (qnum<7){
                         if (qnum==0){
-                            buttonPrev.setVisibility(view.INVISIBLE);
+                            buttonPrev.setVisibility(View.INVISIBLE);
                         }
-                        buttonNext.setVisibility(view.VISIBLE);
+                        buttonNext.setVisibility(View.VISIBLE);
                     }
                     if (qnum>0){
                         if (qnum==7){
-                            buttonNext.setVisibility(view.INVISIBLE);
+                            buttonNext.setVisibility(View.INVISIBLE);
                         }
-                        buttonPrev.setVisibility(view.VISIBLE);
+                        buttonPrev.setVisibility(View.VISIBLE);
                     }
                     //if(questCount == 8){
                     //    buttonNext.setVisibility(View.INVISIBLE);
@@ -173,23 +173,23 @@ public class LifestyleSurvey extends AppCompatActivity implements NavigationView
                     final RadioButton opt5 = (RadioButton) findViewById(R.id.opt5);
 
                     opt1.setText(questionchoices.get(qnum)[0]);
-                    opt1.setVisibility(view.VISIBLE);
+                    opt1.setVisibility(View.VISIBLE);
                     opt2.setText(questionchoices.get(qnum)[1]);
-                    opt2.setVisibility(view.VISIBLE);
+                    opt2.setVisibility(View.VISIBLE);
                     opt3.setText(questionchoices.get(qnum)[2]);
-                    opt3.setVisibility(view.VISIBLE);
+                    opt3.setVisibility(View.VISIBLE);
 
                     if (qnum == 2 || qnum == 3 || qnum == 5 || qnum == 6) {
-                        opt4.setVisibility(view.INVISIBLE);
-                        opt5.setVisibility(view.INVISIBLE);
+                        opt4.setVisibility(View.INVISIBLE);
+                        opt5.setVisibility(View.INVISIBLE);
                     }
 
 
                     if (qnum == 0 || qnum == 1 || qnum == 4 || qnum == 7){
                         opt4.setText(questionchoices.get(qnum)[3]);
-                        opt4.setVisibility(view.VISIBLE);
+                        opt4.setVisibility(View.VISIBLE);
                         opt5.setText(questionchoices.get(qnum)[4]);
-                        opt5.setVisibility(view.VISIBLE);
+                        opt5.setVisibility(View.VISIBLE);
                     }
 
                     if (answers[qnum] == 1) {

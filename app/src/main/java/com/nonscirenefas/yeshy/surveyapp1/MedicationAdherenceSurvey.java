@@ -48,7 +48,7 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
 
     public static final String PREFS_NAME = "MyPrefsFile";
     public static final String MSURVEY_FILENAME = "msurvey_file";
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     Button btnTag;
     int qnum;
     Context ctx;
@@ -149,15 +149,15 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                     horScrollView.scrollTo(qnum*388,0);
                     if (qnum<7){
                         if (qnum==0){
-                            buttonPrev.setVisibility(view.INVISIBLE);
+                            buttonPrev.setVisibility(View.INVISIBLE);
                         }
-                        buttonNext.setVisibility(view.VISIBLE);
+                        buttonNext.setVisibility(View.VISIBLE);
                     }
                     if (qnum>0){
                         if (qnum==7){
-                            buttonNext.setVisibility(view.INVISIBLE);
+                            buttonNext.setVisibility(View.INVISIBLE);
                         }
-                        buttonPrev.setVisibility(view.VISIBLE);
+                        buttonPrev.setVisibility(View.VISIBLE);
                     }
                     questionsView.setText(Integer.toString(qnum+1)+".  "+questionArray[qnum]);
 
@@ -169,21 +169,21 @@ public class MedicationAdherenceSurvey extends AppCompatActivity implements Navi
                     final RadioButton opt5 = (RadioButton) findViewById(R.id.opt5);
 
                     opt1.setText(questionchoices.get(qnum)[0]);
-                    opt1.setVisibility(view.VISIBLE);
+                    opt1.setVisibility(View.VISIBLE);
                     opt2.setText(questionchoices.get(qnum)[1]);
-                    opt2.setVisibility(view.VISIBLE);
+                    opt2.setVisibility(View.VISIBLE);
                     //Set other buttons invisible
-                    opt3.setVisibility(view.INVISIBLE);
-                    opt4.setVisibility(view.INVISIBLE);
-                    opt5.setVisibility(view.INVISIBLE);
+                    opt3.setVisibility(View.INVISIBLE);
+                    opt4.setVisibility(View.INVISIBLE);
+                    opt5.setVisibility(View.INVISIBLE);
 
                     if (qnum == 7){
                         opt3.setText(questionchoices.get(qnum)[2]);
-                        opt3.setVisibility(view.VISIBLE);
+                        opt3.setVisibility(View.VISIBLE);
                         opt4.setText(questionchoices.get(qnum)[3]);
-                        opt4.setVisibility(view.VISIBLE);
+                        opt4.setVisibility(View.VISIBLE);
                         opt5.setText(questionchoices.get(qnum)[4]);
-                        opt5.setVisibility(view.VISIBLE);
+                        opt5.setVisibility(View.VISIBLE);
                     }
 
                     if (answers[qnum] == 1) {

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
-
+import java.util.Date;
 
 
 
@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity
         String UID = ((MyApplication) this.getApplication()).getUID();
         //String attempt2 = ((MyApplication) MainActivity.this.getApplication()).getPhone();
 
+        Log.e("DATESSS", String.valueOf(new Date()));
+        Date d = new Date();
+        d.getDate();
+        d.getYear();
         mDatabase.child("app").child("users").child(UID).child("pharmanumber").addValueEventListener(
                 new ValueEventListener() {
 
@@ -195,7 +199,7 @@ public class MainActivity extends AppCompatActivity
 
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
                         while (it.hasNext()) {
-                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            DataSnapshot medicine = it.next();
                             //e("reading2", medicine.toString());
                             //e("reading3", medicine.getKey());
                             medArray.add(medicine.getKey().toString());
@@ -278,7 +282,7 @@ public class MainActivity extends AppCompatActivity
     public void fileIOMeds(ArrayList<String> medArray, ArrayList<String> medFrequency) {
         deleteFile(MED_FILENAME);
         try {
-            FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_WORLD_READABLE);
+            FileOutputStream fos = openFileOutput(MED_FILENAME, Context.MODE_APPEND);
             String text = "";
             for (int i = 0; i < medArray.size(); i++) {
                 text = text.concat(medArray.get(i));
@@ -286,7 +290,7 @@ public class MainActivity extends AppCompatActivity
                     text = text.concat("\n");
                 }
             }
-            //Log.e("Meds",text);
+            Log.e("Meds",text);
             fos.write(text.getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
@@ -298,7 +302,7 @@ public class MainActivity extends AppCompatActivity
         //Frequency Array
 deleteFile(FREQ_FILENAME);
         try {
-            FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_WORLD_READABLE);
+            FileOutputStream fos = openFileOutput(FREQ_FILENAME, Context.MODE_APPEND);
             String text = "";
             for (int i = 0; i < medFrequency.size(); i++) {
                 text = text.concat(medFrequency.get(i));
@@ -407,7 +411,7 @@ deleteFile(FREQ_FILENAME);
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
                         int g = 0;
                         while (it.hasNext()) {
-                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            DataSnapshot medicine = it.next();
                             String attempts = medicine.getValue().toString();
                             responseArray.add(attempts);
                             g++;
@@ -444,7 +448,7 @@ deleteFile(FREQ_FILENAME);
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
                         int g = 0;
                         while (it.hasNext()) {
-                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            DataSnapshot medicine = it.next();
                             String attempts = medicine.getValue().toString();
                             responseArray1.add(attempts);
                             g++;

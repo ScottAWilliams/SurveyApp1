@@ -10,6 +10,14 @@
     android:background="@color/white_pressed"
     android:weightSum="1">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NFC Available"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible"
+        android:id="@+id/btnTag"/>
+
     <Spinner
         android:layout_marginTop="50dp"
         android:layout_width="190dp"

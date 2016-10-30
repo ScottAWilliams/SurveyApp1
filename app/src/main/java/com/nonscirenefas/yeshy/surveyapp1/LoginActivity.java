@@ -114,6 +114,7 @@ if (isConnected){
                 if (temp.length() > 1) {
                     mEdit.setText(temp);
                     check.setChecked(true);
+                    deleteFile(USER_FILENAME);
                     //login(temp+ "@mercer.edu","password",v);
                 } else {
                     check.setChecked(false);
@@ -186,7 +187,7 @@ if (isConnected){
             check = (CheckBox) findViewById(R.id.checkbox);
             if (check.isChecked()) {
                 try {
-                    FileOutputStream fos = openFileOutput(USER_FILENAME, Context.MODE_WORLD_READABLE);
+                    FileOutputStream fos = openFileOutput(USER_FILENAME, Context.MODE_APPEND);
                     fos.write(mEdit.getText().toString().getBytes());
                     fos.close();
                 } catch (FileNotFoundException e) {

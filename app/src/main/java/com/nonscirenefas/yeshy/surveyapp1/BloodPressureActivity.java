@@ -69,7 +69,7 @@ public class BloodPressureActivity extends AppCompatActivity
                         Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
                         int g=0;
                         while (it.hasNext()) {
-                            DataSnapshot bpDate = (DataSnapshot) it.next();
+                            DataSnapshot bpDate = it.next();
                             String key = bpDate.getKey().toString();
                             String value = bpDate.getValue().toString();
                             bpDates.add(g,key);

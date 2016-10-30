@@ -70,7 +70,7 @@ public class MedicationInformationActivity extends AppCompatActivity
                         System.out.println(dataSnapshot);
                         int g=0;
                         while (it.hasNext()) {
-                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            DataSnapshot medicine = it.next();
                             String attempts =  medicine.child("name").getValue().toString();
                             records.add(attempts);
                             //records[g] = (medicine.child("name").getValue().toString());

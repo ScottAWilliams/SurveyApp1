@@ -83,7 +83,7 @@ public class BloodPressureLogReadActivity extends AppCompatActivity {
                             records.add(" ");
                         }
                         while (it.hasNext()) {
-                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            DataSnapshot medicine = it.next();
                             //Log.e("reading2", medicine.toString());
                             //Log.e("reading3", medicine.getKey());
                             int colonNdx = medicine.getKey().toString().indexOf(":");
