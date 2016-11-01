@@ -132,15 +132,15 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
 
                     if (qnum<1){
                         if (qnum==0){
-                            buttonPrev.setVisibility(view.INVISIBLE);
+                            buttonPrev.setVisibility(View.INVISIBLE);
                         }
-                        buttonNext.setVisibility(view.VISIBLE);
+                        buttonNext.setVisibility(View.VISIBLE);
                     }
                     if (qnum>0){
                         if (qnum==1){
-                            buttonNext.setVisibility(view.INVISIBLE);
+                            buttonNext.setVisibility(View.INVISIBLE);
                         }
-                        buttonPrev.setVisibility(view.VISIBLE);
+                        buttonPrev.setVisibility(View.VISIBLE);
                     }
 
 
@@ -149,16 +149,16 @@ public class healthLiteracyExampleActivity extends AppCompatActivity
 
 
                     final RadioButton opt1 = (RadioButton) findViewById(R.id.opt1);
-                    opt1.setVisibility(view.VISIBLE);
+                    opt1.setVisibility(View.VISIBLE);
                     opt1.setText(questionchoices.get(qnum)[0]);
                     final RadioButton opt2 = (RadioButton) findViewById(R.id.opt2);
-                    opt2.setVisibility(view.VISIBLE);
+                    opt2.setVisibility(View.VISIBLE);
                     opt2.setText(questionchoices.get(qnum)[1]);
                     final RadioButton opt3 = (RadioButton) findViewById(R.id.opt3);
-                    opt3.setVisibility(view.VISIBLE);
+                    opt3.setVisibility(View.VISIBLE);
                     opt3.setText(questionchoices.get(qnum)[2]);
                     final RadioButton opt4 = (RadioButton) findViewById(R.id.opt4);
-                    opt4.setVisibility(view.VISIBLE);
+                    opt4.setVisibility(View.VISIBLE);
                     opt4.setText(questionchoices.get(qnum)[3]);
                     if (answers[qnum] == 1) {
                         opt1.setChecked(true);

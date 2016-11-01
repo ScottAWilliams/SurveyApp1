@@ -92,7 +92,7 @@ public class SurveySelectionActivity extends AppCompatActivity
                                 //System.out.println(dataSnapshot);
                                 if (it.hasNext()) {
                                     while (it.hasNext()) {
-                                        DataSnapshot medicine = (DataSnapshot) it.next();
+                                        DataSnapshot medicine = it.next();
 
                                         records.add(medicine.getKey());
                                     }
@@ -170,7 +170,7 @@ public class SurveySelectionActivity extends AppCompatActivity
                                 //System.out.println(dataSnapshot);
                                 if (it.hasNext()) {
                                     while (it.hasNext()) {
-                                        DataSnapshot medicine = (DataSnapshot) it.next();
+                                        DataSnapshot medicine = it.next();
 
                                         records.add(medicine.getKey());
                                     }
@@ -246,7 +246,7 @@ public class SurveySelectionActivity extends AppCompatActivity
                                 //System.out.println(dataSnapshot);
                                 if (it.hasNext()) {
                                     while (it.hasNext()) {
-                                        DataSnapshot medicine = (DataSnapshot) it.next();
+                                        DataSnapshot medicine = it.next();
 
                                         records.add(medicine.getKey());
                                     }
@@ -281,10 +281,10 @@ public class SurveySelectionActivity extends AppCompatActivity
 
                                     if (daysPassed<31) {
                                         Toast.makeText(ctx, "You've taken this survey in the past month, please take again in " + (31-daysPassed) + " days.", Toast.LENGTH_SHORT).show();
-
+                                        deleteFile(HSURVEY_FILENAME);
                                         //Log.e("tryin",surveyDate);
                                         try {
-                                            FileOutputStream fos = openFileOutput(HSURVEY_FILENAME, Context.MODE_WORLD_READABLE);
+                                            FileOutputStream fos = openFileOutput(HSURVEY_FILENAME, Context.MODE_APPEND);
                                             fos.write(surveyDate.getBytes());
                                             fos.close();
                                         } catch (FileNotFoundException e) {

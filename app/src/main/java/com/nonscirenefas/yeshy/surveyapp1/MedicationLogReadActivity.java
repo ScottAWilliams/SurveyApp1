@@ -72,7 +72,7 @@ public class MedicationLogReadActivity extends AppCompatActivity {
                             records.add(" ");
                         }
                         while (it.hasNext()) {
-                            DataSnapshot medicine = (DataSnapshot) it.next();
+                            DataSnapshot medicine = it.next();
                             //Log.e("reading2", medicine.toString());
                             //Log.e("reading3", medicine.getKey());
                             //Log.e("reading4", medicine.getValue().toString());

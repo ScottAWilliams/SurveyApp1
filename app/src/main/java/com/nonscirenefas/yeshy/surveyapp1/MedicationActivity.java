@@ -3,10 +3,6 @@ package com.nonscirenefas.yeshy.surveyapp1;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
-import android.icu.util.GregorianCalendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -27,8 +23,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+//import java.sql.Time;
 
 /**
  * Created by Yeshy on 7/12/2016.
@@ -71,7 +71,6 @@ public class MedicationActivity extends AppCompatActivity
 
     public void initializeCalendar() {
         CalendarView calendarMed = (CalendarView) findViewById(R.id.calendarMed);
-
         //calendarMed.setBackground(getResources().getDrawable(R.drawable.common_google_signin_btn_icon_dark));
 
         calendarMed.setSelectedDateVerticalBar(getResources().getDrawable(R.drawable.common_google_signin_btn_text_dark_normal));
@@ -79,32 +78,34 @@ public class MedicationActivity extends AppCompatActivity
         calendarMed.setOnDateChangeListener(new OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month,int day) {
-                //finish();
-                //Intent i = new Intent(ctx, MedicationLogActivity.class);
-                //i.putExtra("date", String.format("%d-%d-%d",year, month+1, day));
-                //Log.e("nrp",String.format("%d-%d",year, month+1, day));
-                //startActivity(i);
-                //finish();
+
+                String currentDate;
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Calendar cal = Calendar.getInstance();
+                    System.out.println(dateFormat.format(cal.getTime()));
+                    currentDate = dateFormat.format(cal.getTime());
+                    String currDate = currentDate;
+                    curYear = Integer.parseInt(currDate.substring(0, currDate.indexOf("-")));
+                    curMonth = Integer.parseInt(currDate.substring(currDate.indexOf("-") + 1, currDate.lastIndexOf("-")));
+                    curDay = Integer.parseInt(currDate.substring(currDate.lastIndexOf("-") + 1, currDate.length()));
+
+                    String data = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+                    Log.e("DATAAAA",data);
+
+               }
+                else{
+                    String data = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+                    String currDate = data;
+                    curYear = Integer.parseInt(currDate.substring(0, currDate.indexOf("-")));
+                    curMonth = Integer.parseInt(currDate.substring(currDate.indexOf("-") + 1, currDate.lastIndexOf("-")));
+                    curDay = Integer.parseInt(currDate.substring(currDate.lastIndexOf("-") + 1, currDate.length()));
+                }
 
 
-
-
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar cal = Calendar.getInstance();
-                System.out.println(dateFormat.format(cal.getTime()));
-                final String currentDate = dateFormat.format(cal.getTime());
-                String currDate="";
-                    currDate = currentDate;
-
-                curYear = Integer.parseInt(currDate.substring(0, currDate.indexOf("-")));
-                curMonth = Integer.parseInt(currDate.substring(currDate.indexOf("-") + 1, currDate.lastIndexOf("-")));
-                curDay = Integer.parseInt(currDate.substring(currDate.lastIndexOf("-") + 1, currDate.length()));
-
-
-                GregorianCalendar old = new GregorianCalendar();
-                old.set(GregorianCalendar.DAY_OF_MONTH, day);
-                old.set(GregorianCalendar.MONTH, month);
-                old.set(GregorianCalendar.YEAR, year);
                 Date current = new Date(curYear,curMonth,curDay);// some Dat
                 Date survey = new Date(year,month+1,day);// some Date
                 Date oldDateTime = new Date(1,1,2010);
@@ -112,13 +113,29 @@ public class MedicationActivity extends AppCompatActivity
                 int one = (int)getDifferenceDays(oldDateTime,current);
                 int two = (int)getDifferenceDays(oldDateTime,survey);
 
+                String mon;
+                String d;
+
+                if (month <10){
+                     mon = "0"+Integer.toString(month);
+                }
+                else{
+                    mon = Integer.toString(month);
+                }
+                if (day <10){
+                    d = "0"+Integer.toString(day);
+                }
+                else{
+                    d = Integer.toString(day);
+                }
+
 
                 int daysSince = one-two;
 
                 if (daysSince>=0) {
                     Intent i = new Intent(ctx, MedicationLogActivity.class);
                     //old.set(GregorianCalendar.MONTH, date.getMonth()-1);
-                    i.putExtra("date", dateFormat.format(old));//Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
+                    i.putExtra("date", year+"-"+mon+"-"+d);//Log.e("nrp",String.format("%d-%d", date.getMonth(), date.getDay()));
                     startActivity(i);
                     //Snackbar.make(view, String.format("%d-%d", date.getMonth(), date.getDay()), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
