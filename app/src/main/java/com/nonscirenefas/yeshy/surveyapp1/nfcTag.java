@@ -15,6 +15,15 @@ import android.util.DisplayMetrics;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.Iterator;
+
 /**
  * Created by lindsayherron on 10/28/16.
  */
@@ -25,6 +34,8 @@ public class nfcTag extends AppCompatActivity {
     NfcAdapter nfcAdapter;
     IntentFilter[] readTagFilters;
     PendingIntent pendingIntent;
+    String UID;
+    private DatabaseReference mDatabase;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -85,6 +96,23 @@ public class nfcTag extends AppCompatActivity {
 ndef.getNdefMessage();
             String value = new String(ndef.getTag().getId(), "UTF-8");
             txtID.setText(value);
+
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+            UID = ((MyApplication) this.getApplication()).getUID();
+
+            FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("medicine")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                               
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
             txtType.setText(ndef.getType().toString());
             txtSize.setText(String.valueOf(ndef.getMaxSize()));
             txtWrite.setText(ndef.isWritable() ? "True" : "False");
