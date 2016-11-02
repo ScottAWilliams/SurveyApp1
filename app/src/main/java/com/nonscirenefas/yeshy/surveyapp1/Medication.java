@@ -8,15 +8,17 @@ public class Medication {
     private String name;
     private String frequency;
     private String daysSupply;
+    private String id;
 
     public Medication() {
         //default constructor because why not
     }
 
-    public Medication(String name, String frequency, String daysSupply) {
+    public Medication(String name, String frequency, String daysSupply, String id) {
         this.name = name;
         this.frequency = frequency;
         this.daysSupply = daysSupply;
+        this.id = id;
     }
 
     public String getName() {
@@ -42,4 +44,10 @@ public class Medication {
     public void setDaysSupply(String daysSupply) {
         this.daysSupply = daysSupply;
     }
+
+    public String getID() { return id; }
+
+    public void setID(String id) { this.id = id; }
+
+
 }
